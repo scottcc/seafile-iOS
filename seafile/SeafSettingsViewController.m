@@ -248,7 +248,7 @@ enum ENC_LIBRARIES{
     _cacheCell.textLabel.text = NSLocalizedString(@"Local Cache", @"Seafile");
     _tellFriendCell.textLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Tell Friends about %@", @"Seafile"), APP_NAME];
     _websiteCell.textLabel.text = NSLocalizedString(@"Website", @"Seafile");
-    _websiteCell.detailTextLabel.text = @"www.seafile.com";
+    _websiteCell.detailTextLabel.text = @"www.horizonbase.com";
     _serverCell.textLabel.text = NSLocalizedString(@"Server", @"Seafile");
     _versionCell.textLabel.text = NSLocalizedString(@"Version", @"Seafile");
     _wipeCacheLabel.text = NSLocalizedString(@"Wipe Cache", @"Seafile");

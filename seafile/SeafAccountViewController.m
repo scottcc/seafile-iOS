@@ -178,6 +178,8 @@
 
     _httpsLabel.text = @"https";
     serverTextField.clearButtonMode = UITextFieldViewModeNever;
+    _msgLabel.text = [APP_NAME stringByAppendingFormat:@" %@", NSLocalizedString(@"Server", @"Seafile")];
+    serverTextField.enabled = false;
     serverTextField.placeholder = NSLocalizedString(@"Server, like https://seafile.cc", @"Seafile");
     if (self.type != ACCOUNT_SHIBBOLETH) {
         _msgLabel.text = NSLocalizedString(@"For example: https://seacloud.cc or http://192.168.1.24:8000", @"Seafile");
@@ -201,12 +203,13 @@
             break;
         case ACCOUNT_OTHER:{
 #if DEBUG
-            serverTextField.text = @"https://dev.seafile.com/seahub/";
-            usernameTextField.text = @"demo@seafile.com";
-            passwordTextField.text = @"demo";
+            //serverTextField.text = @"https://dev.seafile.com/seahub/";
+            //usernameTextField.text = @"demo@seafile.com";
+            //passwordTextField.text = @"demo";
 #else
-            serverTextField.text = HTTPS;
+            //serverTextField.text = HTTPS;
 #endif
+            serverTextField.text = @"https://horizonbase.ch";
         }
             break;
         case ACCOUNT_SHIBBOLETH:
@@ -229,6 +232,8 @@
     }
     [self.serverTextField setDelegate:self];
     self.navigationController.navigationBar.tintColor = BAR_COLOR;
+    self.serverTextField.hidden = true;
+    self.msgLabel.hidden = true;
 }
 
 - (void)didReceiveMemoryWarning
