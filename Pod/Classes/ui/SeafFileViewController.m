@@ -5,10 +5,12 @@
 //  Created by Wei Wang on 7/7/12.
 //  Copyright (c) 2012 Seafile Ltd. All rights reserved.
 //
+#import <MessageUI/MFMailComposeViewController.h>
+
 #import "MWPhotoBrowser.h"
 #import "UIScrollView+SVPullToRefresh.h"
 
-#import "SeafAppDelegate.h"
+#import "SeafGlobal.h"
 #import "SeafFileViewController.h"
 #import "SeafDetailViewController.h"
 #import "SeafDirViewController.h"
@@ -41,6 +43,8 @@ enum {
     STATE_SHARE_LINK,
 };
 
+#define STR_12 NSLocalizedString(@"A file with the same name already exists, do you want to overwrite?", @"Seafile")
+#define STR_13 NSLocalizedString(@"Files with the same name already exist, do you want to overwrite?", @"Seafile")
 
 @interface SeafFileViewController ()<QBImagePickerControllerDelegate, UIPopoverControllerDelegate, SeafUploadDelegate, SeafDirDelegate, SeafShareDelegate, UISearchBarDelegate, UISearchDisplayDelegate, MFMailComposeViewControllerDelegate, SWTableViewCellDelegate, MWPhotoBrowserDelegate>
 - (UITableViewCell *)getSeafFileCell:(SeafFile *)sfile forTableView:(UITableView *)tableView;
@@ -93,11 +97,25 @@ enum {
 
 @synthesize popoverController;
 
+static SeafDetailViewControllerResolver detailViewControllerResolver = ^SeafDetailViewController *{ return nil; };
+
++ (void)setSeafDetailViewControllerResolver:(SeafDetailViewControllerResolver)resolver
+{
+    NSAssert(resolver != NULL, @"You must provide a way to create the SeafDetailViewController");
+    detailViewControllerResolver = resolver;
+}
 
 - (SeafDetailViewController *)detailViewController
 {
-    SeafAppDelegate *appdelegate = (SeafAppDelegate *)[[UIApplication sharedApplication] delegate];
-    return (SeafDetailViewController *)[appdelegate detailViewControllerAtIndex:TABBED_SEAFILE];
+    return detailViewControllerResolver();
+}
+
+/**
+ * @return A convenience helper casted to the protocol we're interested in.
+ */
+- (id <SeafAppDelegateProxy>)appdelegate
+{
+    return (id <SeafAppDelegateProxy>)[[UIApplication sharedApplication] delegate];
 }
 
 - (NSArray *)editToolItems
@@ -376,8 +394,7 @@ enum {
         self.popoverController.delegate = self;
         [self.popoverController presentPopoverFromBarButtonItem:self.photoItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     } else {
-        SeafAppDelegate *appdelegate = (SeafAppDelegate *)[[UIApplication sharedApplication] delegate];
-        [appdelegate showDetailView:imagePickerController];
+        [[self appdelegate] showDetailView:imagePickerController];
     }
 }
 
@@ -506,8 +523,9 @@ enum {
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    if ([_directory hasCache])
-        [SeafAppDelegate checkOpenLink:self];
+    if ([_directory hasCache]) {
+        [[self appdelegate] checkOpenLinkAfterAHalfSecond:self];
+    }
 }
 
 #pragma mark - Table View
@@ -835,12 +853,11 @@ enum {
 - (void)popupDirChooseView:(SeafUploadFile *)file
 {
     self.ufile = file;
-    SeafAppDelegate *appdelegate = (SeafAppDelegate *)[[UIApplication sharedApplication] delegate];
     UIViewController *controller = [[SeafDirViewController alloc] initWithSeafDir:self.connection.rootFolder delegate:self chooseRepo:false];
 
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
     [navController setModalPresentationStyle:UIModalPresentationFormSheet];
-    [appdelegate.window.rootViewController presentViewController:navController animated:YES completion:nil];
+    [[self appdelegate].window.rootViewController presentViewController:navController animated:YES completion:nil];
     if (IsIpad()) {
         CGRect frame = navController.view.superview.frame;
         navController.view.superview.frame = CGRectMake(frame.origin.x+frame.size.width/2-320/2, frame.origin.y+frame.size.height/2-500/2, 320, 500);
@@ -913,8 +930,7 @@ enum {
             if (self.detailViewController.state == PREVIEW_QL_MODAL) { // Use fullscreen preview for doc, xls, etc.
                 [self presentViewController:self.detailViewController.qlViewController animated:NO completion:nil];
             } else {
-                SeafAppDelegate *appdelegate = (SeafAppDelegate *)[[UIApplication sharedApplication] delegate];
-                [appdelegate showDetailView:self.detailViewController];
+                [[self appdelegate] showDetailView:self.detailViewController];
             }
         }
     } else if ([_curEntry isKindOfClass:[SeafDir class]]) {
@@ -1013,7 +1029,7 @@ enum {
         [self dismissLoadingView];
         if (updated) {
             [self refreshView];
-            [SeafAppDelegate checkOpenLink:self];
+            [[self appdelegate] checkOpenLinkAfterAHalfSecond:self];
         } else {
             //[self.tableView reloadData];
         }
@@ -1082,7 +1098,7 @@ enum {
 #pragma mark - edit files
 - (void)editOperation:(id)sender
 {
-    SeafAppDelegate *appdelegate = (SeafAppDelegate *)[[UIApplication sharedApplication] delegate];
+    id <SeafAppDelegateProxy> appdelegate = [self appdelegate];
 
     if (self != appdelegate.fileVC) {
         return [appdelegate.fileVC editOperation:sender];
@@ -1713,8 +1729,8 @@ enum {
         return;
     }
 
-    SeafAppDelegate *appdelegate = (SeafAppDelegate *)[[UIApplication sharedApplication] delegate];
-    MFMailComposeViewController *mailPicker = appdelegate.globalMailComposer;    mailPicker.mailComposeDelegate = self;
+    MFMailComposeViewController *mailPicker = [self appdelegate].globalMailComposer;
+    mailPicker.mailComposeDelegate = self;
     NSString *emailSubject, *emailBody;
     if ([entry isKindOfClass:[SeafFile class]]) {
         emailSubject = [NSString stringWithFormat:NSLocalizedString(@"File '%@' is shared with you using %@", @"Seafile"), entry.name, APP_NAME];
@@ -1751,8 +1767,7 @@ enum {
     }
     Debug("share file:send mail %@\n", msg);
     [self dismissViewControllerAnimated:YES completion:^{
-        SeafAppDelegate *appdelegate = (SeafAppDelegate *)[[UIApplication sharedApplication] delegate];
-        [appdelegate cycleTheGlobalMailComposer];
+        [[self appdelegate] cycleTheGlobalMailComposer];
     }];
 }
 
