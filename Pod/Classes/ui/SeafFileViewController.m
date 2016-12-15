@@ -19,6 +19,7 @@
 #import "SeafCell.h"
 #import "SeafPhoto.h"
 #import "SeafPhotoThumb.h"
+#import "SeafUI.h"
 
 #import "FileSizeFormatter.h"
 #import "SeafDateFormatter.h"
@@ -108,14 +109,6 @@ static SeafDetailViewControllerResolver detailViewControllerResolver = ^SeafDeta
 - (SeafDetailViewController *)detailViewController
 {
     return detailViewControllerResolver();
-}
-
-/**
- * @return A convenience helper casted to the protocol we're interested in.
- */
-- (id <SeafAppDelegateProxy>)appdelegate
-{
-    return (id <SeafAppDelegateProxy>)[[UIApplication sharedApplication] delegate];
 }
 
 - (NSArray *)editToolItems
@@ -394,7 +387,7 @@ static SeafDetailViewControllerResolver detailViewControllerResolver = ^SeafDeta
         self.popoverController.delegate = self;
         [self.popoverController presentPopoverFromBarButtonItem:self.photoItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     } else {
-        [[self appdelegate] showDetailView:imagePickerController];
+        [[SeafUI appdelegate] showDetailView:imagePickerController];
     }
 }
 
@@ -524,7 +517,7 @@ static SeafDetailViewControllerResolver detailViewControllerResolver = ^SeafDeta
 {
     [super viewDidAppear:animated];
     if ([_directory hasCache]) {
-        [[self appdelegate] checkOpenLinkAfterAHalfSecond:self];
+        [[SeafUI appdelegate] checkOpenLinkAfterAHalfSecond:self];
     }
 }
 
@@ -857,7 +850,7 @@ static SeafDetailViewControllerResolver detailViewControllerResolver = ^SeafDeta
 
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
     [navController setModalPresentationStyle:UIModalPresentationFormSheet];
-    [[self appdelegate].window.rootViewController presentViewController:navController animated:YES completion:nil];
+    [[SeafUI appdelegate].window.rootViewController presentViewController:navController animated:YES completion:nil];
     if (IsIpad()) {
         CGRect frame = navController.view.superview.frame;
         navController.view.superview.frame = CGRectMake(frame.origin.x+frame.size.width/2-320/2, frame.origin.y+frame.size.height/2-500/2, 320, 500);
@@ -930,7 +923,7 @@ static SeafDetailViewControllerResolver detailViewControllerResolver = ^SeafDeta
             if (self.detailViewController.state == PREVIEW_QL_MODAL) { // Use fullscreen preview for doc, xls, etc.
                 [self presentViewController:self.detailViewController.qlViewController animated:NO completion:nil];
             } else {
-                [[self appdelegate] showDetailView:self.detailViewController];
+                [[SeafUI appdelegate] showDetailView:self.detailViewController];
             }
         }
     } else if ([_curEntry isKindOfClass:[SeafDir class]]) {
@@ -1029,7 +1022,7 @@ static SeafDetailViewControllerResolver detailViewControllerResolver = ^SeafDeta
         [self dismissLoadingView];
         if (updated) {
             [self refreshView];
-            [[self appdelegate] checkOpenLinkAfterAHalfSecond:self];
+            [[SeafUI appdelegate] checkOpenLinkAfterAHalfSecond:self];
         } else {
             //[self.tableView reloadData];
         }
@@ -1098,7 +1091,7 @@ static SeafDetailViewControllerResolver detailViewControllerResolver = ^SeafDeta
 #pragma mark - edit files
 - (void)editOperation:(id)sender
 {
-    id <SeafAppDelegateProxy> appdelegate = [self appdelegate];
+    id <SeafAppDelegateProxy> appdelegate = [SeafUI appdelegate];
 
     if (self != appdelegate.fileVC) {
         return [appdelegate.fileVC editOperation:sender];
@@ -1729,7 +1722,7 @@ static SeafDetailViewControllerResolver detailViewControllerResolver = ^SeafDeta
         return;
     }
 
-    MFMailComposeViewController *mailPicker = [self appdelegate].globalMailComposer;
+    MFMailComposeViewController *mailPicker = [SeafUI appdelegate].globalMailComposer;
     mailPicker.mailComposeDelegate = self;
     NSString *emailSubject, *emailBody;
     if ([entry isKindOfClass:[SeafFile class]]) {
@@ -1767,7 +1760,7 @@ static SeafDetailViewControllerResolver detailViewControllerResolver = ^SeafDeta
     }
     Debug("share file:send mail %@\n", msg);
     [self dismissViewControllerAnimated:YES completion:^{
-        [[self appdelegate] cycleTheGlobalMailComposer];
+        [[SeafUI appdelegate] cycleTheGlobalMailComposer];
     }];
 }
 

@@ -18,6 +18,7 @@
 #import "SeafSettingsViewController.h"
 #import "SeafActivityViewController.h"
 #import "SeafGlobal.h"
+#import "SeafUI.h"
 
 enum {
     TABBED_SEAFILE = 0,
