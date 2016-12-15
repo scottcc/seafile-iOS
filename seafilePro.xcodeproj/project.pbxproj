@@ -16,7 +16,6 @@
 		571617B91BE39FBD00792316 /* SeafPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 571617B81BE39FBD00792316 /* SeafPhoto.m */; };
 		571D8CAB1677881400F1A22C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 57DB827F15A833FA00097CEC /* main.m */; };
 		571D8CAC1677881400F1A22C /* SeafAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 57DB828315A833FA00097CEC /* SeafAppDelegate.m */; };
-		571D8CAD1677881400F1A22C /* SeafFileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 57DB828F15A833FA00097CEC /* SeafFileViewController.m */; };
 		571D8CBF1677881400F1A22C /* StartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 572B0A7615D16C1C00798C6E /* StartViewController.m */; };
 		571D8CC91677881400F1A22C /* FailToPreview.m in Sources */ = {isa = PBXBuildFile; fileRef = 57655331161BEA40005E5327 /* FailToPreview.m */; };
 		571D8CCB1677881400F1A22C /* DownloadingProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 571ABF521625DF31005C9B08 /* DownloadingProgressView.m */; };
@@ -254,8 +253,6 @@
 		57DB827715A833FA00097CEC /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		57DB827F15A833FA00097CEC /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		57DB828315A833FA00097CEC /* SeafAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeafAppDelegate.m; sourceTree = "<group>"; };
-		57DB828E15A833FA00097CEC /* SeafFileViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeafFileViewController.h; sourceTree = "<group>"; };
-		57DB828F15A833FA00097CEC /* SeafFileViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeafFileViewController.m; sourceTree = "<group>"; };
 		57DB829115A833FA00097CEC /* SeafDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeafDetailViewController.h; sourceTree = "<group>"; };
 		57E1E89B1737ED0F006601FE /* SeafTextEditorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SeafTextEditorViewController.h; sourceTree = "<group>"; };
 		57E228B61A0E403A00C92330 /* QBImagePickerController.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = QBImagePickerController.bundle; sourceTree = "<group>"; };
@@ -399,8 +396,6 @@
 				576C91C2177EB43F007B50BD /* SeafDirViewController.m */,
 				57E5E7B21CC219C8004B7125 /* SeafEventCell.h */,
 				57E5E7B11CC219C8004B7125 /* SeafEventCell.m */,
-				57DB828E15A833FA00097CEC /* SeafFileViewController.h */,
-				57DB828F15A833FA00097CEC /* SeafFileViewController.m */,
 				57D5F81B1BD23389006BAD7B /* SeafPhoto.h */,
 				571617B81BE39FBD00792316 /* SeafPhoto.m */,
 				5764C829163BF91B006AD511 /* SeafSettingsViewController.h */,
@@ -1025,7 +1020,6 @@
 				574F61F71BDB5DB300014EBA /* SeafButtonCell.m in Sources */,
 				571D8CAB1677881400F1A22C /* main.m in Sources */,
 				571D8CAC1677881400F1A22C /* SeafAppDelegate.m in Sources */,
-				571D8CAD1677881400F1A22C /* SeafFileViewController.m in Sources */,
 				571D8CBF1677881400F1A22C /* StartViewController.m in Sources */,
 				57E5E7B31CC219C8004B7125 /* SeafEventCell.m in Sources */,
 				571D8CC91677881400F1A22C /* FailToPreview.m in Sources */,

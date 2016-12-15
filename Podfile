@@ -12,7 +12,7 @@ target :"seafile-appstore" do
   pod 'SVPullToRefresh', '~> 0.4.1'
   pod 'SVProgressHUD', '~> 1.1.3'
   pod 'SWTableViewCell', :git => 'https://github.com/haiwen/SWTableViewCell.git', :branch => 'master'
-  pod 'MWPhotoBrowserPlus', :git => 'https://github.com/scottcc/MWPhotoBrowserPlus.git', :branch => 'master'
+  pod 'MWPhotoBrowserPlus', '2.1.6'
   pod 'QBImagePickerControllerPlus', :git => 'https://github.com/scottcc/QBImagePickerControllerPlus.git', :branch => 'master'
   shared
 end
@@ -36,13 +36,16 @@ pre_install do |installer|
 end
 
 post_install do |installer|
-    installer.pods_project.targets.each do |target|
-        target.build_configurations.each do |config|
-            config.build_settings['SWIFT_VERSION'] = '3.0.2'
-#            if target.name == "Pods-seafile-appstore"
-                config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)', 'SV_APP_EXTENSIONS=1']
-#            end
-        end
-    end
+   installer.pods_project.targets.each do |target|
+       target.build_configurations.each do |config|
+           config.build_settings['SWIFT_VERSION'] = '3.0.2'
+           if target.name == "SVProgressHUD"
+               config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)', 'SV_APP_EXTENSIONS=1']
+           end
+           if target.name == "MWPhotoBrowserPlus"
+               config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)', 'MW_APP_EXTENSIONS=1']
+           end
+       end
+   end
 end
 

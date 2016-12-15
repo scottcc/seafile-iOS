@@ -9,7 +9,7 @@ Pod::Spec.new do |s|
                          :tag => s.version.to_s }
   s.social_media_url = 'https://twitter.com/Seafile'
   s.source_files     = 'Pod/Classes/**/*.{h,m}'
-  s.resource_bundles = { 'Seafile' => 'Pod/Resources/**/*' }
+  s.resource_bundles = { 'Seafile' => 'Pod/Resources/*' }
   s.platform         = :ios, '8.0'
   s.requires_arc     = true
   s.frameworks       = 'AssetsLibrary'
@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
   s.dependency 'SVPullToRefresh', '~> 0.4.1'
   s.dependency 'SVProgressHUD', '~> 1.1.3'
   s.dependency 'NotDeadSWTableViewCell', '~> 0.3.9'
-  s.dependency 'MWPhotoBrowserPlus', '~> 2.1.3'  
+  s.dependency 'MWPhotoBrowserPlus', '~> 2.1.6'  
   s.dependency 'QBImagePickerControllerPlus', '2.2.2.1'
   s.pod_target_xcconfig = {
     'LIBRARY_SEARCH_PATHS' => '$(inherited) $(PODS_ROOT)/OpenSSL-Universal/lib-ios/',
