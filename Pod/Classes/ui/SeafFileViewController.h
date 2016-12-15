@@ -49,12 +49,22 @@ enum {
 
 
 @class SeafDetailViewController;
+@class SeafFileViewController;
 
 #import <CoreData/CoreData.h>
 
 #import "SeafDir.h"
 #import "SeafFile.h"
 
+@protocol SeafAppDelegateProxy <UIApplicationDelegate, SeafConnectionDelegate>
+- (void)checkOpenLinkAfterAHalfSecond:(SeafFileViewController *)c;
+- (void)showDetailView:(UIViewController *) c;
+- (SeafFileViewController *)fileVC;
+- (MFMailComposeViewController *)globalMailComposer;
+- (void)cycleTheGlobalMailComposer;
+@end
+
+typedef SeafDetailViewController *(^SeafDetailViewControllerResolver)(void);
 
 @interface SeafFileViewController : UITableViewController <SeafDentryDelegate, SeafFileUpdateDelegate> {
 }
@@ -62,6 +72,8 @@ enum {
 @property (strong, nonatomic) SeafConnection *connection;
 
 @property (strong, readonly) SeafDetailViewController *detailViewController;
+
++ (void)setSeafDetailViewControllerResolver:(SeafDetailViewControllerResolver)resolver;
 
 - (void)refreshView;
 - (void)uploadFile:(SeafUploadFile *)file;
