@@ -30,20 +30,15 @@
 		571D8CE41677881400F1A22C /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57DB827715A833FA00097CEC /* CoreData.framework */; };
 		571F5148168C80380055D69B /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 571F5147168C80380055D69B /* MobileCoreServices.framework */; };
 		5725186217AE7D010078CD12 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5725186117AE7D000078CD12 /* Security.framework */; };
-		5725395A1DE2722D007EAF57 /* UIViewController+Extend.m in Sources */ = {isa = PBXBuildFile; fileRef = 572539581DE2722D007EAF57 /* UIViewController+Extend.m */; };
-		572539B71DE2726F007EAF57 /* UIViewController+Extend.m in Sources */ = {isa = PBXBuildFile; fileRef = 572539581DE2722D007EAF57 /* UIViewController+Extend.m */; };
-		572539B81DE2727F007EAF57 /* UIViewController+Extend.m in Sources */ = {isa = PBXBuildFile; fileRef = 572539581DE2722D007EAF57 /* UIViewController+Extend.m */; };
 		573C3C651A15104B009675F9 /* seafile.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 573C3C641A15104B009675F9 /* seafile.entitlements */; };
 		574D3D8E1DFA6EF90093C18C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 57D189CE182E0A380029A797 /* Images.xcassets */; };
 		574D3D8F1DFA7B190093C18C /* SeafAccountCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5795F49916A7266E00FF90E3 /* SeafAccountCell.m */; };
 		574D3DC21DFA815B0093C18C /* SeafAccountCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 57E22AF91A12625B00C92330 /* SeafAccountCell.xib */; };
-		574D3DC51DFA86540093C18C /* UIViewController+Extend.m in Sources */ = {isa = PBXBuildFile; fileRef = 572539581DE2722D007EAF57 /* UIViewController+Extend.m */; };
 		574D3DC81DFA88CF0093C18C /* SeafActionDirViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 574D3DC71DFA88CF0093C18C /* SeafActionDirViewController.m */; };
 		574D3DCA1DFD1E010093C18C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 57532C161868AA48003D564B /* Localizable.strings */; };
 		574DF02C1AF2863E0044FE06 /* SeafShibbolethViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 574DF02A1AF2863E0044FE06 /* SeafShibbolethViewController.xib */; };
 		57532C1A1868AA48003D564B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 57532C161868AA48003D564B /* Localizable.strings */; };
 		5757DCCD1AEBCF1600BC0426 /* SeafShibbolethViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5757DCCB1AEBCF1600BC0426 /* SeafShibbolethViewController.m */; };
-		576C91C4177EB43F007B50BD /* SeafDirViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 576C91C2177EB43F007B50BD /* SeafDirViewController.m */; };
 		5775EA1217476FAD000A1765 /* SeafActivityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5775EA0F17476FAD000A1765 /* SeafActivityViewController.m */; };
 		577C6F381AB07B910043A833 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 577C6F371AB07B910043A833 /* Settings.bundle */; };
 		577C6F391AB07B910043A833 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 577C6F371AB07B910043A833 /* Settings.bundle */; };
@@ -168,8 +163,6 @@
 		571D8DBA1677881400F1A22C /* SeafilePro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SeafilePro.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		571F5147168C80380055D69B /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		5725186117AE7D000078CD12 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
-		572539581DE2722D007EAF57 /* UIViewController+Extend.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Extend.m"; sourceTree = "<group>"; };
-		572539591DE2722D007EAF57 /* UIViewController+Extend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Extend.h"; sourceTree = "<group>"; };
 		5729697318B76D6F00363B2E /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		5729697418B76F0F00363B2E /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		5729697518B76F3600363B2E /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -193,8 +186,6 @@
 		5765533D161D44A2005E5327 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		576B9918186142EC00A16ED6 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		576B9EC015DD394600802D07 /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
-		576C91C1177EB43F007B50BD /* SeafDirViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SeafDirViewController.h; sourceTree = "<group>"; };
-		576C91C2177EB43F007B50BD /* SeafDirViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SeafDirViewController.m; sourceTree = "<group>"; };
 		5775EA0E17476FAD000A1765 /* SeafActivityViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SeafActivityViewController.h; sourceTree = "<group>"; };
 		5775EA0F17476FAD000A1765 /* SeafActivityViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SeafActivityViewController.m; sourceTree = "<group>"; };
 		577C6F371AB07B910043A833 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
@@ -357,8 +348,6 @@
 		5709512615B9ACDF00F48C08 /* views */ = {
 			isa = PBXGroup;
 			children = (
-				572539581DE2722D007EAF57 /* UIViewController+Extend.m */,
-				572539591DE2722D007EAF57 /* UIViewController+Extend.h */,
 				5795F49816A7266E00FF90E3 /* SeafAccountCell.h */,
 				5795F49916A7266E00FF90E3 /* SeafAccountCell.m */,
 				570DFAC316A15D0100ADD5F2 /* SeafAccountViewController.h */,
@@ -369,8 +358,6 @@
 				57DB828315A833FA00097CEC /* SeafAppDelegate.m */,
 				57DB829115A833FA00097CEC /* SeafDetailViewController.h */,
 				57A90DA018C49F97005D8A53 /* SeafDetailViewController.m */,
-				576C91C1177EB43F007B50BD /* SeafDirViewController.h */,
-				576C91C2177EB43F007B50BD /* SeafDirViewController.m */,
 				57D5F81B1BD23389006BAD7B /* SeafPhoto.h */,
 				571617B81BE39FBD00792316 /* SeafPhoto.m */,
 				5764C829163BF91B006AD511 /* SeafSettingsViewController.h */,
@@ -1005,11 +992,9 @@
 				57DA26F5173E6DFC0003BA31 /* SeafTextEditorViewController.m in Sources */,
 				5757DCCD1AEBCF1600BC0426 /* SeafShibbolethViewController.m in Sources */,
 				5775EA1217476FAD000A1765 /* SeafActivityViewController.m in Sources */,
-				5725395A1DE2722D007EAF57 /* UIViewController+Extend.m in Sources */,
 				57A90DA118C49F97005D8A53 /* SeafDetailViewController.m in Sources */,
 				5704C6D31753A1380028F4FE /* IntelligentSplitViewController.m in Sources */,
 				57F476EC1C00623300047395 /* SeafPhotoThumb.m in Sources */,
-				576C91C4177EB43F007B50BD /* SeafDirViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1017,7 +1002,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				572539B71DE2726F007EAF57 /* UIViewController+Extend.m in Sources */,
 				57A192151A208F0900985F77 /* SeafAccountCell.m in Sources */,
 				57A029A41A170147009C9D7B /* SeafProviderFileViewController.m in Sources */,
 				57A029861A16F91F009C9D7B /* DocumentPickerViewController.m in Sources */,
@@ -1028,7 +1012,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				572539B81DE2727F007EAF57 /* UIViewController+Extend.m in Sources */,
 				57A0298E1A16F935009C9D7B /* FileProvider.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1038,7 +1021,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				574D3DC81DFA88CF0093C18C /* SeafActionDirViewController.m in Sources */,
-				574D3DC51DFA86540093C18C /* UIViewController+Extend.m in Sources */,
 				574D3D8F1DFA7B190093C18C /* SeafAccountCell.m in Sources */,
 				57B14B6E1DF5325B0045112E /* ActionViewController.m in Sources */,
 			);
