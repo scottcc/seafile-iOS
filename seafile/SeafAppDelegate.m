@@ -292,6 +292,9 @@
     [SeafFileViewController setSeafDetailViewControllerResolver:^SeafDetailViewController *(void) {
         return (SeafDetailViewController *)[welf detailViewControllerAtIndex:TABBED_SEAFILE];
     }];
+    [SeafStarredFilesViewController setSeafDetailViewControllerResolver:^SeafDetailViewController *{
+        return (SeafDetailViewController *)[welf detailViewControllerAtIndex:TABBED_STARRED];
+    }];
 }
 
 - (void)enterBackground

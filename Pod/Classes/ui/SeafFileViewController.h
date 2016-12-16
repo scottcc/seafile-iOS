@@ -42,8 +42,6 @@ enum {
 
 #define S_SHARE_EMAIL NSLocalizedString(@"Send share link via email", @"Seafile")
 #define S_SHARE_LINK NSLocalizedString(@"Copy share link to clipboard", @"Seafile")
-#define S_REDOWNLOAD NSLocalizedString(@"Redownload", @"Seafile")
-#define S_UPLOAD NSLocalizedString(@"Upload", @"Seafile")
 #define S_RESET_PASSWORD NSLocalizedString(@"Reset repo password", @"Seafile")
 #define S_CLEAR_REPO_PASSWORD NSLocalizedString(@"Clear password", @"Seafile")
 
@@ -55,16 +53,7 @@ enum {
 
 #import "SeafDir.h"
 #import "SeafFile.h"
-
-@protocol SeafAppDelegateProxy <UIApplicationDelegate, SeafConnectionDelegate>
-- (void)checkOpenLinkAfterAHalfSecond:(SeafFileViewController *)c;
-- (void)showDetailView:(UIViewController *) c;
-- (SeafFileViewController *)fileVC;
-- (MFMailComposeViewController *)globalMailComposer;
-- (void)cycleTheGlobalMailComposer;
-@end
-
-typedef SeafDetailViewController *(^SeafDetailViewControllerResolver)(void);
+#import "SeafUI.h"
 
 @interface SeafFileViewController : UITableViewController <SeafDentryDelegate, SeafFileUpdateDelegate> {
 }

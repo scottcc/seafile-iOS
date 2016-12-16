@@ -10,13 +10,22 @@
 
 #import "SeafConnection.h"
 
+@class SeafDetailViewController;
+@class SeafStarredFilesViewController;
 @class SeafFileViewController;
 @class MFMailComposeViewController;
 
+typedef SeafDetailViewController *(^SeafDetailViewControllerResolver)(void);
+
+#define S_UPLOAD NSLocalizedString(@"Upload", @"Seafile")
+#define S_REDOWNLOAD NSLocalizedString(@"Redownload", @"Seafile")
+
 @protocol SeafAppDelegateProxy <UIApplicationDelegate, SeafConnectionDelegate>
+- (SeafFileViewController *)fileVC;
+- (SeafStarredFilesViewController *)starredVC;
+
 - (void)checkOpenLinkAfterAHalfSecond:(SeafFileViewController *)c;
 - (void)showDetailView:(UIViewController *) c;
-- (SeafFileViewController *)fileVC;
 - (MFMailComposeViewController *)globalMailComposer;
 - (void)cycleTheGlobalMailComposer;
 @end

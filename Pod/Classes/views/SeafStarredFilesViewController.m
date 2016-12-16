@@ -8,7 +8,6 @@
 
 #import "UIScrollView+SVPullToRefresh.h"
 
-#import "SeafAppDelegate.h"
 #import "SeafStarredFilesViewController.h"
 #import "SeafDetailViewController.h"
 #import "SeafStarredFile.h"
@@ -44,10 +43,17 @@
     return self;
 }
 
+static SeafDetailViewControllerResolver detailViewControllerResolver = ^SeafDetailViewController *{ return nil; };
+
++ (void)setSeafDetailViewControllerResolver:(SeafDetailViewControllerResolver)resolver
+{
+    NSAssert(resolver != NULL, @"You must provide a way to create the SeafDetailViewController");
+    detailViewControllerResolver = resolver;
+}
+
 - (SeafDetailViewController *)detailViewController
 {
-    SeafAppDelegate *appdelegate = (SeafAppDelegate *)[[UIApplication sharedApplication] delegate];
-    return (SeafDetailViewController *)[appdelegate detailViewControllerAtIndex:TABBED_STARRED];
+    return detailViewControllerResolver();
 }
 
 - (void)refresh:(id)sender
@@ -231,8 +237,7 @@
         if (self.detailViewController.state == PREVIEW_QL_MODAL) { // Use fullscreen preview for doc, xls, etc.
             [self presentViewController:self.detailViewController.qlViewController animated:NO completion:nil];
         } else {
-            SeafAppDelegate *appdelegate = (SeafAppDelegate *)[[UIApplication sharedApplication] delegate];
-            [appdelegate showDetailView:self.detailViewController];
+            [[SeafUI appdelegate] showDetailView:self.detailViewController];
         }
     }
 }
