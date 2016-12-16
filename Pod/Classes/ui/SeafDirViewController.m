@@ -8,7 +8,6 @@
 #import "UIScrollView+SVPullToRefresh.h"
 
 #import "SeafDirViewController.h"
-#import "SeafAppDelegate.h"
 #import "SeafDir.h"
 #import "SeafRepos.h"
 #import "SeafCell.h"
