@@ -6,10 +6,10 @@
 //  Copyright (c) 2012 Seafile Ltd. All rights reserved.
 //
 
+@import AFNetworking;
 @import Contacts;
 #import <Photos/Photos.h>
 #import "SVProgressHUD.h"
-#import "AFNetworking.h"
 
 #import "SeafAppDelegate.h"
 #import "SeafDataTaskManager.h"

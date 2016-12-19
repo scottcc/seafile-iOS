@@ -1,3 +1,6 @@
+use_frameworks!
+inhibit_all_warnings!
+
 def shared
   platform :ios, '8.0'
   pod 'Seafile', :path => "./"
@@ -10,7 +13,9 @@ target :"seafile-appstore" do
   pod 'SVProgressHUD', '~> 1.1.3'
   pod 'SWTableViewCell', :git => 'https://github.com/haiwen/SWTableViewCell.git', :branch => 'master'
   pod 'MWPhotoBrowser', :git => 'https://github.com/haiwen/MWPhotoBrowser.git', :branch => 'master'
+#  pod 'MWPhotoBrowserPlus', '2.1.6'
   pod 'QBImagePickerController', :git => 'https://github.com/haiwen/QBImagePickerController.git', :branch => 'master'
+#  pod 'QBImagePickerControllerPlus', :git => 'https://github.com/scottcc/QBImagePickerControllerPlus.git', :branch => 'master'
   shared
 end
 
@@ -26,4 +31,19 @@ end
 target :"SeafAction" do
   pod 'SVPullToRefresh', :git => 'https://github.com/lilthree/SVPullToRefresh.git', :branch => 'master'
   shared
+end
+
+pre_install do |installer|
+    # workaround for https://github.com/CocoaPods/CocoaPods/issues/3289
+    def installer.verify_no_static_framework_transitive_dependencies; end
+end
+
+post_install do |installer|
+    installer.pods_project.targets.each do |target|
+        target.build_configurations.each do |config|
+            if config.build_settings['APPLICATION_EXTENSION_API_ONLY'] == 'YES'
+                config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)', 'SV_APP_EXTENSIONS=1']
+            end
+        end
+    end
 end

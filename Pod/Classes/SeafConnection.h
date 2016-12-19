@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "AFNetworking.h"
+@import AFNetworking;
 #import "SeafCacheProvider.h"
 #import "SeafBase.h"
 
