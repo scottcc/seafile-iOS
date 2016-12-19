@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SWTableViewCell.h"
+@import NotDeadSWTableViewCell;
 
 @interface SeafCell : SWTableViewCell
 @property (strong, nonatomic) IBOutlet UIImageView *imageView;
