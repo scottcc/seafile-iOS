@@ -7,7 +7,7 @@
 //
 #import <MessageUI/MFMailComposeViewController.h>
 
-#import "MWPhotoBrowser.h"
+@import MWPhotoBrowserPlus;
 #import "UIScrollView+SVPullToRefresh.h"
 
 #import "SeafGlobal.h"

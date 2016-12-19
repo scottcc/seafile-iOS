@@ -12,11 +12,10 @@ target :"seafile-appstore" do
   pod 'SVPullToRefresh', '~> 0.4.1'
   pod 'SVProgressHUD', '~> 1.1.3'
   pod 'SWTableViewCell', :git => 'https://github.com/haiwen/SWTableViewCell.git', :branch => 'master'
-  pod 'MWPhotoBrowser', :git => 'https://github.com/haiwen/MWPhotoBrowser.git', :branch => 'master'
-  pod 'QBImagePickerController', :git => 'https://github.com/haiwen/QBImagePickerController.git', :branch => 'master'
+  pod 'MWPhotoBrowserPlus', :git => 'https://github.com/scottcc/MWPhotoBrowserPlus.git', :branch => 'master'
+  pod 'QBImagePickerControllerPlus', :git => 'https://github.com/scottcc/QBImagePickerControllerPlus.git', :branch => 'master'
   shared
 end
-
 
 target :"SeafProvider" do
   shared
@@ -35,3 +34,15 @@ pre_install do |installer|
     # workaround for https://github.com/CocoaPods/CocoaPods/issues/3289
     def installer.verify_no_static_framework_transitive_dependencies; end
 end
+
+post_install do |installer|
+    installer.pods_project.targets.each do |target|
+        target.build_configurations.each do |config|
+            config.build_settings['SWIFT_VERSION'] = '3.0.2'
+#            if target.name == "Pods-seafile-appstore"
+                config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)', 'SV_APP_EXTENSIONS=1']
+#            end
+        end
+    end
+end
+
