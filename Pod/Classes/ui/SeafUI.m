@@ -15,7 +15,10 @@
  */
 + (id <SeafAppDelegateProxy>)appdelegate
 {
+#if !defined(SF_APP_EXTENSIONS)
     return (id <SeafAppDelegateProxy>)[[UIApplication sharedApplication] delegate];
+#endif
+    return nil;
 }
 
 @end
