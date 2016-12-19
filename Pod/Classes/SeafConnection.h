@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "AFNetworking.h"
+@import AFNetworking;
 
 #define HTTP_ERR_UNAUTHORIZED                   401
 #define HTTP_ERR_LOGIN_INCORRECT_PASSWORD       400

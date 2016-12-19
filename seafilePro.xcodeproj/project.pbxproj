@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		10CC62C9699DE05CBA3647E4 /* libPods-seafile-appstore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E2A39A0EBB6C3379F30D1A83 /* libPods-seafile-appstore.a */; };
-		11FAE5D19696AF534A19C252 /* libPods-SeafProvider.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 08E34A4BEBB32AD5D2CB9442 /* libPods-SeafProvider.a */; };
 		5704C6D31753A1380028F4FE /* IntelligentSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5704C6D11753A1380028F4FE /* IntelligentSplitViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		5704C6F91756710F0028F4FE /* tab-account.png in Resources */ = {isa = PBXBuildFile; fileRef = 5704C6F51756710F0028F4FE /* tab-account.png */; };
 		5704C6FB1756710F0028F4FE /* tab-modify.png in Resources */ = {isa = PBXBuildFile; fileRef = 5704C6F61756710F0028F4FE /* tab-modify.png */; };
@@ -174,8 +172,10 @@
 		57F8CD2C1A127566000F6CDC /* SeafTextEditorViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 57E22B091A12625B00C92330 /* SeafTextEditorViewController_iPad.xib */; };
 		57F8CD2D1A127566000F6CDC /* SeafTextEditorViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 57E22B0B1A12625B00C92330 /* SeafTextEditorViewController_iPhone.xib */; };
 		57F8CD2F1A127566000F6CDC /* SeafUploadingFileCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 57E22B0F1A12625C00C92330 /* SeafUploadingFileCell.xib */; };
-		7354777D2C3444E394BB2F31 /* libPods-SeafAction.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 159E0D2A7419F67E532A240F /* libPods-SeafAction.a */; };
-		FE5D80C9DA6AB7339F81D3AD /* libPods-SeafProviderFileProvider.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DFD7A698B44546A8DDD2D26 /* libPods-SeafProviderFileProvider.a */; };
+		9332CB64D63F393C383E7467 /* Pods_seafile_appstore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7581134A1EE8EF47DA154C05 /* Pods_seafile_appstore.framework */; };
+		9B1A2939B69EE3A661A48B8E /* Pods_SeafProviderFileProvider.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA245AE219BC2805BAA39A5C /* Pods_SeafProviderFileProvider.framework */; };
+		AB3B5E3C0B0AE2F5A9F562AE /* Pods_SeafProvider.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 354CE5C4E60CF14CE9F07CFB /* Pods_SeafProvider.framework */; };
+		F9CB28DD8F4FDBAF2077A696 /* Pods_SeafAction.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F520EC43DA65B947AC8FF94D /* Pods_SeafAction.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -231,12 +231,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		08E34A4BEBB32AD5D2CB9442 /* libPods-SeafProvider.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SeafProvider.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0AC7D46EF997A8FF83A3AD84 /* Pods-SeafProvider.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SeafProvider.release.xcconfig"; path = "Pods/Target Support Files/Pods-SeafProvider/Pods-SeafProvider.release.xcconfig"; sourceTree = "<group>"; };
 		14F713F28AC94AB8901C31BF /* Pods-seafile-appstore.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-seafile-appstore.release.xcconfig"; path = "Pods/Target Support Files/Pods-seafile-appstore/Pods-seafile-appstore.release.xcconfig"; sourceTree = "<group>"; };
-		159E0D2A7419F67E532A240F /* libPods-SeafAction.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SeafAction.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2979DE872836DD67FEA29262 /* Pods-SeafProviderFileProvider.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SeafProviderFileProvider.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SeafProviderFileProvider/Pods-SeafProviderFileProvider.debug.xcconfig"; sourceTree = "<group>"; };
-		3DFD7A698B44546A8DDD2D26 /* libPods-SeafProviderFileProvider.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SeafProviderFileProvider.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		354CE5C4E60CF14CE9F07CFB /* Pods_SeafProvider.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SeafProvider.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5704C6D01753A1380028F4FE /* IntelligentSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IntelligentSplitViewController.h; sourceTree = "<group>"; };
 		5704C6D11753A1380028F4FE /* IntelligentSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IntelligentSplitViewController.m; sourceTree = "<group>"; };
 		5704C6F51756710F0028F4FE /* tab-account.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab-account.png"; sourceTree = "<group>"; };
@@ -444,12 +442,14 @@
 		57F8CD1E1A127544000F6CDC /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/SeafTextEditorViewController_iPhone.xib; sourceTree = "<group>"; };
 		57F8CD201A12754E000F6CDC /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/SeafUploadingFileCell.xib; sourceTree = "<group>"; };
 		67C8B56C448237DC7BB99D18 /* Pods-SeafProvider.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SeafProvider.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SeafProvider/Pods-SeafProvider.debug.xcconfig"; sourceTree = "<group>"; };
+		7581134A1EE8EF47DA154C05 /* Pods_seafile_appstore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_seafile_appstore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AF30EE6039454E8B0967C09 /* Pods-SeafAction.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SeafAction.release.xcconfig"; path = "Pods/Target Support Files/Pods-SeafAction/Pods-SeafAction.release.xcconfig"; sourceTree = "<group>"; };
 		AB170391198116EFF77DDDA5 /* Pods-seafile-appstore.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-seafile-appstore.debug.xcconfig"; path = "Pods/Target Support Files/Pods-seafile-appstore/Pods-seafile-appstore.debug.xcconfig"; sourceTree = "<group>"; };
 		DE6E97E6F025F693FDC9CCB1 /* Pods-SeafProviderFileProvider.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SeafProviderFileProvider.release.xcconfig"; path = "Pods/Target Support Files/Pods-SeafProviderFileProvider/Pods-SeafProviderFileProvider.release.xcconfig"; sourceTree = "<group>"; };
-		E2A39A0EBB6C3379F30D1A83 /* libPods-seafile-appstore.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-seafile-appstore.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4F46F57187B44B200B80C36 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		EA245AE219BC2805BAA39A5C /* Pods_SeafProviderFileProvider.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SeafProviderFileProvider.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EE1E1FA7502D3F04292B11CB /* Pods-SeafAction.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SeafAction.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SeafAction/Pods-SeafAction.debug.xcconfig"; sourceTree = "<group>"; };
+		F520EC43DA65B947AC8FF94D /* Pods_SeafAction.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SeafAction.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -471,7 +471,7 @@
 				571D8CE21677881400F1A22C /* Foundation.framework in Frameworks */,
 				571D8CE31677881400F1A22C /* CoreGraphics.framework in Frameworks */,
 				571D8CE41677881400F1A22C /* CoreData.framework in Frameworks */,
-				10CC62C9699DE05CBA3647E4 /* libPods-seafile-appstore.a in Frameworks */,
+				9332CB64D63F393C383E7467 /* Pods_seafile_appstore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -479,7 +479,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				11FAE5D19696AF534A19C252 /* libPods-SeafProvider.a in Frameworks */,
+				AB3B5E3C0B0AE2F5A9F562AE /* Pods_SeafProvider.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -487,7 +487,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FE5D80C9DA6AB7339F81D3AD /* libPods-SeafProviderFileProvider.a in Frameworks */,
+				9B1A2939B69EE3A661A48B8E /* Pods_SeafProviderFileProvider.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -495,7 +495,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7354777D2C3444E394BB2F31 /* libPods-SeafAction.a in Frameworks */,
+				F9CB28DD8F4FDBAF2077A696 /* Pods_SeafAction.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -786,10 +786,10 @@
 				5725186117AE7D000078CD12 /* Security.framework */,
 				57335CF8160DA00000018AE8 /* SystemConfiguration.framework */,
 				57DB827115A833FA00097CEC /* UIKit.framework */,
-				08E34A4BEBB32AD5D2CB9442 /* libPods-SeafProvider.a */,
-				3DFD7A698B44546A8DDD2D26 /* libPods-SeafProviderFileProvider.a */,
-				159E0D2A7419F67E532A240F /* libPods-SeafAction.a */,
-				E2A39A0EBB6C3379F30D1A83 /* libPods-seafile-appstore.a */,
+				F520EC43DA65B947AC8FF94D /* Pods_SeafAction.framework */,
+				354CE5C4E60CF14CE9F07CFB /* Pods_SeafProvider.framework */,
+				EA245AE219BC2805BAA39A5C /* Pods_SeafProviderFileProvider.framework */,
+				7581134A1EE8EF47DA154C05 /* Pods_seafile_appstore.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1626,7 +1626,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = AB170391198116EFF77DDDA5 /* Pods-seafile-appstore.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
@@ -1658,7 +1657,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 14F713F28AC94AB8901C31BF /* Pods-seafile-appstore.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
@@ -1690,7 +1688,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2979DE872836DD67FEA29262 /* Pods-SeafProviderFileProvider.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -1727,7 +1724,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = DE6E97E6F025F693FDC9CCB1 /* Pods-SeafProviderFileProvider.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -1762,7 +1758,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 67C8B56C448237DC7BB99D18 /* Pods-SeafProvider.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -1801,7 +1796,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0AC7D46EF997A8FF83A3AD84 /* Pods-SeafProvider.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -1904,7 +1898,6 @@
 		57DB829415A833FA00097CEC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -1954,7 +1947,6 @@
 		57DB829515A833FA00097CEC /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;

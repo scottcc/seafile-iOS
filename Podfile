@@ -1,3 +1,6 @@
+use_frameworks!
+inhibit_all_warnings!
+
 def shared
   platform :ios, '8.0'
   pod 'Seafile', :path => "./"
@@ -26,4 +29,9 @@ end
 target :"SeafAction" do
   pod 'SVPullToRefresh', '~> 0.4.1'
   shared
+end
+
+pre_install do |installer|
+    # workaround for https://github.com/CocoaPods/CocoaPods/issues/3289
+    def installer.verify_no_static_framework_transitive_dependencies; end
 end

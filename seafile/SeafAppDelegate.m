@@ -10,7 +10,7 @@
 
 #import "SeafAppDelegate.h"
 #import "SVProgressHUD.h"
-#import "AFNetworking.h"
+@import AFNetworking;
 #import "Debug.h"
 #import "Utils.h"
 #import "Version.h"
