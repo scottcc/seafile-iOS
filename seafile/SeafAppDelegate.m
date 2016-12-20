@@ -425,15 +425,15 @@
     UIViewController *accountvc = [tabs.viewControllers objectAtIndex:TABBED_ACCOUNTS];
 
     fileController.tabBarItem.title = NSLocalizedString(@"Libraries", @"Seafile");
-    fileController.tabBarItem.image = [UIImage imageNamed:@"tab-home.png"];
+    fileController.tabBarItem.image = [UIImage imageNamed:@"tab-home.png" inBundle:SeafileBundle() compatibleWithTraitCollection:nil];
     starredController.tabBarItem.title = NSLocalizedString(@"Starred", @"Seafile");
-    starredController.tabBarItem.image = [UIImage imageNamed:@"tab-star.png"];
+    starredController.tabBarItem.image = [UIImage imageNamed:@"tab-star.png" inBundle:SeafileBundle() compatibleWithTraitCollection:nil];
     settingsController.tabBarItem.title = NSLocalizedString(@"Settings", @"Seafile");
-    settingsController.tabBarItem.image = [UIImage imageNamed:@"tab-settings.png"];
+    settingsController.tabBarItem.image = [UIImage imageNamed:@"tab-settings.png" inBundle:SeafileBundle() compatibleWithTraitCollection:nil];
     activityController.tabBarItem.title = NSLocalizedString(@"Activity", @"Seafile");
-    activityController.tabBarItem.image = [UIImage imageNamed:@"tab-modify.png"];
+    activityController.tabBarItem.image = [UIImage imageNamed:@"tab-modify.png" inBundle:SeafileBundle() compatibleWithTraitCollection:nil];
     accountvc.tabBarItem.title = NSLocalizedString(@"Accounts", @"Seafile");
-    accountvc.tabBarItem.image = [UIImage imageNamed:@"tab-account.png"];
+    accountvc.tabBarItem.image = [UIImage imageNamed:@"tab-account.png" inBundle:SeafileBundle() compatibleWithTraitCollection:nil];
 
     if (IsIpad()) {
         ((UISplitViewController *)fileController).delegate = (id)[[((UISplitViewController *)fileController).viewControllers lastObject] topViewController];

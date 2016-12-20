@@ -670,7 +670,7 @@ static SeafDetailViewControllerResolver detailViewControllerResolver = ^SeafDeta
                 [cell.downloadingIndicator startAnimating];
             } else {
                 NSString *downloadImageNmae = waiting ? @"download_waiting" : @"download_finished";
-                cell.downloadStatusImageView.image = [UIImage imageNamed:downloadImageNmae];
+                cell.downloadStatusImageView.image = [UIImage imageNamed:downloadImageNmae inBundle:SeafileBundle() compatibleWithTraitCollection:nil];
             }
             cell.downloadStatusImageView.hidden = isDownloading;
             cell.downloadingIndicator.hidden = !isDownloading;

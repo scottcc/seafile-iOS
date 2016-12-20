@@ -16,7 +16,6 @@
 		571D8CAB1677881400F1A22C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 57DB827F15A833FA00097CEC /* main.m */; };
 		571D8CAC1677881400F1A22C /* SeafAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 57DB828315A833FA00097CEC /* SeafAppDelegate.m */; };
 		571D8CBF1677881400F1A22C /* StartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 572B0A7615D16C1C00798C6E /* StartViewController.m */; };
-		571D8CD01677881400F1A22C /* SeafUploadingFileCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 57C07CE31632556600502B06 /* SeafUploadingFileCell.m */; };
 		571D8CD21677881400F1A22C /* SeafSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5764C82A163BF91B006AD511 /* SeafSettingsViewController.m */; };
 		571D8CDD1677881400F1A22C /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5765533D161D44A2005E5327 /* MessageUI.framework */; };
 		571D8CDE1677881400F1A22C /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57335CF8160DA00000018AE8 /* SystemConfiguration.framework */; };
@@ -60,9 +59,6 @@
 		57F143931B886B96009C1BC8 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57F143921B886B96009C1BC8 /* CoreLocation.framework */; };
 		57F8CD2A1A127566000F6CDC /* SeafStartFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 57E22B051A12625B00C92330 /* SeafStartFooterView.xib */; };
 		57F8CD2B1A127566000F6CDC /* SeafStartHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 57E22B071A12625B00C92330 /* SeafStartHeaderView.xib */; };
-		57F8CD2C1A127566000F6CDC /* SeafTextEditorViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 57E22B091A12625B00C92330 /* SeafTextEditorViewController_iPad.xib */; };
-		57F8CD2D1A127566000F6CDC /* SeafTextEditorViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 57E22B0B1A12625B00C92330 /* SeafTextEditorViewController_iPhone.xib */; };
-		57F8CD2F1A127566000F6CDC /* SeafUploadingFileCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 57E22B0F1A12625C00C92330 /* SeafUploadingFileCell.xib */; };
 		9332CB64D63F393C383E7467 /* Pods_seafile_appstore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7581134A1EE8EF47DA154C05 /* Pods_seafile_appstore.framework */; };
 		9B1A2939B69EE3A661A48B8E /* Pods_SeafProviderFileProvider.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA245AE219BC2805BAA39A5C /* Pods_SeafProviderFileProvider.framework */; };
 		AB3B5E3C0B0AE2F5A9F562AE /* Pods_SeafProvider.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 354CE5C4E60CF14CE9F07CFB /* Pods_SeafProvider.framework */; };
@@ -192,8 +188,6 @@
 		57B14B721DF5325B0045112E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		57B14B791DF7EA300045112E /* SeafAction.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SeafAction.entitlements; sourceTree = "<group>"; };
 		57B66EAF15BA513E00C2B41B /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		57C07CE21632556600502B06 /* SeafUploadingFileCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SeafUploadingFileCell.h; sourceTree = "<group>"; };
-		57C07CE31632556600502B06 /* SeafUploadingFileCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SeafUploadingFileCell.m; sourceTree = "<group>"; };
 		57D189CE182E0A380029A797 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = "seafile-appstore/Images.xcassets"; sourceTree = "<group>"; };
 		57D822F51C12B80A008947FC /* seafile-appstore-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "seafile-appstore-Info.plist"; sourceTree = "<group>"; };
 		57DB827115A833FA00097CEC /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -213,9 +207,6 @@
 		57F8CD1A1A127531000F6CDC /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/SeafStart.storyboard; sourceTree = "<group>"; };
 		57F8CD1B1A127536000F6CDC /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/SeafStartFooterView.xib; sourceTree = "<group>"; };
 		57F8CD1C1A12753A000F6CDC /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/SeafStartHeaderView.xib; sourceTree = "<group>"; };
-		57F8CD1D1A12753F000F6CDC /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/SeafTextEditorViewController_iPad.xib; sourceTree = "<group>"; };
-		57F8CD1E1A127544000F6CDC /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/SeafTextEditorViewController_iPhone.xib; sourceTree = "<group>"; };
-		57F8CD201A12754E000F6CDC /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/SeafUploadingFileCell.xib; sourceTree = "<group>"; };
 		67C8B56C448237DC7BB99D18 /* Pods-SeafProvider.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SeafProvider.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SeafProvider/Pods-SeafProvider.debug.xcconfig"; sourceTree = "<group>"; };
 		7581134A1EE8EF47DA154C05 /* Pods_seafile_appstore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_seafile_appstore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AF30EE6039454E8B0967C09 /* Pods-SeafAction.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SeafAction.release.xcconfig"; path = "Pods/Target Support Files/Pods-SeafAction/Pods-SeafAction.release.xcconfig"; sourceTree = "<group>"; };
@@ -316,8 +307,6 @@
 				5757DCCB1AEBCF1600BC0426 /* SeafShibbolethViewController.m */,
 				570DFACD16A1EA1A00ADD5F2 /* SeafStartHeaderView.h */,
 				570DFACE16A1EA1A00ADD5F2 /* SeafStartHeaderView.m */,
-				57C07CE21632556600502B06 /* SeafUploadingFileCell.h */,
-				57C07CE31632556600502B06 /* SeafUploadingFileCell.m */,
 				572B0A7515D16C1C00798C6E /* StartViewController.h */,
 				572B0A7615D16C1C00798C6E /* StartViewController.m */,
 			);
@@ -333,9 +322,6 @@
 				57E22B031A12625B00C92330 /* SeafStart.storyboard */,
 				57E22B051A12625B00C92330 /* SeafStartFooterView.xib */,
 				57E22B071A12625B00C92330 /* SeafStartHeaderView.xib */,
-				57E22B091A12625B00C92330 /* SeafTextEditorViewController_iPad.xib */,
-				57E22B0B1A12625B00C92330 /* SeafTextEditorViewController_iPhone.xib */,
-				57E22B0F1A12625C00C92330 /* SeafUploadingFileCell.xib */,
 			);
 			name = ui;
 			sourceTree = "<group>";
@@ -670,9 +656,6 @@
 				57124BE11B3E710E00075EAE /* SeafAccountViewController_iPhone.xib in Resources */,
 				57F8CD2A1A127566000F6CDC /* SeafStartFooterView.xib in Resources */,
 				57F8CD2B1A127566000F6CDC /* SeafStartHeaderView.xib in Resources */,
-				57F8CD2C1A127566000F6CDC /* SeafTextEditorViewController_iPad.xib in Resources */,
-				57F8CD2D1A127566000F6CDC /* SeafTextEditorViewController_iPhone.xib in Resources */,
-				57F8CD2F1A127566000F6CDC /* SeafUploadingFileCell.xib in Resources */,
 				57E22B411A126EBE00C92330 /* SeafStart.storyboard in Resources */,
 				573C3C651A15104B009675F9 /* seafile.entitlements in Resources */,
 				574DF02C1AF2863E0044FE06 /* SeafShibbolethViewController.xib in Resources */,
@@ -902,7 +885,6 @@
 				571D8CAB1677881400F1A22C /* main.m in Sources */,
 				571D8CAC1677881400F1A22C /* SeafAppDelegate.m in Sources */,
 				571D8CBF1677881400F1A22C /* StartViewController.m in Sources */,
-				571D8CD01677881400F1A22C /* SeafUploadingFileCell.m in Sources */,
 				571D8CD21677881400F1A22C /* SeafSettingsViewController.m in Sources */,
 				570DFAC716A15D0100ADD5F2 /* SeafAccountViewController.m in Sources */,
 				570DFAD016A1EA1B00ADD5F2 /* SeafStartHeaderView.m in Sources */,
@@ -1046,30 +1028,6 @@
 				57F8CD1C1A12753A000F6CDC /* en */,
 			);
 			name = SeafStartHeaderView.xib;
-			sourceTree = "<group>";
-		};
-		57E22B091A12625B00C92330 /* SeafTextEditorViewController_iPad.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				57F8CD1D1A12753F000F6CDC /* en */,
-			);
-			name = SeafTextEditorViewController_iPad.xib;
-			sourceTree = "<group>";
-		};
-		57E22B0B1A12625B00C92330 /* SeafTextEditorViewController_iPhone.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				57F8CD1E1A127544000F6CDC /* en */,
-			);
-			name = SeafTextEditorViewController_iPhone.xib;
-			sourceTree = "<group>";
-		};
-		57E22B0F1A12625C00C92330 /* SeafUploadingFileCell.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				57F8CD201A12754E000F6CDC /* en */,
-			);
-			name = SeafUploadingFileCell.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

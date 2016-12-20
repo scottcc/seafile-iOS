@@ -85,6 +85,9 @@
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
     btn.frame = CGRectMake(0,0,size,size);
     UIImage *img = [UIImage imageNamed:imageName];
+    if (!img) { // check the bundle next
+        img = [UIImage imageNamed:imageName inBundle:SeafileBundle() compatibleWithTraitCollection:nil];
+    }
     [btn setImage:img forState:UIControlStateNormal];
     btn.showsTouchWhenHighlighted = YES;
     [btn addTarget:self action:action forControlEvents:UIControlEventTouchUpInside];
