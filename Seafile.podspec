@@ -9,7 +9,7 @@ Pod::Spec.new do |s|
                          :tag => s.version.to_s }
   s.social_media_url = 'https://twitter.com/Seafile'
   s.source_files     = 'Pod/Classes/**/*.{h,m}'
-  s.resource_bundles = { 'Seafile' => 'Pod/Resources/*' }
+  s.resource_bundles = { 'Seafile' => 'Pod/Resources/**/*' }
   s.platform         = :ios, '8.0'
   s.requires_arc     = true
   s.frameworks       = 'AssetsLibrary'

@@ -208,7 +208,7 @@ static SeafDetailViewControllerResolver detailViewControllerResolver = ^SeafDeta
     NSString *CellIdentifier = @"SeafCell";
     SeafCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        NSArray *cells = [[NSBundle mainBundle] loadNibNamed:@"SeafCell" owner:self options:nil];
+        NSArray *cells = [SeafileBundle() loadNibNamed:@"SeafCell" owner:self options:nil];
         cell = [cells objectAtIndex:0];
     }
     [cell reset];

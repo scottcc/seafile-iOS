@@ -449,9 +449,9 @@ typedef void (^ModificationHandler)(NSString *repoId, NSString *path);
     SeafFile *sfile = [[SeafFile alloc] initWithConnection:self.connection oid:nil repoId:repoId name:path.lastPathComponent path:path mtime:0 size:0];
     SeafDetailViewController *detailvc;
     if (IsIpad()) {
-        detailvc = [[UIStoryboard storyboardWithName:@"FolderView_iPad" bundle:nil] instantiateViewControllerWithIdentifier:@"DETAILVC"];
+        detailvc = [[UIStoryboard storyboardWithName:@"FolderView_iPad" bundle:SeafileBundle()] instantiateViewControllerWithIdentifier:@"DETAILVC"];
     } else {
-        detailvc = [[UIStoryboard storyboardWithName:@"FolderView_iPhone" bundle:nil] instantiateViewControllerWithIdentifier:@"DETAILVC"];
+        detailvc = [[UIStoryboard storyboardWithName:@"FolderView_iPhone" bundle:SeafileBundle()] instantiateViewControllerWithIdentifier:@"DETAILVC"];
     }
 
     @synchronized(self.navigationController) {

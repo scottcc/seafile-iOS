@@ -286,14 +286,14 @@ enum SHARE_STATUS {
     self.barItemsUnStar  = [NSArray arrayWithObjects:self.exportItem, space, self.shareItem, space, unstarItem, space, nil];
 
     if(IsIpad()) {
-        NSArray *views = [[NSBundle mainBundle] loadNibNamed:@"FailToPreview_iPad" owner:self options:nil];
+        NSArray *views = [SeafileBundle() loadNibNamed:@"FailToPreview_iPad" owner:self options:nil];
         self.failedView = [views objectAtIndex:0];
-        views = [[NSBundle mainBundle] loadNibNamed:@"DownloadingProgress_iPad" owner:self options:nil];
+        views = [SeafileBundle() loadNibNamed:@"DownloadingProgress_iPad" owner:self options:nil];
         self.progressView = [views objectAtIndex:0];
     } else {
-        NSArray *views = [[NSBundle mainBundle] loadNibNamed:@"FailToPreview_iPhone" owner:self options:nil];
+        NSArray *views = [SeafileBundle() loadNibNamed:@"FailToPreview_iPhone" owner:self options:nil];
         self.failedView = [views objectAtIndex:0];
-        views = [[NSBundle mainBundle] loadNibNamed:@"DownloadingProgress_iPhone" owner:self options:nil];
+        views = [SeafileBundle() loadNibNamed:@"DownloadingProgress_iPhone" owner:self options:nil];
         self.progressView = [views objectAtIndex:0];
     }
     self.webView = [[UIWebView alloc] initWithFrame:self.view.frame];

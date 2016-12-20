@@ -414,9 +414,9 @@
 {
     UITabBarController *tabs;
     if (IsIpad()) {
-        tabs = [[UIStoryboard storyboardWithName:@"FolderView_iPad" bundle:nil] instantiateViewControllerWithIdentifier:@"TABVC"];
+        tabs = [[UIStoryboard storyboardWithName:@"FolderView_iPad" bundle:SeafileBundle()] instantiateViewControllerWithIdentifier:@"TABVC"];
     } else {
-        tabs = [[UIStoryboard storyboardWithName:@"FolderView_iPhone" bundle:nil] instantiateViewControllerWithIdentifier:@"TABVC"];
+        tabs = [[UIStoryboard storyboardWithName:@"FolderView_iPhone" bundle:SeafileBundle()] instantiateViewControllerWithIdentifier:@"TABVC"];
     }
     UIViewController *fileController = [tabs.viewControllers objectAtIndex:TABBED_SEAFILE];
     UIViewController *starredController = [tabs.viewControllers objectAtIndex:TABBED_STARRED];
@@ -481,7 +481,7 @@
         return [[[[self.viewControllers objectAtIndex:index] viewControllers] lastObject] topViewController];
     } else {
         if (!_detailVC)
-            _detailVC = [[UIStoryboard storyboardWithName:@"FolderView_iPhone" bundle:nil] instantiateViewControllerWithIdentifier:@"DETAILVC"];
+            _detailVC = [[UIStoryboard storyboardWithName:@"FolderView_iPhone" bundle:SeafileBundle()] instantiateViewControllerWithIdentifier:@"DETAILVC"];
         return _detailVC;
     }
 }

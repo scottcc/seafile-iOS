@@ -47,6 +47,8 @@ static inline NSString *actionSheetCancelTitle()
 #define SEAF_COLOR_DARK  [UIColor colorWithRed:236.0/256 green:114.0/256 blue:31.0/256 alpha:1.0]
 #define SEAF_COLOR_LIGHT [UIColor colorWithRed:255.0/256 green:196.0/256 blue:115.0/256 alpha:1.0]
 
+#import "SeafConnection.h"
+
 static inline NSBundle *SeafileBundle() {
-    return [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"Seafile" ofType:@"bundle"]];
+    return [NSBundle bundleWithPath:[[NSBundle bundleForClass:[SeafConnection class]] pathForResource:@"Seafile" ofType:@"bundle"]];
 }

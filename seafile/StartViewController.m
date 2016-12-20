@@ -273,7 +273,7 @@
     NSString *CellIdentifier = @"SeafButtonCell";
     SeafButtonCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        NSArray *cells = [[NSBundle mainBundle] loadNibNamed:@"SeafButtonCell" owner:self options:nil];
+        NSArray *cells = [SeafileBundle() loadNibNamed:@"SeafButtonCell" owner:self options:nil];
         cell = [cells objectAtIndex:0];
     }
     [cell.button setTitle:NSLocalizedString(@"Add account", @"Seafile") forState:UIControlStateNormal];
