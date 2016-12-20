@@ -248,21 +248,11 @@ enum SHARE_STATUS {
     self.currentPageIndex = [items indexOfObject:item];
     [self.mwPhotoBrowser reloadData];
     [self.view addSubview:self.mwPhotoBrowser.view];
-    [c.view addSubview:self.view];
     self.mwPhotoBrowser.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
     [self.mwPhotoBrowser viewDidAppear:false];
     [self.mwPhotoBrowser setCurrentPhotoIndex:self.currentPageIndex];
     [self updateNavigation];
     [self.view setNeedsLayout];
-//    [c.view setNeedsLayout];
-    
-//    [c.navigationController pushViewController:self.mwPhotoBrowser animated:YES];
-//    [c presentViewController:self.mwPhotoBrowser animated:YES completion:nil];
-    
-//    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:self.mwPhotoBrowser];
-//    [navController setModalPresentationStyle:UIModalPresentationFullScreen];
-//    [c presentViewController:navController animated:YES completion:nil];
-
 }
 
 - (void)goBack:(id)sender

@@ -40,7 +40,7 @@ post_install do |installer|
        target.build_configurations.each do |config|
            config.build_settings['SWIFT_VERSION'] = '3.0.2'
 		   if target.name == "Seafile"
-			  config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)', 'SF_APP_EXTENSIONS=1']
+              config.build_settings['APPLICATION_EXTENSION_API_ONLY'] = 'NO'
            end
            if target.name == "SVProgressHUD"
                config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)', 'SV_APP_EXTENSIONS=1']
