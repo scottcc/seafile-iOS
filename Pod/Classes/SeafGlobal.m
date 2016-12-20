@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Seafile. All rights reserved.
 //
 @import LocalAuthentication;
+@import Photos;
 
 #import "SeafGlobal.h"
 #import "SeafUploadFile.h"
@@ -49,6 +50,15 @@ static NSError * NewNSErrorFromException(NSException * exc) {
 @synthesize managedObjectModel = __managedObjectModel;
 @synthesize persistentStoreCoordinator = __persistentStoreCoordinator;
 @synthesize applicationDocumentsDirectoryURL = _applicationDocumentsDirectoryURL;
+
+static SeafGlobal * sharedInstance;
+
++ (void)initialize
+{
+    if (self == [SeafGlobal class]) {
+        sharedInstance = [[SeafGlobal alloc] init];
+    }
+}
 
 -(id)init
 {
@@ -94,11 +104,8 @@ static NSError * NewNSErrorFromException(NSException * exc) {
 
 + (SeafGlobal *)sharedObject
 {
-    static SeafGlobal *object = nil;
-    if (!object) {
-        object = [[SeafGlobal alloc] init];
-    }
-    return object;
+    return sharedInstance;
+}
 }
 
 - (NSURL *)applicationDocumentsDirectoryURL
@@ -718,7 +725,7 @@ static NSError * NewNSErrorFromException(NSException * exc) {
 
 - (NSComparisonResult)compare:(id<SeafSortable>)obj1 with:(id<SeafSortable>)obj2
 {
-    NSString *key = [SeafGlobal.sharedObject objectForKey:@"SORT_KEY"];
+    NSString *key = [self objectForKey:@"SORT_KEY"];
     if ([@"MTIME" caseInsensitiveCompare:key] == NSOrderedSame) {
         return [[NSNumber numberWithLongLong:obj2.mtime] compare:[NSNumber numberWithLongLong:obj1.mtime]];
     }
@@ -789,7 +796,7 @@ static NSError * NewNSErrorFromException(NSException * exc) {
     NSMutableDictionary *exports = [self getExports];
     [exports setObject:dict forKey:[self exportKeyFor:url]];
     Debug("exports: %@", exports);
-    [SeafGlobal.sharedObject saveExports:exports];
+    [self saveExports:exports];
 }
 
 - (void)removeExportFile:(NSURL *)url
@@ -797,7 +804,7 @@ static NSError * NewNSErrorFromException(NSException * exc) {
     NSMutableDictionary *exports = [self getExports];
     [exports removeObjectForKey:[self exportKeyFor:url]];
     Debug("exports: %@", exports);
-    [SeafGlobal.sharedObject saveExports:exports];
+    [self saveExports:exports];
 }
 - (NSDictionary *)getExportFile:(NSURL *)url
 {
@@ -807,13 +814,13 @@ static NSError * NewNSErrorFromException(NSException * exc) {
 
 - (void)clearExportFiles
 {
-    [Utils clearAllFiles:SeafGlobal.sharedObject.documentStorageDir];
-    [SeafGlobal.sharedObject saveExports:[NSDictionary new]];
+    [Utils clearAllFiles:self.documentStorageDir];
+    [self saveExports:[NSDictionary new]];
 }
 
 - (void)clearThumbs
 {
-    NSString *dir = [SeafGlobal.sharedObject applicationDocumentsDirectory];
+    NSString *dir = [self applicationDocumentsDirectory];
     NSError *error = nil;
     BOOL isDirectory;
     NSArray *dirContents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:dir error:&error];
@@ -832,19 +839,19 @@ static NSError * NewNSErrorFromException(NSException * exc) {
 - (void)clearCache
 {
     Debug("clear local cache.");
-    [Utils clearAllFiles:SeafGlobal.sharedObject.objectsDir];
-    [Utils clearAllFiles:SeafGlobal.sharedObject.blocksDir];
-    [Utils clearAllFiles:SeafGlobal.sharedObject.editDir];
-    [Utils clearAllFiles:SeafGlobal.sharedObject.thumbsDir];
-    [Utils clearAllFiles:SeafGlobal.sharedObject.tempDir];
+    [Utils clearAllFiles:self.objectsDir];
+    [Utils clearAllFiles:self.blocksDir];
+    [Utils clearAllFiles:self.editDir];
+    [Utils clearAllFiles:self.thumbsDir];
+    [Utils clearAllFiles:self.tempDir];
     [SeafUploadFile clearCache];
     [SeafAvatar clearCache];
     [self clearThumbs];
 
-    [SeafGlobal.sharedObject clearExportFiles];
-    [SeafGlobal.sharedObject deleteAllObjects:@"Directory"];
-    [SeafGlobal.sharedObject deleteAllObjects:@"DownloadedFile"];
-    [SeafGlobal.sharedObject deleteAllObjects:@"SeafCacheObj"];
+    [self clearExportFiles];
+    [self deleteAllObjects:@"Directory"];
+    [self deleteAllObjects:@"DownloadedFile"];
+    [self deleteAllObjects:@"SeafCacheObj"];
 }
 
 - (NSArray *)getSecPersistentRefs {

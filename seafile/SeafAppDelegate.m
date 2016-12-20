@@ -44,10 +44,10 @@
 
 - (BOOL)shouldContinue
 {
-    for (SeafConnection *conn in SeafGlobal.sharedObject.conns) {
+    for (SeafConnection *conn in _global.conns) {
         if (conn.inAutoSync) return true;
     }
-    return SeafGlobal.sharedObject.uploadingnum != 0 || SeafGlobal.sharedObject.downloadingnum != 0;
+    return _global.uploadingnum != 0 || _global.downloadingnum != 0;
 }
 
 - (BOOL)selectAccount:(SeafConnection *)conn
@@ -133,14 +133,14 @@
 - (void)uploadFile:(NSString *)path
 {
     [[self masterNavController:TABBED_SEAFILE] popToRootViewControllerAnimated:NO];
-    SeafUploadFile *file = [SeafGlobal.sharedObject.connection getUploadfile:path];
+    SeafUploadFile *file = [_global.connection getUploadfile:path];
     [self.fileVC uploadFile:file];
 }
 
 - (BOOL)openFileURL:(NSURL*)url
 {
     Debug("open %@", url);
-    NSString *uploadDir = [SeafGlobal.sharedObject uniqueUploadDir];
+    NSString *uploadDir = [_global uniqueUploadDir];
     NSURL *to = [NSURL fileURLWithPath:[uploadDir stringByAppendingPathComponent:url.lastPathComponent]];
     Debug("Copy %@, to %@, %@, %@\n", url, to, to.absoluteString, to.path);
     BOOL ret = [Utils checkMakeDir:uploadDir];
@@ -195,7 +195,7 @@
 - (void)checkPhotoChanges:(NSNotification *)notification
 {
     Debug("Start check photos changes.");
-    for (SeafConnection *conn in SeafGlobal.sharedObject.conns) {
+    for (SeafConnection *conn in _global.conns) {
         [conn photosChanged:notification];
     }
 }
@@ -241,7 +241,7 @@
 
     [[UITabBar appearance] setTintColor:[UIColor colorWithRed:238.0f/256 green:136.0f/256 blue:51.0f/255 alpha:1.0]];
 
-    [SeafGlobal.sharedObject loadAccounts];
+    [_global loadAccounts];
 
     self.autoBackToDefaultAccount = false;
     _monitors = [[NSMutableArray alloc] init];
@@ -322,7 +322,7 @@
     Debug("token=%@, %ld\n", deviceToken, (unsigned long)deviceToken.length);
     _deviceToken = deviceToken;
     if (self.deviceToken)
-        [SeafGlobal.sharedObject.connection registerDevice:self.deviceToken];
+        [_global.connection registerDevice:self.deviceToken];
 }
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
 {
@@ -361,7 +361,7 @@
     for (id <SeafBackgroundMonitor> monitor in _monitors) {
         [monitor enterBackground];
     }
-    if (self.window.rootViewController != self.startNav && SeafGlobal.sharedObject.connection.touchIdEnabled) {
+    if (self.window.rootViewController != self.startNav && _global.connection.touchIdEnabled) {
         Debug("hiding contents when enter background");
         [self exitAccount];
         self.autoBackToDefaultAccount = true;
@@ -373,7 +373,7 @@
 {
     Debug("Seafile will enter foreground");
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
-    [SeafGlobal.sharedObject loadSettings:[NSUserDefaults standardUserDefaults]];
+    [_global loadSettings:[NSUserDefaults standardUserDefaults]];
     [self checkPhotoChanges:nil];
     for (id <SeafBackgroundMonitor> monitor in _monitors) {
         [monitor enterForeground];
@@ -584,7 +584,7 @@
 - (void)checkBackgroundUploadStatus
 {
     BOOL needLocationService = false;
-    for (SeafConnection *conn in SeafGlobal.sharedObject.conns) {
+    for (SeafConnection *conn in _global.conns) {
         if (conn.autoSync && conn.backgroundSync && conn.autoSyncRepo.length > 0) {
             Debug("account %@ %@ (%d %d %@) need location service", conn.address, conn.username, conn.autoSync, conn.backgroundSync, conn.autoSyncRepo);
             needLocationService = true;
@@ -600,8 +600,8 @@
 
 - (void)openFile:(NSString *)repo path:(NSString *)path
 {
-    [SeafGlobal.sharedObject setObject:repo forKey:@"SEAFILE-OPEN-REPO"];
-    [SeafGlobal.sharedObject setObject:path forKey:@"SEAFILE-OPEN-PATH"];
+    [_global setObject:repo forKey:@"SEAFILE-OPEN-REPO"];
+    [_global setObject:path forKey:@"SEAFILE-OPEN-PATH"];
 
     Debug("open file %@ %@", repo, path);
     self.gotoRepo = repo;
