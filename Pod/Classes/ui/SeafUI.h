@@ -23,11 +23,14 @@ typedef SeafDetailViewController *(^SeafDetailViewControllerResolver)(void);
 @protocol SeafAppDelegateProxy <UIApplicationDelegate, SeafConnectionDelegate>
 - (SeafFileViewController *)fileVC;
 - (SeafStarredFilesViewController *)starredVC;
-
 - (void)checkOpenLinkAfterAHalfSecond:(SeafFileViewController *)c;
 - (void)showDetailView:(UIViewController *) c;
 - (MFMailComposeViewController *)globalMailComposer;
 - (void)cycleTheGlobalMailComposer;
+/**
+ * @brief Checks all connections, and if necessary triggers location service updates.
+ */
+- (void)checkBackgroundUploadStatus;
 @end
 
 @interface SeafUI : NSObject

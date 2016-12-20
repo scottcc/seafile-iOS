@@ -200,35 +200,6 @@
     }
 }
 
-- (void)delayedInit
-{
-    NSUserDefaults *defs = [[NSUserDefaults alloc] initWithSuiteName:GROUP_NAME];
-    NSMutableArray *array = [NSMutableArray new];
-    for(NSString *key in defs.dictionaryRepresentation) {
-        if ([key hasPrefix:@"EXPORTED/"]) {
-            [array addObject:key];
-        }
-    }
-    for(NSString *key in array) {
-        [defs removeObjectForKey:key];
-    }
-
-    Debug("clear tmp dir: %@", SeafGlobal.sharedObject.tempDir);
-    [Utils clearAllFiles:SeafGlobal.sharedObject.tempDir];
-
-    Debug("Current app version is %@\n", SEAFILE_VERSION);
-    [SeafGlobal.sharedObject startTimer];
-
-    for (SeafConnection *conn in SeafGlobal.sharedObject.conns) {
-        [conn checkAutoSync];
-    }
-    if (ios8) {
-         [[PHPhotoLibrary sharedPhotoLibrary] registerChangeObserver:self];
-    } else
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkPhotoChanges:) name:ALAssetsLibraryChangedNotification object:SeafGlobal.sharedObject.assetsLibrary];
-    [self checkBackgroundUploadStatus];
-}
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     Debug("%@", [[NSBundle mainBundle] infoDictionary]);
@@ -248,14 +219,7 @@
     _startNav = (UINavigationController *)self.window.rootViewController;
     _startVC = (StartViewController *)_startNav.topViewController;
 
-    [Utils checkMakeDir:SeafGlobal.sharedObject.objectsDir];
-    [Utils checkMakeDir:SeafGlobal.sharedObject.avatarsDir];
-    [Utils checkMakeDir:SeafGlobal.sharedObject.certsDir];
-    [Utils checkMakeDir:SeafGlobal.sharedObject.blocksDir];
-    [Utils checkMakeDir:SeafGlobal.sharedObject.uploadsDir];
-    [Utils checkMakeDir:SeafGlobal.sharedObject.editDir];
-    [Utils checkMakeDir:SeafGlobal.sharedObject.thumbsDir];
-    [Utils checkMakeDir:SeafGlobal.sharedObject.tempDir];
+    [_global ensureDocumentDirectories];
 
 #if !(TARGET_IPHONE_SIMULATOR)
     [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge) categories:nil]];
@@ -282,7 +246,7 @@
 
     [SVProgressHUD setBackgroundColor:[UIColor colorWithRed:250.0/256 green:250.0/256 blue:250.0/256 alpha:1.0]];
 
-    [self performSelectorInBackground:@selector(delayedInit) withObject:nil];
+    [_global performDelayedInit:self];
     return YES;
 }
 

@@ -12,6 +12,7 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "SeafConnection.h"
 #import "SeafPreView.h"
+#import "SeafUI.h"
 
 #define OBJECTS_DIR @"objects"
 #define AVATARS_DIR @"avatars"
@@ -43,6 +44,7 @@
 
 + (SeafGlobal *)sharedObject;
 
+- (void)ensureDocumentDirectories;
 - (NSString *)applicationDocumentsDirectory;
 - (NSString *)tempDir;
 - (NSString *)uploadsDir;
@@ -53,7 +55,11 @@
 - (NSString *)objectsDir;
 - (NSString *)blocksDir;
 - (NSString *)documentStorageDir;
-
+/**
+ * @note    This will perform its execution on a background (non main) queue.
+ * @param   appdelegate The proxy used to call back into [appdelegate checkBackgroundUploadStatus] once at the end.
+ */
+- (void)performDelayedInit:(id <SeafAppDelegateProxy>)appdelegate;
 
 - (NSString *)documentPath:(NSString*)fileId;
 - (NSString *)blockPath:(NSString*)blkId;

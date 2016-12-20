@@ -83,6 +83,38 @@ static SeafGlobal * sharedInstance;
     return self;
 }
 
+- (void)performDelayedInit:(id <SeafAppDelegateProxy>)appdelegate
+{
+    __weak SeafGlobal *welf = self;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND,0), ^{
+        NSUserDefaults *defs = [[NSUserDefaults alloc] initWithSuiteName:GROUP_NAME];
+        NSMutableArray *array = [NSMutableArray new];
+        for(NSString *key in defs.dictionaryRepresentation) {
+            if ([key hasPrefix:@"EXPORTED/"]) {
+                [array addObject:key];
+            }
+        }
+        for(NSString *key in array) {
+            [defs removeObjectForKey:key];
+        }
+        
+        Debug("clear tmp dir: %@", welf.tempDir);
+        [Utils clearAllFiles:welf.tempDir];
+        
+        Debug("Current app version is %@\n", SEAFILE_VERSION);
+        [welf startTimer];
+        
+        for (SeafConnection *conn in welf.conns) {
+            [conn checkAutoSync];
+        }
+        if (ios8) {
+            [[PHPhotoLibrary sharedPhotoLibrary] registerChangeObserver:appdelegate];
+        } else
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkPhotoChanges:) name:ALAssetsLibraryChangedNotification object:welf.assetsLibrary];
+        [appdelegate checkBackgroundUploadStatus];
+    });
+}
+
 - (void)checkSettings
 {
     NSUserDefaults * standardUserDefaults = [NSUserDefaults standardUserDefaults];
@@ -106,6 +138,17 @@ static SeafGlobal * sharedInstance;
 {
     return sharedInstance;
 }
+
+- (void)ensureDocumentDirectories
+{
+    [Utils checkMakeDir:self.objectsDir];
+    [Utils checkMakeDir:self.avatarsDir];
+    [Utils checkMakeDir:self.certsDir];
+    [Utils checkMakeDir:self.blocksDir];
+    [Utils checkMakeDir:self.uploadsDir];
+    [Utils checkMakeDir:self.editDir];
+    [Utils checkMakeDir:self.thumbsDir];
+    [Utils checkMakeDir:self.tempDir];
 }
 
 - (NSURL *)applicationDocumentsDirectoryURL
