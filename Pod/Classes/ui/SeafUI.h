@@ -6,7 +6,8 @@
 //  Copyright © 2016 Seafile. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+@import UIKit;
+@import Photos;
 
 #import "SeafConnection.h"
 
@@ -20,7 +21,7 @@ typedef SeafDetailViewController *(^SeafDetailViewControllerResolver)(void);
 #define S_UPLOAD NSLocalizedString(@"Upload", @"Seafile")
 #define S_REDOWNLOAD NSLocalizedString(@"Redownload", @"Seafile")
 
-@protocol SeafAppDelegateProxy <UIApplicationDelegate, SeafConnectionDelegate>
+@protocol SeafAppDelegateProxy <UIApplicationDelegate, SeafConnectionDelegate, PHPhotoLibraryChangeObserver>
 - (SeafFileViewController *)fileVC;
 - (SeafStarredFilesViewController *)starredVC;
 - (void)checkOpenLinkAfterAHalfSecond:(SeafFileViewController *)c;
