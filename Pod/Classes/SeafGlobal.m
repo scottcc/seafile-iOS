@@ -52,12 +52,29 @@ static NSError * NewNSErrorFromException(NSException * exc) {
 @synthesize applicationDocumentsDirectoryURL = _applicationDocumentsDirectoryURL;
 
 static SeafGlobal * sharedInstance;
+static NSString *groupName = @"group.com.seafile.seafilePro";
+static NSString *appName = @"com.seafile.seafilePro";
 
 + (void)initialize
 {
     if (self == [SeafGlobal class]) {
         sharedInstance = [[SeafGlobal alloc] init];
     }
+}
+
++ (void)setGroupName:(NSString *)group
+{
+    groupName = group;
+}
+
++ (NSString *)appId
+{
+    return appName;
+}
+
++ (void)setAppId:(NSString *)app
+{
+    appName = app;
 }
 
 -(id)init
@@ -69,7 +86,7 @@ static SeafGlobal * sharedInstance;
         _uploadingfiles = [[NSMutableArray alloc] init];
         _conns = [[NSMutableArray alloc] init];
         _downloadnum = 0;
-        _storage = [[NSUserDefaults alloc] initWithSuiteName:GROUP_NAME];
+        _storage = [[NSUserDefaults alloc] initWithSuiteName:groupName];
         _saveAlbumSem = dispatch_semaphore_create(1);
         [self checkSettings];
 
@@ -87,7 +104,7 @@ static SeafGlobal * sharedInstance;
 {
     __weak SeafGlobal *welf = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND,0), ^{
-        NSUserDefaults *defs = [[NSUserDefaults alloc] initWithSuiteName:GROUP_NAME];
+        NSUserDefaults *defs = [[NSUserDefaults alloc] initWithSuiteName:groupName];
         NSMutableArray *array = [NSMutableArray new];
         for(NSString *key in defs.dictionaryRepresentation) {
             if ([key hasPrefix:@"EXPORTED/"]) {
@@ -154,7 +171,7 @@ static SeafGlobal * sharedInstance;
 - (NSURL *)applicationDocumentsDirectoryURL
 {
     if (!_applicationDocumentsDirectoryURL) {
-        _applicationDocumentsDirectoryURL = [[[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:GROUP_NAME] URLByAppendingPathComponent:@"seafile" isDirectory:true];
+        _applicationDocumentsDirectoryURL = [[[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:groupName] URLByAppendingPathComponent:@"seafile" isDirectory:true];
     }
     return _applicationDocumentsDirectoryURL;
 }
@@ -199,7 +216,7 @@ static SeafGlobal * sharedInstance;
 }
 - (NSString *)documentStorageDir
 {
-    return [[[[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:GROUP_NAME] path] stringByAppendingPathComponent:@"File Provider Storage"];
+    return [[[[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:groupName] path] stringByAppendingPathComponent:@"File Provider Storage"];
 }
 
 - (NSString *)documentPath:(NSString*)fileId
@@ -250,7 +267,7 @@ static SeafGlobal * sharedInstance;
 - (void)migrateUserDefaults
 {
     NSUserDefaults *oldDef = [NSUserDefaults standardUserDefaults];
-    NSUserDefaults *newDef = [[NSUserDefaults alloc] initWithSuiteName:GROUP_NAME];
+    NSUserDefaults *newDef = [[NSUserDefaults alloc] initWithSuiteName:groupName];
     NSArray *accounts = [oldDef objectForKey:@"ACCOUNTS"];
     if (accounts && accounts.count > 0) {
         for(NSString *key in oldDef.dictionaryRepresentation) {
@@ -266,7 +283,7 @@ static SeafGlobal * sharedInstance;
 {
 
     NSURL *oldURL = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
-    NSURL *newURL = [[[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:GROUP_NAME] URLByAppendingPathComponent:@"seafile" isDirectory:true];
+    NSURL *newURL = [[[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:groupName] URLByAppendingPathComponent:@"seafile" isDirectory:true];
     if ([Utils fileExistsAtPath:newURL.path])
         return;
 

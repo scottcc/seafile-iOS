@@ -41,8 +41,12 @@
 @property (readonly) dispatch_semaphore_t saveAlbumSem;
 @property (readwrite) BOOL isAppExtension;
 
-
 + (SeafGlobal *)sharedObject;
+/// @note   If not called, `group.com.seafile.seafilePro` is used
++ (void)setGroupName:(NSString *)groupName;
++ (NSString *)appId;
+/// @note   If not called, `com.seafile.seafilePro` is used
++ (void)setAppId:(NSString *)appId;
 
 - (void)ensureDocumentDirectories;
 - (NSString *)applicationDocumentsDirectory;

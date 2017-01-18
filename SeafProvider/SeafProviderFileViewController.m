@@ -35,7 +35,7 @@
 - (NSFileCoordinator *)fileCoordinator
 {
     NSFileCoordinator *fileCoordinator = [[NSFileCoordinator alloc] init];
-    [fileCoordinator setPurposeIdentifier:APP_ID];
+    [fileCoordinator setPurposeIdentifier:[SeafGlobal appId]];
     return fileCoordinator;
 }
 

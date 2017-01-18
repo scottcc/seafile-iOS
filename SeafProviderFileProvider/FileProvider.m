@@ -41,7 +41,7 @@
 
 - (NSString *)providerIdentifier
 {
-    return APP_ID;
+    return [SeafGlobal appId];
 }
 
 - (void)providePlaceholderAtURL:(NSURL *)url completionHandler:(void (^)(NSError *error))completionHandler {

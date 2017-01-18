@@ -53,11 +53,9 @@ post_install do |installer|
            end
            if target.name == "SVProgressHUD"
                config.build_settings['APPLICATION_EXTENSION_API_ONLY'] = 'NO'
-               #               config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)', 'SV_APP_EXTENSIONS=1']
            end
            if target.name == "MWPhotoBrowserPlus"
                config.build_settings['APPLICATION_EXTENSION_API_ONLY'] = 'NO'
-               #               config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)', 'MW_APP_EXTENSIONS=1']
            end
        end
    end
