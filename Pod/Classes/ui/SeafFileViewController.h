@@ -73,4 +73,9 @@ enum {
 
 - (BOOL)goTo:(NSString *)repo path:(NSString *)path;
 
+/**
+ * @brief   Allow setting the directory chosen before display.
+ */
+- (void)setDirectory:(SeafDir *)directory;
+
 @end
