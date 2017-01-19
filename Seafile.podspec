@@ -19,7 +19,7 @@ Pod::Spec.new do |s|
   s.dependency 'SVProgressHUD', '~> 1.1.3'
   s.dependency 'NotDeadSWTableViewCell', '~> 0.3.9'
   s.dependency 'MWPhotoBrowserPlus', '~> 2.1.6'  
-  s.dependency 'QBImagePickerControllerPlus', '2.2.2.1'
+  s.dependency 'QBImagePickerControllerPlus', '2.2.2.2'
   s.pod_target_xcconfig = {
     'LIBRARY_SEARCH_PATHS' => '$(inherited) $(PODS_ROOT)/OpenSSL-Universal/lib-ios/',
     'OTHER_LDFLAGS' => '$(inherited) -lssl -lcrypto'
