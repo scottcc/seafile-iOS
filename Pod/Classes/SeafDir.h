@@ -31,8 +31,7 @@
 @property (readwrite, copy) NSArray *items;
 @property (readonly) NSArray *uploadFiles;
 /**
- * @brief   Experimental method to skip checking the perm string - intended for read-only `NO` caase, untested with `YES`.
- * @param   editable    Set to `YES/NO` to override in memory only. Handy for CDN shared behaviour.
+ * @brief   Experimental method to skip checking the perm string - intended for read-only `NO` case, untested with `YES`.
  */
 @property (readwrite) BOOL editable;
 @property (readonly) NSString *perm;
