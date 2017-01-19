@@ -37,7 +37,7 @@ static NSComparator CMP = ^(id obj1, id obj2) {
 @interface SeafDir ()
 @property NSObject *uploadLock;
 @property (readonly, nonatomic) NSMutableArray *uploadItems;
-
+@property (nonatomic) NSNumber *isEditableOverride;
 @end
 
 @implementation SeafDir
@@ -67,14 +67,21 @@ static NSComparator CMP = ^(id obj1, id obj2) {
     self = [super initWithConnection:aConnection oid:anId repoId:aRepoId name:aName path:aPath mime:aMime];
     _uploadLock = [[NSObject alloc] init];
     _perm = aPerm;
+    _isEditableOverride = nil;
     return self;
 }
 
 - (BOOL)editable
 {
+    if (_isEditableOverride)
+        return [_isEditableOverride boolValue];
     if (self.perm && [self.perm isKindOfClass:[NSString class]])
         return [self.perm.lowercaseString isEqualToString:@"rw"];
     return NO;
+}
+- (void)setEditable:(BOOL)editable
+{
+    _isEditableOverride = [NSNumber numberWithBool:editable];
 }
 
 - (void)unload
