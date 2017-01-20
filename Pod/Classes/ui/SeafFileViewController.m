@@ -596,7 +596,7 @@ static SeafDetailViewControllerResolver detailViewControllerResolver = ^SeafDeta
     } else if ([entry isKindOfClass:[SeafDir class]]) {
         NSMutableArray *titles = [@[S_DOWNLOAD, S_DELETE, S_RENAME, S_SHARE_EMAIL, S_SHARE_LINK] mutableCopy];
         if (!((SeafDir *)entry).editable) {
-            [titles removeObjectAtIndex:1]; // no delete for you!
+            [titles removeObjectsInArray:@[S_DELETE, S_RENAME]]; // no mods for you!
         }
         [self showAlertWithAction:titles fromRect:cell.frame inView:self.tableView withTitle:nil];
     } else if ([entry isKindOfClass:[SeafFile class]]) {
@@ -608,7 +608,7 @@ static SeafDetailViewControllerResolver detailViewControllerResolver = ^SeafDeta
         else
             [titles addObjectsFromArray:@[star, S_DELETE, S_REDOWNLOAD, S_RENAME, S_SHARE_EMAIL, S_SHARE_LINK]];
         if (!file.editable) {
-            [titles removeObjectAtIndex:1]; // no delete for you!
+            [titles removeObjectsInArray:@[S_DELETE, S_RENAME]]; // no mods for you!
         }
         [self showAlertWithAction:titles fromRect:cell.frame inView:self.tableView withTitle:nil];
     } else if ([entry isKindOfClass:[SeafUploadFile class]]) {
@@ -1250,6 +1250,7 @@ static SeafDetailViewControllerResolver detailViewControllerResolver = ^SeafDeta
 
 - (void)renameFile:(SeafFile *)file
 {
+    if (!file.editable) return;
     _curEntry = file;
     [self popupRenameView:file.name];
 }
