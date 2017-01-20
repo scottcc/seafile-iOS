@@ -45,6 +45,10 @@ typedef void (^SeafFileDidDownloadBlock)(SeafFile* _Nonnull file, BOOL result);
 @property (readonly) long long filesize;
 @property (readonly) long long mtime;
 @property (strong, nullable) id <SeafFileUpdateDelegate> udelegate;
+/**
+ * @brief   Experimental method to skip checking the perm string - intended for read-only `NO` case, default is `YES`.
+ */
+@property (readwrite) BOOL editable;
 
 - (BOOL)isStarred;
 - (void)setStarred:(BOOL)starred;

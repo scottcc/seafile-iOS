@@ -111,6 +111,7 @@ static SeafDetailViewControllerResolver detailViewControllerResolver = ^SeafDeta
     return detailViewControllerResolver();
 }
 
+// Note this only shows up if the directory/thing-on-this-controller is editable to begin with
 - (NSArray *)editToolItems
 {
     if (!_editToolItems) {
@@ -593,15 +594,22 @@ static SeafDetailViewControllerResolver detailViewControllerResolver = ^SeafDeta
         }
         [self showAlertWithAction:titles fromRect:cell.frame inView:self.tableView withTitle:nil];
     } else if ([entry isKindOfClass:[SeafDir class]]) {
-        [self showAlertWithAction:[NSArray arrayWithObjects:S_DOWNLOAD, S_DELETE, S_RENAME, S_SHARE_EMAIL, S_SHARE_LINK, nil] fromRect:cell.frame inView:self.tableView withTitle:nil];
+        NSMutableArray *titles = [@[S_DOWNLOAD, S_DELETE, S_RENAME, S_SHARE_EMAIL, S_SHARE_LINK] mutableCopy];
+        if (!((SeafDir *)entry).editable) {
+            [titles removeObjectAtIndex:1]; // no delete for you!
+        }
+        [self showAlertWithAction:titles fromRect:cell.frame inView:self.tableView withTitle:nil];
     } else if ([entry isKindOfClass:[SeafFile class]]) {
         SeafFile *file = (SeafFile *)entry;
-        NSArray *titles;
+        NSMutableArray *titles = [NSMutableArray new];
         NSString *star = file.isStarred ? S_UNSTAR : S_STAR;
         if (file.mpath)
-            titles = [NSArray arrayWithObjects:star, S_DELETE, S_UPLOAD, S_SHARE_EMAIL, S_SHARE_LINK, nil];
+            [titles addObjectsFromArray:@[star, S_DELETE, S_REDOWNLOAD, S_RENAME, S_SHARE_EMAIL, S_SHARE_LINK]];
         else
-            titles = [NSArray arrayWithObjects:star, S_DELETE, S_REDOWNLOAD, S_RENAME, S_SHARE_EMAIL, S_SHARE_LINK, nil];
+            [titles addObjectsFromArray:@[star, S_DELETE, S_REDOWNLOAD, S_RENAME, S_SHARE_EMAIL, S_SHARE_LINK]];
+        if (!file.editable) {
+            [titles removeObjectAtIndex:1]; // no delete for you!
+        }
         [self showAlertWithAction:titles fromRect:cell.frame inView:self.tableView withTitle:nil];
     } else if ([entry isKindOfClass:[SeafUploadFile class]]) {
         [self showAlertWithAction:[NSArray arrayWithObjects:S_DELETE, nil] fromRect:cell.frame inView:self.tableView withTitle:nil];
@@ -765,6 +773,10 @@ static SeafDetailViewControllerResolver detailViewControllerResolver = ^SeafDeta
 {
     if (tableView != self.tableView) return NO;
     NSObject *entry  = [self getDentrybyIndexPath:indexPath tableView:tableView];
+    if (([entry isKindOfClass:[SeafDir class]] && !((SeafDir *)entry).editable) ||
+        ([entry isKindOfClass:[SeafFile class]] && !((SeafFile *)entry).editable)) {
+        return NO;
+    }
     return ![entry isKindOfClass:[SeafUploadFile class]];
 }
 
@@ -1266,9 +1278,9 @@ static SeafDetailViewControllerResolver detailViewControllerResolver = ^SeafDeta
             self.detailViewController.preViewItem = nil;
         [self.directory removeUploadFile:(SeafUploadFile *)entry];
         [self.tableView reloadData];
-    } else if ([entry isKindOfClass:[SeafFile class]])
+    } else if ([entry isKindOfClass:[SeafFile class]] && ((SeafFile *)entry).editable)
         [self deleteFile:(SeafFile*)entry];
-    else if ([entry isKindOfClass:[SeafDir class]])
+    else if ([entry isKindOfClass:[SeafDir class]] && ((SeafDir *)entry).editable)
         [self deleteDir: (SeafDir*)entry];
 }
 
@@ -1802,9 +1814,11 @@ static SeafDetailViewControllerResolver detailViewControllerResolver = ^SeafDeta
     [rightUtilityButtons sw_addUtilityButtonWithColor:
      [UIColor colorWithRed:0.78f green:0.78f blue:0.8f alpha:1.0]
                                                 title:S_MORE];
-    [rightUtilityButtons sw_addUtilityButtonWithColor:
-     [UIColor colorWithRed:1.0f green:0.231f blue:0.188 alpha:1.0f]
-                                                title:S_DELETE];
+    if (self.directory.editable) {
+        [rightUtilityButtons sw_addUtilityButtonWithColor:
+         [UIColor colorWithRed:1.0f green:0.231f blue:0.188 alpha:1.0f]
+                                                    title:S_DELETE];
+    }
 
     return rightUtilityButtons;
 }

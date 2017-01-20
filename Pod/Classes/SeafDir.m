@@ -121,8 +121,14 @@ static NSComparator CMP = ^(id obj1, id obj2) {
 
         if ([type isEqual:@"file"]) {
             newItem = [[SeafFile alloc] initWithConnection:connection oid:[itemInfo objectForKey:@"id"] repoId:self.repoId name:name path:path mtime:[[itemInfo objectForKey:@"mtime"] integerValue:0] size:[[itemInfo objectForKey:@"size"] integerValue:0]];
+            if (self.isEditableOverride) {
+                ((SeafDir *)newItem).editable = self.isEditableOverride.boolValue;
+            }
         } else if ([type isEqual:@"dir"]) {
             newItem = [[SeafDir alloc] initWithConnection:connection oid:[itemInfo objectForKey:@"id"] repoId:self.repoId perm:[itemInfo objectForKey:@"permission"] name:name path:path];
+            if (self.isEditableOverride) {
+                ((SeafDir *)newItem).editable = self.isEditableOverride.boolValue;
+            }
         }
         [newItems addObject:newItem];
     }
