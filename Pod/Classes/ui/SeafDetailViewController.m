@@ -35,6 +35,8 @@ enum SHARE_STATUS {
 
 #define SHARE_TITLE NSLocalizedString(@"How would you like to share this file?", @"Seafile")
 
+static BOOL prefersQuickLookModal = NO;
+
 @interface SeafDetailViewController ()<UIWebViewDelegate, UIPrintInteractionControllerDelegate, MFMailComposeViewControllerDelegate, MWPhotoBrowserDelegate>
 @property (strong, nonatomic) UIPopoverController *masterPopoverController;
 
@@ -63,6 +65,11 @@ enum SHARE_STATUS {
 
 
 @implementation SeafDetailViewController
+
++ (void)setPrefersQuickLookModal:(BOOL)prefersModal
+{
+    prefersQuickLookModal = prefersModal;
+}
 
 - (id)initWithCoder:(NSCoder *)decoder
 {
@@ -137,7 +144,7 @@ enum SHARE_STATUS {
         if (![QLPreviewController canPreviewItem:self.preViewItem]) {
             _state = PREVIEW_FAILED;
         } else {
-            _state = PREVIEW_QL_SUBVIEW;
+            _state = (prefersQuickLookModal ? PREVIEW_QL_MODAL : PREVIEW_QL_SUBVIEW);
             if ([self.preViewItem.mime hasPrefix:@"audio"]
                 || [self.preViewItem.mime hasPrefix:@"video"]
                 || [self.preViewItem.mime isEqualToString:@"image/svg+xml"])
