@@ -1279,9 +1279,9 @@ static SeafDetailViewControllerResolver detailViewControllerResolver = ^SeafDeta
             self.detailViewController.preViewItem = nil;
         [self.directory removeUploadFile:(SeafUploadFile *)entry];
         [self.tableView reloadData];
-    } else if ([entry isKindOfClass:[SeafFile class]] && ((SeafFile *)entry).editable)
+    } else if ([entry isKindOfClass:[SeafFile class]])
         [self deleteFile:(SeafFile*)entry];
-    else if ([entry isKindOfClass:[SeafDir class]] && ((SeafDir *)entry).editable)
+    else if ([entry isKindOfClass:[SeafDir class]])
         [self deleteDir: (SeafDir*)entry];
 }
 
