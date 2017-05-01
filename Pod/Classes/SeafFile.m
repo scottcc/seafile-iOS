@@ -721,7 +721,7 @@ typedef void (^SeafThumbCompleteBlock)(BOOL ret);
 - (BOOL)editable
 {
     return ([[connection getRepo:self.repoId] editable] &&
-            self.editable &&
+            _editable &&
             [self.mime hasPrefix:@"text/"]);
 }
 
