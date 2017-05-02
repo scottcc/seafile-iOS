@@ -124,12 +124,24 @@ static NSString *appName = @"com.seafile.seafilePro";
         for (SeafConnection *conn in welf.conns) {
             [conn checkAutoSync];
         }
-        if (ios8) {
-            [[PHPhotoLibrary sharedPhotoLibrary] registerChangeObserver:appdelegate];
-        } else
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkPhotoChanges:) name:ALAssetsLibraryChangedNotification object:welf.assetsLibrary];
+        [welf registerPhotoObserver:appdelegate];
         [appdelegate checkBackgroundUploadStatus];
     });
+}
+
+- (void)registerPhotoObserver:(id <SeafAppDelegateProxy>)appdelegate
+{
+    if (ios8) {
+        if ([PHPhotoLibrary authorizationStatus] == PHAuthorizationStatusAuthorized) {
+            [[PHPhotoLibrary sharedPhotoLibrary] registerChangeObserver:appdelegate];
+        }
+    }
+    else {
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(checkPhotoChanges:)
+                                                     name:ALAssetsLibraryChangedNotification
+                                                   object:self.assetsLibrary];
+    }
 }
 
 - (void)checkSettings
