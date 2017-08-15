@@ -938,6 +938,13 @@ static SeafDetailViewControllerResolver detailViewControllerResolver = ^SeafDeta
                 [[SeafUI appdelegate] showDetailView:self.detailViewController];
             }
         }
+        else {
+            if (self.detailViewController.state == PREVIEW_QL_MODAL) { // Use fullscreen preview for doc, xls, etc.
+                [self presentViewController:self.detailViewController.qlViewController animated:NO completion:nil];
+            } else {
+                [[SeafUI appdelegate] showDetailView:self.detailViewController];
+            }
+        }
     } else if ([_curEntry isKindOfClass:[SeafDir class]]) {
         SeafFileViewController *controller = [[UIStoryboard storyboardWithName:@"FolderView_iPad" bundle:SeafileBundle()] instantiateViewControllerWithIdentifier:@"MASTERVC"];
         [controller setDirectory:(SeafDir *)_curEntry];
