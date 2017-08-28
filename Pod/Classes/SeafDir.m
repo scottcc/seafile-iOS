@@ -53,7 +53,7 @@ static NSComparator seafSortByMtime = ^(id a, id b) {
 @interface SeafDir ()
 @property NSObject *uploadLock;
 @property (readonly, nonatomic) NSMutableArray *uploadItems;
-
+@property (nonatomic) NSNumber *isEditableOverride;
 @end
 
 @implementation SeafDir
@@ -83,14 +83,21 @@ static NSComparator seafSortByMtime = ^(id a, id b) {
     self = [super initWithConnection:aConnection oid:anId repoId:aRepoId name:aName path:aPath mime:aMime];
     _uploadLock = [[NSObject alloc] init];
     _perm = aPerm;
+    _isEditableOverride = nil;
     return self;
 }
 
 - (BOOL)editable
 {
+    if (_isEditableOverride)
+        return [_isEditableOverride boolValue];
     if (self.perm && [self.perm isKindOfClass:[NSString class]])
         return [self.perm.lowercaseString isEqualToString:@"rw"];
     return NO;
+}
+- (void)setEditable:(BOOL)editable
+{
+    _isEditableOverride = [NSNumber numberWithBool:editable];
 }
 
 - (void)unload
@@ -130,8 +137,14 @@ static NSComparator seafSortByMtime = ^(id a, id b) {
 
         if ([type isEqual:@"file"]) {
             newItem = [[SeafFile alloc] initWithConnection:connection oid:[itemInfo objectForKey:@"id"] repoId:self.repoId name:name path:path mtime:[[itemInfo objectForKey:@"mtime"] integerValue:0] size:[[itemInfo objectForKey:@"size"] integerValue:0]];
+            if (self.isEditableOverride) {
+                ((SeafDir *)newItem).editable = self.isEditableOverride.boolValue;
+            }
         } else if ([type isEqual:@"dir"]) {
             newItem = [[SeafDir alloc] initWithConnection:connection oid:[itemInfo objectForKey:@"id"] repoId:self.repoId perm:[itemInfo objectForKey:@"permission"] name:name path:path];
+            if (self.isEditableOverride) {
+                ((SeafDir *)newItem).editable = self.isEditableOverride.boolValue;
+            }
         }
         [newItems addObject:newItem];
     }

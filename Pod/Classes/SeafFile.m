@@ -60,6 +60,7 @@ typedef void (^SeafThumbCompleteBlock)(BOOL ret);
         _filesize = size;
         self.downloadingFileOid = nil;
         self.task = nil;
+        self.editable = YES;
     }
     return self;
 }
@@ -656,7 +657,9 @@ typedef void (^SeafThumbCompleteBlock)(BOOL ret);
 
 - (BOOL)editable
 {
-    return [[connection getRepo:self.repoId] editable] && [self.mime hasPrefix:@"text/"];
+    return ([[connection getRepo:self.repoId] editable] &&
+            _editable &&
+            [self.mime hasPrefix:@"text/"]);
 }
 
 - (UIImage *)image
