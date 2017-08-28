@@ -179,7 +179,7 @@ static SeafDetailViewControllerResolver detailViewControllerResolver = ^SeafDeta
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self.tableView registerNib:[UINib nibWithNibName:@"SeafCell" bundle:nil]
+    [self.tableView registerNib:[UINib nibWithNibName:@"SeafCell" bundle:SeafileBundle()]
          forCellReuseIdentifier:@"SeafCell"];
     if([self respondsToSelector:@selector(edgesForExtendedLayout)])
         self.edgesForExtendedLayout = UIRectEdgeAll;
@@ -566,7 +566,7 @@ static SeafDetailViewControllerResolver detailViewControllerResolver = ^SeafDeta
 {
     SeafCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        NSArray *cells = [[NSBundle mainBundle] loadNibNamed:CellIdentifier owner:self options:nil];
+        NSArray *cells = [SeafileBundle() loadNibNamed:CellIdentifier owner:self options:nil];
         cell = [cells objectAtIndex:0];
     }
     [cell reset];
@@ -827,7 +827,7 @@ static SeafDetailViewControllerResolver detailViewControllerResolver = ^SeafDeta
     [self popupSetRepoPassword:repo handler:^{
             [SVProgressHUD dismiss];
             self.state = STATE_INIT;
-            SeafFileViewController *controller = [[UIStoryboard storyboardWithName:@"FolderView_iPad" bundle:nil] instantiateViewControllerWithIdentifier:@"MASTERVC"];
+            SeafFileViewController *controller = [[UIStoryboard storyboardWithName:@"FolderView_iPad" bundle:SeafileBundle()] instantiateViewControllerWithIdentifier:@"MASTERVC"];
             [self.navigationController pushViewController:controller animated:YES];
             [controller setDirectory:(SeafDir *)repo];
     }];

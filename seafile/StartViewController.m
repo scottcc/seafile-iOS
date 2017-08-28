@@ -64,7 +64,7 @@
     [self setExtraCellLineHidden:self.tableView];
     self.title = NSLocalizedString(@"Accounts", @"Seafile");
 
-    NSArray *views = [[NSBundle mainBundle] loadNibNamed:@"SeafStartHeaderView" owner:self options:nil];
+    NSArray *views = [SeafileBundle() loadNibNamed:@"SeafStartHeaderView" owner:self options:nil];
     UIView *header = [views objectAtIndex:0];
     header.frame = CGRectMake(0,0, self.tableView.frame.size.width, TABLE_HEADER_HEIGHT);
     header.backgroundColor = [UIColor clearColor];
@@ -78,7 +78,7 @@
     self.navigationController.navigationBar.tintColor = BAR_COLOR;
     self.navigationItem.rightBarButtonItem = [self getBarItemAutoSize:@"ellipsis".navItemImgName action:@selector(editSheet:)];
 
-    views = [[NSBundle mainBundle] loadNibNamed:@"SeafStartFooterView" owner:self options:nil];
+    views = [SeafileBundle() loadNibNamed:@"SeafStartFooterView" owner:self options:nil];
     ColorfulButton *bt = [views objectAtIndex:0];
     [bt addTarget:self action:@selector(goToDefaultBtclicked:) forControlEvents:UIControlEventTouchUpInside];
     bt.layer.cornerRadius = 0;
@@ -273,7 +273,7 @@
     NSString *CellIdentifier = @"SeafButtonCell";
     SeafButtonCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        NSArray *cells = [[NSBundle mainBundle] loadNibNamed:@"SeafButtonCell" owner:self options:nil];
+        NSArray *cells = [SeafileBundle() loadNibNamed:@"SeafButtonCell" owner:self options:nil];
         cell = [cells objectAtIndex:0];
     }
     [cell.button setTitle:NSLocalizedString(@"Add account", @"Seafile") forState:UIControlStateNormal];

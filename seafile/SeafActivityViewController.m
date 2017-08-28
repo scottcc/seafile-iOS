@@ -69,7 +69,7 @@ typedef void (^ModificationHandler)(NSString *repoId, NSString *path);
     self.eventsMore = true;
     self.eventsOffset = 0;
     _eventDetails = [NSMutableDictionary new];
-    _defaultAccountImage = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"account" ofType:@"png"]];
+    _defaultAccountImage = [UIImage imageWithContentsOfFile:[SeafileBundle() pathForResource:@"account" ofType:@"png"]];
 
     NSArray *keys = [NSArray arrayWithObjects:
                      @"Added",
@@ -314,7 +314,7 @@ typedef void (^ModificationHandler)(NSString *repoId, NSString *path);
     NSString *CellIdentifier = @"SeafEventCell";
     SeafEventCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        NSArray *cells = [[NSBundle mainBundle] loadNibNamed:CellIdentifier owner:self options:nil];
+        NSArray *cells = [SeafileBundle() loadNibNamed:CellIdentifier owner:self options:nil];
         cell = [cells objectAtIndex:0];
         cell.accountImageView.layer.cornerRadius = 5.0f;
         cell.accountImageView.clipsToBounds = YES;
@@ -459,9 +459,9 @@ typedef void (^ModificationHandler)(NSString *repoId, NSString *path);
     SeafFile *sfile = [[SeafFile alloc] initWithConnection:self.connection oid:nil repoId:repoId name:path.lastPathComponent path:path mtime:0 size:0];
     SeafDetailViewController *detailvc;
     if (IsIpad()) {
-        detailvc = [[UIStoryboard storyboardWithName:@"FolderView_iPad" bundle:nil] instantiateViewControllerWithIdentifier:@"DETAILVC"];
+        detailvc = [[UIStoryboard storyboardWithName:@"FolderView_iPad" bundle:SeafileBundle()] instantiateViewControllerWithIdentifier:@"DETAILVC"];
     } else {
-        detailvc = [[UIStoryboard storyboardWithName:@"FolderView_iPhone" bundle:nil] instantiateViewControllerWithIdentifier:@"DETAILVC"];
+        detailvc = [[UIStoryboard storyboardWithName:@"FolderView_iPhone" bundle:SeafileBundle()] instantiateViewControllerWithIdentifier:@"DETAILVC"];
     }
     sfile.delegate = detailvc;
     [detailvc setPreViewItem:sfile master:nil];

@@ -194,7 +194,7 @@ static AFHTTPRequestSerializer <AFURLRequestSerialization> * _requestSerializer;
 - (NSString *)platformVersion
 {
     if (!_platformVersion) {
-        NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
+        NSDictionary *infoDictionary = [SeafileBundle() infoDictionary];
         _platformVersion = [infoDictionary objectForKey:@"DTPlatformVersion"];
     }
     return _platformVersion;
@@ -680,7 +680,7 @@ static AFHTTPRequestSerializer <AFURLRequestSerialization> * _requestSerializer;
     [request setHTTPMethod:@"POST"];
     [request setValue:@"application/x-www-form-urlencoded; charset=UTF-8" forHTTPHeaderField:@"Content-Type"];
 
-    NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
+    NSDictionary *infoDictionary = [SeafileBundle() infoDictionary];
     NSString *version = SEAFILE_VERSION;
     NSString *platform = @"ios";
     NSString *platformName = [infoDictionary objectForKey:@"DTPlatformName"];
@@ -1009,7 +1009,7 @@ static AFHTTPRequestSerializer <AFURLRequestSerialization> * _requestSerializer;
 - (void)registerDevice:(NSData *)deviceToken
 {
 #if 0
-    NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
+    NSDictionary *infoDictionary = [SeafileBundle() infoDictionary];
     NSString *version = SEAFILE_VERSION;
     NSString *platform = [infoDictionary objectForKey:@"DTPlatformName"];
     NSString *platformVersion = [infoDictionary objectForKey:@"DTPlatformVersion"];
