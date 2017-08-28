@@ -180,11 +180,14 @@ static SeafDetailViewControllerResolver detailViewControllerResolver = ^SeafDeta
 
     self.formatter = [[NSDateFormatter alloc] init];
     [self.formatter setDateFormat:@"yyyy-MM-dd HH.mm.ss"];
-
-    self.tableView.estimatedRowHeight = 55;
+    // SCC_CONFIRM: Do we still not set automatic, and leave at 50 instead of 55?
+    // self.tableView.rowHeight = UITableViewAutomaticDimension;
+    self.tableView.estimatedRowHeight = 50.0;
     self.state = STATE_INIT;
 
     self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectZero];
+    // SCC_CONFIRM - might need the adjustment to offsets still...
+    // self.searchBar.searchTextPositionAdjustment = UIOffsetMake(0, 0);
     Debug("repoId:%@, %@, path:%@, loading ... cached:%d %@\n", _directory.repoId, _directory.name, _directory.path, _directory.hasCache, _directory.ooid);
     self.searchBar.delegate = self;
     self.searchBar.barTintColor = [UIColor colorWithRed:240/255.0 green:239/255.0 blue:246/255.0 alpha:1.0];
@@ -206,6 +209,8 @@ static SeafDetailViewControllerResolver detailViewControllerResolver = ^SeafDeta
     self.tableView.backgroundView = bView;
     
     self.tableView.tableHeaderView = self.searchBar;
+    // SCC_CONFIRM: Don't need content offset?
+    // self.tableView.contentOffset = CGPointMake(0, CGRectGetHeight(self.searchBar.bounds));
     self.tableView.tableFooterView = [UIView new];
     self.tableView.allowsMultipleSelection = NO;
 
@@ -564,7 +569,11 @@ static SeafDetailViewControllerResolver detailViewControllerResolver = ^SeafDeta
         cell = [cells objectAtIndex:0];
     }
     [cell reset];
-
+    // SCC_CONFIRM: No more right utility buttons?
+    // if (tableView == self.tableView) {
+    //     cell.rightUtilityButtons = [self rightButtons];
+    //     cell.delegate = self;
+    // }
     return cell;
 }
 
@@ -1021,6 +1030,7 @@ static SeafDetailViewControllerResolver detailViewControllerResolver = ^SeafDeta
     }
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.bounds.size.width, 30)];
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 3, tableView.bounds.size.width - 10, 18)];
+    // SCC_CONFIRM: that we want 12 points, not 14 as before
     label.font = [UIFont systemFontOfSize:12];
     label.text = text;
     label.textColor = [UIColor darkTextColor];
