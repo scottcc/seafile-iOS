@@ -8,7 +8,6 @@
 #import "UIScrollView+SVPullToRefresh.h"
 
 #import "SeafDirViewController.h"
-#import "SeafAppDelegate.h"
 #import "SeafDir.h"
 #import "SeafRepos.h"
 #import "SeafCell.h"
@@ -26,7 +25,6 @@
 @end
 
 @implementation SeafDirViewController
-
 - (id)initWithSeafDir:(SeafDir *)dir dirChosen:(SeafDirChoose)choose cancel:(SeafDirCancelChoose)cancel chooseRepo:(BOOL)chooseRepo
 {
     if (self = [super init]) {
@@ -66,7 +64,7 @@
     [super viewDidLoad];
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     self.tableView.estimatedRowHeight = 50.0;
-    [self.tableView registerNib:[UINib nibWithNibName:@"SeafDirCell" bundle:nil]
+    [self.tableView registerNib:[UINib nibWithNibName:@"SeafDirCell" bundle:SeafileBundle()]
          forCellReuseIdentifier:@"SeafDirCell"];
 
     if([self respondsToSelector:@selector(edgesForExtendedLayout)])
@@ -153,7 +151,7 @@
     NSString *CellIdentifier = @"SeafDirCell";
     SeafCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        NSArray *cells = [[NSBundle mainBundle] loadNibNamed:CellIdentifier owner:self options:nil];
+        NSArray *cells = [SeafileBundle() loadNibNamed:CellIdentifier owner:self options:nil];
         cell = [cells objectAtIndex:0];
     }
     [cell reset];

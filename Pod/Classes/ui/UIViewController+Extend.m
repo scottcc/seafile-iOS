@@ -22,7 +22,7 @@
 
 - (id)initWithAutoNibName
 {
-    return [self initWithNibName:(NSStringFromClass ([self class])) bundle:nil];
+    return [self initWithNibName:(NSStringFromClass ([self class])) bundle:SeafileBundle()];
 }
 
 - (id)initWithAutoPlatformNibName
@@ -34,7 +34,7 @@
     } else {
         plaformSuffix = @"iPad";
     }
-    return [self initWithNibName:[NSString stringWithFormat:@"%@_%@", className, plaformSuffix] bundle:nil];
+    return [self initWithNibName:[NSString stringWithFormat:@"%@_%@", className, plaformSuffix] bundle:SeafileBundle()];
 }
 
 - (id)initWithAutoPlatformLangNibName:(NSString *)lang
@@ -46,7 +46,7 @@
     } else {
         plaformSuffix = @"iPad";
     }
-    return [self initWithNibName:[NSString stringWithFormat:@"%@_%@_%@", className, plaformSuffix, lang] bundle:nil];
+    return [self initWithNibName:[NSString stringWithFormat:@"%@_%@_%@", className, plaformSuffix, lang] bundle:SeafileBundle()];
 }
 
 - (void)alertWithTitle:(NSString*)title message:(NSString*)message handler:(void (^)())handler;
@@ -85,6 +85,9 @@
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
     btn.frame = CGRectMake(0,0,size,size);
     UIImage *img = [UIImage imageNamed:imageName];
+    if (!img) { // check the bundle next
+        img = [UIImage imageNamed:imageName inBundle:SeafileBundle() compatibleWithTraitCollection:nil];
+    }
     [btn setImage:img forState:UIControlStateNormal];
     btn.showsTouchWhenHighlighted = YES;
     [btn addTarget:self action:action forControlEvents:UIControlEventTouchUpInside];

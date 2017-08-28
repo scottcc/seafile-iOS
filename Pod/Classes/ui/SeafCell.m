@@ -38,6 +38,9 @@
     self.badgeLabel.hidden = true;
     self.cacheStatusView.hidden = true;
     self.progressView.hidden = true;
+    // SCC_CONFIRM: should still not do these?
+    // self.rightUtilityButtons = nil;
+    // self.delegate = nil;
 }
 
 - (IBAction)moreButtonTouch:(id)sender {

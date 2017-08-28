@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Seafile. All rights reserved.
 //
 @import LocalAuthentication;
+@import Photos;
 
 #import "SeafGlobal.h"
 #import "SeafUploadFile.h"
@@ -18,7 +19,7 @@
 #import "Version.h"
 #import "SeafDbCacheProvider.h"
 #import "SeafStorage.h"
-
+#import "SeafDataTaskManager.h"
 
 /*
 static NSError * NewNSErrorFromException(NSException * exc) {
@@ -41,15 +42,39 @@ static NSError * NewNSErrorFromException(NSException * exc) {
 
 @implementation SeafGlobal
 
-@synthesize cacheProvider = _cacheProvider;
+static SeafGlobal * sharedInstance;
+static NSString *groupName = @"group.com.seafile.seafilePro";
+static NSString *appName = @"com.seafile.seafilePro";
+
++ (void)initialize
+{
+    if (self == [SeafGlobal class]) {
+        sharedInstance = [[SeafGlobal alloc] init];
+    }
+}
+
++ (void)setGroupName:(NSString *)group
+{
+    groupName = group;
+}
+
++ (NSString *)appId
+{
+    return appName;
+}
+
++ (void)setAppId:(NSString *)app
+{
+    appName = app;
+}
 
 -(id)init
 {
     if (self = [super init]) {
         _conns = [[NSMutableArray alloc] init];
         _saveAlbumSem = dispatch_semaphore_create(1);
-         NSURL *rootURL = [[[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:SEAFILE_SUITE_NAME] URLByAppendingPathComponent:@"seafile" isDirectory:true];
-        [SeafStorage registerRootPath:rootURL.path metadataStorage:[[NSUserDefaults alloc] initWithSuiteName:SEAFILE_SUITE_NAME]];
+         NSURL *rootURL = [[[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:groupName] URLByAppendingPathComponent:@"seafile" isDirectory:true];
+        [SeafStorage registerRootPath:rootURL.path metadataStorage:[[NSUserDefaults alloc] initWithSuiteName:groupName]];
 
         _cacheProvider = [[SeafDbCacheProvider alloc] init];
         [self checkSystemSettings];
@@ -59,6 +84,50 @@ static NSError * NewNSErrorFromException(NSException * exc) {
         Debug("Cache root path=%@, clientVersion=%@",  SeafStorage.sharedObject.rootPath, SEAFILE_VERSION);
     }
     return self;
+}
+
+- (void)performDelayedInit:(id <SeafAppDelegateProxy>)appdelegate
+{
+    __weak SeafGlobal *welf = self;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND,0), ^{
+        NSUserDefaults *defs = [[NSUserDefaults alloc] initWithSuiteName:groupName];
+        NSMutableArray *array = [NSMutableArray new];
+        for(NSString *key in defs.dictionaryRepresentation) {
+            if ([key hasPrefix:@"EXPORTED/"]) {
+                [array addObject:key];
+            }
+        }
+        for(NSString *key in array) {
+            [defs removeObjectForKey:key];
+        }
+        
+        Debug("clear tmp dir: %@", SeafStorage.sharedObject.tempDir);
+        [Utils clearAllFiles:SeafStorage.sharedObject.tempDir];
+        
+        Debug("Current app version is %@\n", SEAFILE_VERSION);
+        [welf startTimer];
+        
+        for (SeafConnection *conn in welf.conns) {
+            [conn checkAutoSync];
+        }
+        [welf registerPhotoObserver:appdelegate];
+        [appdelegate checkBackgroundUploadStatus];
+    });
+}
+
+- (void)registerPhotoObserver:(id <SeafAppDelegateProxy>)appdelegate
+{
+    if (ios8) {
+        if ([PHPhotoLibrary authorizationStatus] == PHAuthorizationStatusAuthorized) {
+            [[PHPhotoLibrary sharedPhotoLibrary] registerChangeObserver:appdelegate];
+        }
+    }
+    else {
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(photosDidChange:)
+                                                     name:ALAssetsLibraryChangedNotification
+                                                   object:SeafDataTaskManager.sharedObject.assetsLibrary];
+    }
 }
 
 - (void)checkSystemSettings
@@ -83,17 +152,12 @@ static NSError * NewNSErrorFromException(NSException * exc) {
 
 + (SeafGlobal *)sharedObject
 {
-    static SeafGlobal *object = nil;
-    if (!object) {
-        object = [[SeafGlobal alloc] init];
-
-    }
-    return object;
+    return sharedInstance;
 }
 
 - (NSString *)fileProviderStorageDir
 {
-    return [[[[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:SEAFILE_SUITE_NAME] path] stringByAppendingPathComponent:@"File Provider Storage"];
+    return [[[[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:groupName] path] stringByAppendingPathComponent:@"File Provider Storage"];
 }
 
 - (void)registerDefaultsFromSettingsBundle
@@ -134,7 +198,7 @@ static NSError * NewNSErrorFromException(NSException * exc) {
 - (void)migrateUserDefaults
 {
     NSUserDefaults *oldDef = [NSUserDefaults standardUserDefaults];
-    NSUserDefaults *newDef = [[NSUserDefaults alloc] initWithSuiteName:SEAFILE_SUITE_NAME];
+    NSUserDefaults *newDef = [[NSUserDefaults alloc] initWithSuiteName:groupName];
     NSArray *accounts = [oldDef objectForKey:@"ACCOUNTS"];
     if (accounts && accounts.count > 0) {
         for(NSString *key in oldDef.dictionaryRepresentation) {
@@ -149,7 +213,7 @@ static NSError * NewNSErrorFromException(NSException * exc) {
 - (void)migrateDocuments
 {
     NSURL *oldURL = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
-    NSURL *newURL = [[[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:SEAFILE_SUITE_NAME] URLByAppendingPathComponent:@"seafile" isDirectory:true];
+    NSURL *newURL = [[[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:groupName] URLByAppendingPathComponent:@"seafile" isDirectory:true];
     if ([Utils fileExistsAtPath:newURL.path])
         return;
 

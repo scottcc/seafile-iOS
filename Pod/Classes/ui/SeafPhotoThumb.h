@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "MWPhoto.h"
+@import MWPhotoBrowser;
 #import "SeafThumb.h"
 #import "SeafPreView.h"
 

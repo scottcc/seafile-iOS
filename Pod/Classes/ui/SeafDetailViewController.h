@@ -28,6 +28,7 @@ enum PREVIEW_STATE {
 @property (nonatomic) UIViewController<SeafDentryDelegate> *masterVc;
 @property (retain) QLPreviewController *qlViewController;
 
++ (void)setPrefersQuickLookModal:(BOOL)prefersQuickLookModal;
 
 - (void)refreshView;
 - (void)setPreViewItem:(id<SeafPreView>)item master:(UIViewController<SeafDentryDelegate> *)c;

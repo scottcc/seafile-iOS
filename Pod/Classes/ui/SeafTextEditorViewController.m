@@ -7,7 +7,9 @@
 //
 
 #import "SeafTextEditorViewController.h"
-#import "SeafAppDelegate.h"
+#import "SeafFileViewController.h"
+#import "SeafStarredFilesViewController.h"
+#import "SeafUI.h"
 
 #import "UIViewController+Extend.h"
 #import "ExtentedString.h"
@@ -58,7 +60,7 @@
 {
     NSString *content = [[self textView] text];
     [_previewFile saveStrContent:content];
-    SeafAppDelegate *appdelegate = (SeafAppDelegate *)[[UIApplication sharedApplication] delegate];
+    id <SeafAppDelegateProxy> appdelegate = [SeafUI appdelegate];
     [self.detailViewController refreshView];
     [appdelegate.fileVC refreshView];
     [appdelegate.starredVC refreshView];

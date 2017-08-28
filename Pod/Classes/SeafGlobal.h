@@ -12,6 +12,7 @@
 #import "SeafConnection.h"
 #import "SeafDbCacheProvider.h"
 #import "SeafPreView.h"
+#import "SeafUI.h"
 
 
 #define SEAFILE_SUITE_NAME @"group.com.seafile.seafilePro"
@@ -32,6 +33,18 @@
 
 
 + (SeafGlobal *)sharedObject;
+
+/**
+ * @note    This will perform its execution on a background (non main) queue.
+ * @param   appdelegate The proxy used to call back into [appdelegate checkBackgroundUploadStatus] once at the end.
+ */
+- (void)performDelayedInit:(id <SeafAppDelegateProxy>)appdelegate;
+/**
+ * @note    Safe to be called multiple times, is called by performDelayedInit but only registers
+ *          if the app is authorized to access photos (otherwise a modal requesting permission pops up,
+ *          which you may wish to control when that happens).
+ */
+- (void)registerPhotoObserver:(id <SeafAppDelegateProxy>)appdelegate;
 
 - (BOOL)isCertInUse:(NSData*)clientIdentityKey;
 - (void)loadAccounts;

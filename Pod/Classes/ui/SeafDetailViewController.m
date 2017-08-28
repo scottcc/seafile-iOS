@@ -5,17 +5,18 @@
 //  Created by Wei Wang on 7/7/12.
 //  Copyright (c) 2012 Seafile Ltd. All rights reserved.
 //
+#import <MessageUI/MessageUI.h>
 
-#import "MWPhotoBrowser.h"
+@import MWPhotoBrowser;
 #import "SVProgressHUD.h"
 
-#import "SeafAppDelegate.h"
 #import "SeafDetailViewController.h"
 #import "FailToPreview.h"
 #import "DownloadingProgressView.h"
 #import "SeafTextEditorViewController.h"
 #import "SeafUploadFile.h"
 #import "SeafFileViewController.h"
+#import "SeafUI.h"
 
 #import "SeafPhoto.h"
 #import "UIViewController+Extend.h"
@@ -33,6 +34,8 @@ enum SHARE_STATUS {
 #define ACTION_SHEET_OLD_ACTIONS 2000
 
 #define SHARE_TITLE NSLocalizedString(@"How would you like to share this file?", @"Seafile")
+
+static BOOL prefersQuickLookModal = NO;
 
 @interface SeafDetailViewController ()<UIWebViewDelegate, UIPrintInteractionControllerDelegate, MFMailComposeViewControllerDelegate, MWPhotoBrowserDelegate>
 @property (strong, nonatomic) UIPopoverController *masterPopoverController;
@@ -62,6 +65,11 @@ enum SHARE_STATUS {
 
 
 @implementation SeafDetailViewController
+
++ (void)setPrefersQuickLookModal:(BOOL)prefersModal
+{
+    prefersQuickLookModal = prefersModal;
+}
 
 - (id)initWithCoder:(NSCoder *)decoder
 {
@@ -134,7 +142,7 @@ enum SHARE_STATUS {
         if (![QLPreviewController canPreviewItem:self.preViewItem]) {
             _state = PREVIEW_FAILED;
         } else {
-            _state = PREVIEW_QL_SUBVIEW;
+            _state = (prefersQuickLookModal ? PREVIEW_QL_MODAL : PREVIEW_QL_SUBVIEW);
             if ([self.preViewItem.mime hasPrefix:@"audio"]
                 || [self.preViewItem.mime hasPrefix:@"video"]
                 || [self.preViewItem.mime isEqualToString:@"image/svg+xml"])
@@ -165,6 +173,7 @@ enum SHARE_STATUS {
     if (!self.isViewLoaded) return;
 
     [self updateNavigation];
+    // SCC_CONFIRM: Should the 64 be 0 instead? If so, remove last subtraction of same too.
     CGRect r = CGRectMake(self.view.frame.origin.x, 64, self.view.frame.size.width, self.view.frame.size.height - 64);
     switch (self.state) {
         case PREVIEW_DOWNLOADING:
@@ -197,6 +206,12 @@ enum SHARE_STATUS {
                         }];
                     }];
                 }
+            }
+            // SCC_CONFIRM: Do we still need this below chunk?
+            else if (!self.isModal) {
+                UINavigationController *nc = self.navigationController;
+                [self.navigationController popToRootViewControllerAnimated:NO];
+                [nc presentViewController:self.qlViewController animated:NO completion:nil];
             }
             break;
         }
@@ -292,14 +307,14 @@ enum SHARE_STATUS {
     self.barItemsUnStar  = [NSArray arrayWithObjects:self.exportItem, space, self.shareItem, space, unstarItem, space, nil];
 
     if(IsIpad()) {
-        NSArray *views = [[NSBundle mainBundle] loadNibNamed:@"FailToPreview_iPad" owner:self options:nil];
+        NSArray *views = [SeafileBundle() loadNibNamed:@"FailToPreview_iPad" owner:self options:nil];
         self.failedView = [views objectAtIndex:0];
-        views = [[NSBundle mainBundle] loadNibNamed:@"DownloadingProgress_iPad" owner:self options:nil];
+        views = [SeafileBundle() loadNibNamed:@"DownloadingProgress_iPad" owner:self options:nil];
         self.progressView = [views objectAtIndex:0];
     } else {
-        NSArray *views = [[NSBundle mainBundle] loadNibNamed:@"FailToPreview_iPhone" owner:self options:nil];
+        NSArray *views = [SeafileBundle() loadNibNamed:@"FailToPreview_iPhone" owner:self options:nil];
         self.failedView = [views objectAtIndex:0];
-        views = [[NSBundle mainBundle] loadNibNamed:@"DownloadingProgress_iPhone" owner:self options:nil];
+        views = [SeafileBundle() loadNibNamed:@"DownloadingProgress_iPhone" owner:self options:nil];
         self.progressView = [views objectAtIndex:0];
     }
     self.webView = [[UIWebView alloc] initWithFrame:self.view.frame];
@@ -692,8 +707,7 @@ enum SHARE_STATUS {
         [self alertWithTitle:NSLocalizedString(@"The mail account has not been set yet", @"Seafile")];
         return;
     }
-    SeafAppDelegate *appdelegate = (SeafAppDelegate *)[[UIApplication sharedApplication] delegate];
-    MFMailComposeViewController *mailPicker = appdelegate.globalMailComposer;
+    MFMailComposeViewController *mailPicker = [SeafUI appdelegate].globalMailComposer;
     mailPicker.mailComposeDelegate = self;
 
     [mailPicker setSubject:[NSString stringWithFormat:NSLocalizedString(@"File '%@' is shared with you using %@", @"Seafile"), name, APP_NAME]];
@@ -724,8 +738,8 @@ enum SHARE_STATUS {
             msg = @"";
             break;
     }
+    id <SeafAppDelegateProxy> appdelegate = [SeafUI appdelegate];
     [self dismissViewControllerAnimated:YES completion:^{
-        SeafAppDelegate *appdelegate = (SeafAppDelegate *)[[UIApplication sharedApplication] delegate];
         [appdelegate cycleTheGlobalMailComposer];
     }];
 

@@ -8,7 +8,6 @@
 
 #import "UIScrollView+SVPullToRefresh.h"
 
-#import "SeafAppDelegate.h"
 #import "SeafStarredFilesViewController.h"
 #import "SeafDetailViewController.h"
 #import "SeafStarredFile.h"
@@ -44,10 +43,17 @@
     return self;
 }
 
+static SeafDetailViewControllerResolver detailViewControllerResolver = ^SeafDetailViewController *{ return nil; };
+
++ (void)setSeafDetailViewControllerResolver:(SeafDetailViewControllerResolver)resolver
+{
+    NSAssert(resolver != NULL, @"You must provide a way to create the SeafDetailViewController");
+    detailViewControllerResolver = resolver;
+}
+
 - (SeafDetailViewController *)detailViewController
 {
-    SeafAppDelegate *appdelegate = (SeafAppDelegate *)[[UIApplication sharedApplication] delegate];
-    return (SeafDetailViewController *)[appdelegate detailViewControllerAtIndex:TABBED_STARRED];
+    return detailViewControllerResolver();
 }
 
 - (void)refresh:(id)sender
@@ -71,7 +77,7 @@
 {
     [super viewDidLoad];
     self.title = NSLocalizedString(@"Starred", @"Seafile");
-    [self.tableView registerNib:[UINib nibWithNibName:@"SeafCell" bundle:nil]
+    [self.tableView registerNib:[UINib nibWithNibName:@"SeafCell" bundle:SeafileBundle()]
          forCellReuseIdentifier:@"SeafCell"];
     if([self respondsToSelector:@selector(edgesForExtendedLayout)])
         self.edgesForExtendedLayout = UIRectEdgeAll;
@@ -203,7 +209,7 @@
     NSString *CellIdentifier = @"SeafCell";
     SeafCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        NSArray *cells = [[NSBundle mainBundle] loadNibNamed:@"SeafCell" owner:self options:nil];
+        NSArray *cells = [SeafileBundle() loadNibNamed:@"SeafCell" owner:self options:nil];
         cell = [cells objectAtIndex:0];
     }
     cell.cellIndexPath = indexPath;
@@ -235,8 +241,7 @@
             [self.detailViewController.qlViewController reloadData];
             [self presentViewController:self.detailViewController.qlViewController animated:NO completion:nil];
         } else {
-            SeafAppDelegate *appdelegate = (SeafAppDelegate *)[[UIApplication sharedApplication] delegate];
-            [appdelegate showDetailView:self.detailViewController];
+            [[SeafUI appdelegate] showDetailView:self.detailViewController];
         }
     }
 }
