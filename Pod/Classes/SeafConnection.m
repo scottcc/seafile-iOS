@@ -90,6 +90,8 @@ _out:
 }
 
 static AFHTTPRequestSerializer <AFURLRequestSerialization> * _requestSerializer;
+static SSLProtocol tlsMinimumSupportedProtocol = kTLSProtocol1;
+
 @interface SeafConnection ()
 
 @property NSMutableSet *starredFiles;
@@ -127,6 +129,11 @@ static AFHTTPRequestSerializer <AFURLRequestSerialization> * _requestSerializer;
 @synthesize localUploadDir = _localUploadDir;
 @synthesize platformVersion = _platformVersion;
 
++ (void)setTLSMinimumSupportedProtocol:(SSLProtocol)minTLS
+{
+    tlsMinimumSupportedProtocol = minTLS;
+}
+
 - (id)initWithUrl:(NSString *)url cacheProvider:(id<SeafCacheProvider>)cacheProvider
 {
     if (self = [super init]) {
@@ -138,7 +145,7 @@ static AFHTTPRequestSerializer <AFURLRequestSerialization> * _requestSerializer;
         _syncDir = nil;
         NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
         //configuration.TLSMaximumSupportedProtocol = kTLSProtocol12;
-        configuration.TLSMinimumSupportedProtocol = kTLSProtocol1;
+        configuration.TLSMinimumSupportedProtocol = tlsMinimumSupportedProtocol;
         _sessionMgr = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:configuration];
         _sessionMgr.responseSerializer = [AFJSONResponseSerializer serializerWithReadingOptions:NSJSONReadingAllowFragments];
         self.policy = [self policyForHost:[self host]];
@@ -512,7 +519,7 @@ static AFHTTPRequestSerializer <AFURLRequestSerialization> * _requestSerializer;
 - (AFHTTPSessionManager *)loginMgr
 {
     NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration ephemeralSessionConfiguration];
-    configuration.TLSMinimumSupportedProtocol = kTLSProtocol1;
+    configuration.TLSMinimumSupportedProtocol = tlsMinimumSupportedProtocol;
 
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:configuration];
     [manager setSessionDidReceiveAuthenticationChallengeBlock:^NSURLSessionAuthChallengeDisposition(NSURLSession *session, NSURLAuthenticationChallenge *challenge, NSURLCredential *__autoreleasing *credential) {

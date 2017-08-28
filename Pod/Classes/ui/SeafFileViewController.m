@@ -7,7 +7,7 @@
 //
 #import <MessageUI/MFMailComposeViewController.h>
 
-#import "MWPhotoBrowser.h"
+@import MWPhotoBrowser;
 #import "UIScrollView+SVPullToRefresh.h"
 
 #import "SeafGlobal.h"
@@ -973,7 +973,7 @@ static SeafDetailViewControllerResolver detailViewControllerResolver = ^SeafDeta
             }
         }
     } else if ([_curEntry isKindOfClass:[SeafDir class]]) {
-        SeafFileViewController *controller = [[UIStoryboard storyboardWithName:@"FolderView_iPad" bundle:nil] instantiateViewControllerWithIdentifier:@"MASTERVC"];
+        SeafFileViewController *controller = [[UIStoryboard storyboardWithName:@"FolderView_iPad" bundle:SeafileBundle()] instantiateViewControllerWithIdentifier:@"MASTERVC"];
         [controller setDirectory:(SeafDir *)_curEntry];
         [self.navigationController pushViewController:controller animated:YES];
     }
