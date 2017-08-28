@@ -55,14 +55,7 @@ enum {
 
 #import "SeafDir.h"
 #import "SeafFile.h"
-
-@protocol SeafAppDelegateProxy <UIApplicationDelegate, SeafConnectionDelegate>
-- (void)checkOpenLinkAfterAHalfSecond:(SeafFileViewController *)c;
-- (void)showDetailView:(UIViewController *) c;
-- (SeafFileViewController *)fileVC;
-- (MFMailComposeViewController *)globalMailComposer;
-- (void)cycleTheGlobalMailComposer;
-@end
+#import "SeafUI.h"
 
 typedef SeafDetailViewController *(^SeafDetailViewControllerResolver)(void);
 
@@ -83,5 +76,10 @@ typedef SeafDetailViewController *(^SeafDetailViewControllerResolver)(void);
 - (void)photoSelectedChanged:(id<SeafPreView>)preViewItem to:(id<SeafPreView>)to;
 
 - (BOOL)goTo:(NSString *)repo path:(NSString *)path;
+
+/**
+ * @brief   Allow setting the directory chosen before display.
+ */
+- (void)setDirectory:(SeafDir *)directory;
 
 @end
