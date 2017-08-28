@@ -5,7 +5,7 @@
 //  Created by Wang Wei on 10/20/12.
 //  Copyright (c) 2012 Seafile Ltd. All rights reserved.
 //
-#import "UIScrollView+SVPullToRefresh.h"
+@import SVPullToRefreshPlus;
 
 #import "SeafDirViewController.h"
 #import "SeafDir.h"

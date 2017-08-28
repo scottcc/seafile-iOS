@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		54027810266F099F96E72234 /* Pods_SeafProvider.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56FD99DB25456180D2025389 /* Pods_SeafProvider.framework */; };
+		0FDFB119506D1550BD51E962 /* Pods_SeafAction.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4ACD3447FE5E0640E429047C /* Pods_SeafAction.framework */; };
 		5704C6D31753A1380028F4FE /* IntelligentSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5704C6D11753A1380028F4FE /* IntelligentSplitViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		57124BEB1B3EA6EA00075EAE /* LaunchScreen.png in Resources */ = {isa = PBXBuildFile; fileRef = 57124BEA1B3EA6EA00075EAE /* LaunchScreen.png */; };
 		571D8CAB1677881400F1A22C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 57DB827F15A833FA00097CEC /* main.m */; };
@@ -54,14 +54,14 @@
 		58D40A791E9AF84400A68BEF /* seafile.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 58D40A6C1E9AF7A400A68BEF /* seafile.xcdatamodeld */; };
 		58D40A7A1E9AF84C00A68BEF /* seafile.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 58D40A6C1E9AF7A400A68BEF /* seafile.xcdatamodeld */; };
 		58D40A7B1E9AF85100A68BEF /* seafile.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 58D40A6C1E9AF7A400A68BEF /* seafile.xcdatamodeld */; };
-		5DBC31661F0C294FC74F856A /* Pods_SeafAction.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 509E4A1BC95D10FFD17762E9 /* Pods_SeafAction.framework */; };
 		627A245F1F54879C00DB5D6A /* SeafActivityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 627A245E1F54879C00DB5D6A /* SeafActivityViewController.m */; };
 		627A24621F54A63B00DB5D6A /* SeafShibbolethViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 627A24611F54A63B00DB5D6A /* SeafShibbolethViewController.m */; };
 		627A24651F54A6DD00DB5D6A /* SeafSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 627A24641F54A6DD00DB5D6A /* SeafSettingsViewController.m */; };
 		627AB7161F54776A0064762C /* SeafStart.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 627AB7141F54776A0064762C /* SeafStart.storyboard */; };
 		627AB71D1F5485A40064762C /* SeafAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 627AB71C1F5485A40064762C /* SeafAccountViewController.m */; };
-		A4F0D41E01517CFDF9FE12E3 /* Pods_SeafProviderFileProvider.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB94332D80A1EB7A9EF58964 /* Pods_SeafProviderFileProvider.framework */; };
-		FF260978F86F72C8E43CA565 /* Pods_seafile_appstore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E8D568C23882F692EC5A871 /* Pods_seafile_appstore.framework */; };
+		810F738117421747A14BFB76 /* Pods_SeafProviderFileProvider.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3B12755B1AF232A60E2F0F4 /* Pods_SeafProviderFileProvider.framework */; };
+		81A093E4710ED9611941AFDD /* Pods_seafile_appstore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B180032AFF762FA052F88BD /* Pods_seafile_appstore.framework */; };
+		94CFB5FD3A646E41C8D46F90 /* Pods_SeafProvider.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C677FE666B0F9A2D590D760 /* Pods_SeafProvider.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -117,13 +117,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		006C6ACA1508C099E405C7CD /* Pods-SeafAction.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SeafAction.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SeafAction/Pods-SeafAction.debug.xcconfig"; sourceTree = "<group>"; };
-		009044694A9211AA47F1EF8F /* Pods-SeafProvider.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SeafProvider.release.xcconfig"; path = "Pods/Target Support Files/Pods-SeafProvider/Pods-SeafProvider.release.xcconfig"; sourceTree = "<group>"; };
-		0E8D568C23882F692EC5A871 /* Pods_seafile_appstore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_seafile_appstore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		13A0007FB5DF2F8394F711C6 /* Pods-seafile-appstore.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-seafile-appstore.release.xcconfig"; path = "Pods/Target Support Files/Pods-seafile-appstore/Pods-seafile-appstore.release.xcconfig"; sourceTree = "<group>"; };
-		2ACB4718F3EFBA2F0492D5D5 /* Pods-SeafProviderFileProvider.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SeafProviderFileProvider.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SeafProviderFileProvider/Pods-SeafProviderFileProvider.debug.xcconfig"; sourceTree = "<group>"; };
-		509E4A1BC95D10FFD17762E9 /* Pods_SeafAction.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SeafAction.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		56FD99DB25456180D2025389 /* Pods_SeafProvider.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SeafProvider.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		1BDBC3F71F5F001A4EEA076F /* Pods-SeafAction.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SeafAction.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SeafAction/Pods-SeafAction.debug.xcconfig"; sourceTree = "<group>"; };
+		4ACD3447FE5E0640E429047C /* Pods_SeafAction.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SeafAction.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4C677FE666B0F9A2D590D760 /* Pods_SeafProvider.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SeafProvider.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		52BEB2A93FEFDBF1D2A0A446 /* Pods-SeafProvider.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SeafProvider.release.xcconfig"; path = "Pods/Target Support Files/Pods-SeafProvider/Pods-SeafProvider.release.xcconfig"; sourceTree = "<group>"; };
 		5704C6D01753A1380028F4FE /* IntelligentSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IntelligentSplitViewController.h; sourceTree = "<group>"; };
 		5704C6D11753A1380028F4FE /* IntelligentSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IntelligentSplitViewController.m; sourceTree = "<group>"; };
 		57124BEA1B3EA6EA00075EAE /* LaunchScreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LaunchScreen.png; sourceTree = SOURCE_ROOT; };
@@ -204,12 +201,15 @@
 		627AB7151F54776A0064762C /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/SeafStart.storyboard; sourceTree = "<group>"; };
 		627AB71B1F5485A40064762C /* SeafAccountViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SeafAccountViewController.h; sourceTree = "<group>"; };
 		627AB71C1F5485A40064762C /* SeafAccountViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SeafAccountViewController.m; sourceTree = "<group>"; };
-		73B0C64609EFAB37F69E06D7 /* Pods-SeafAction.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SeafAction.release.xcconfig"; path = "Pods/Target Support Files/Pods-SeafAction/Pods-SeafAction.release.xcconfig"; sourceTree = "<group>"; };
-		8836AC1D19165F5CD5103F6D /* Pods-SeafProviderFileProvider.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SeafProviderFileProvider.release.xcconfig"; path = "Pods/Target Support Files/Pods-SeafProviderFileProvider/Pods-SeafProviderFileProvider.release.xcconfig"; sourceTree = "<group>"; };
-		BB94332D80A1EB7A9EF58964 /* Pods_SeafProviderFileProvider.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SeafProviderFileProvider.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		CB47AC9608C6180503D508C4 /* Pods-SeafProvider.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SeafProvider.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SeafProvider/Pods-SeafProvider.debug.xcconfig"; sourceTree = "<group>"; };
-		D49307F8D7ED338F5FBB6FF2 /* Pods-seafile-appstore.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-seafile-appstore.debug.xcconfig"; path = "Pods/Target Support Files/Pods-seafile-appstore/Pods-seafile-appstore.debug.xcconfig"; sourceTree = "<group>"; };
+		6B180032AFF762FA052F88BD /* Pods_seafile_appstore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_seafile_appstore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7E8B8F3EC1FB2446F671E1FD /* Pods-SeafProvider.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SeafProvider.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SeafProvider/Pods-SeafProvider.debug.xcconfig"; sourceTree = "<group>"; };
+		81DCFD41100BA631840FD70E /* Pods-SeafAction.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SeafAction.release.xcconfig"; path = "Pods/Target Support Files/Pods-SeafAction/Pods-SeafAction.release.xcconfig"; sourceTree = "<group>"; };
+		8B45850D32B59CBAE13E4E15 /* Pods-SeafProviderFileProvider.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SeafProviderFileProvider.release.xcconfig"; path = "Pods/Target Support Files/Pods-SeafProviderFileProvider/Pods-SeafProviderFileProvider.release.xcconfig"; sourceTree = "<group>"; };
+		A76462E752454430E3112C61 /* Pods-seafile-appstore.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-seafile-appstore.debug.xcconfig"; path = "Pods/Target Support Files/Pods-seafile-appstore/Pods-seafile-appstore.debug.xcconfig"; sourceTree = "<group>"; };
+		BAA7F4F4CA29D6AC00B10471 /* Pods-SeafProviderFileProvider.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SeafProviderFileProvider.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SeafProviderFileProvider/Pods-SeafProviderFileProvider.debug.xcconfig"; sourceTree = "<group>"; };
+		D3B12755B1AF232A60E2F0F4 /* Pods_SeafProviderFileProvider.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SeafProviderFileProvider.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4F46F57187B44B200B80C36 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E7053A9F36FBE323D59BF0D9 /* Pods-seafile-appstore.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-seafile-appstore.release.xcconfig"; path = "Pods/Target Support Files/Pods-seafile-appstore/Pods-seafile-appstore.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -232,7 +232,7 @@
 				571D8CE21677881400F1A22C /* Foundation.framework in Frameworks */,
 				571D8CE31677881400F1A22C /* CoreGraphics.framework in Frameworks */,
 				571D8CE41677881400F1A22C /* CoreData.framework in Frameworks */,
-				FF260978F86F72C8E43CA565 /* Pods_seafile_appstore.framework in Frameworks */,
+				81A093E4710ED9611941AFDD /* Pods_seafile_appstore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -240,7 +240,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				54027810266F099F96E72234 /* Pods_SeafProvider.framework in Frameworks */,
+				94CFB5FD3A646E41C8D46F90 /* Pods_SeafProvider.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -248,7 +248,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A4F0D41E01517CFDF9FE12E3 /* Pods_SeafProviderFileProvider.framework in Frameworks */,
+				810F738117421747A14BFB76 /* Pods_SeafProviderFileProvider.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -256,13 +256,28 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5DBC31661F0C294FC74F856A /* Pods_SeafAction.framework in Frameworks */,
+				0FDFB119506D1550BD51E962 /* Pods_SeafAction.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		16EB348209B8A248255FFE0A /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				1BDBC3F71F5F001A4EEA076F /* Pods-SeafAction.debug.xcconfig */,
+				81DCFD41100BA631840FD70E /* Pods-SeafAction.release.xcconfig */,
+				7E8B8F3EC1FB2446F671E1FD /* Pods-SeafProvider.debug.xcconfig */,
+				52BEB2A93FEFDBF1D2A0A446 /* Pods-SeafProvider.release.xcconfig */,
+				BAA7F4F4CA29D6AC00B10471 /* Pods-SeafProviderFileProvider.debug.xcconfig */,
+				8B45850D32B59CBAE13E4E15 /* Pods-SeafProviderFileProvider.release.xcconfig */,
+				A76462E752454430E3112C61 /* Pods-seafile-appstore.debug.xcconfig */,
+				E7053A9F36FBE323D59BF0D9 /* Pods-seafile-appstore.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		5704C6CF1753A07E0028F4FE /* thirdpart */ = {
 			isa = PBXGroup;
 			children = (
@@ -365,7 +380,7 @@
 				57DB827915A833FA00097CEC /* seafile */,
 				57A029601A16F8AC009C9D7B /* SeafProvider */,
 				57A0296E1A16F8AD009C9D7B /* SeafProviderFileProvider */,
-				AE44785A448058FD1D2A64F9 /* Pods */,
+				16EB348209B8A248255FFE0A /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -398,10 +413,10 @@
 				5725186117AE7D000078CD12 /* Security.framework */,
 				57335CF8160DA00000018AE8 /* SystemConfiguration.framework */,
 				57DB827115A833FA00097CEC /* UIKit.framework */,
-				509E4A1BC95D10FFD17762E9 /* Pods_SeafAction.framework */,
-				56FD99DB25456180D2025389 /* Pods_SeafProvider.framework */,
-				BB94332D80A1EB7A9EF58964 /* Pods_SeafProviderFileProvider.framework */,
-				0E8D568C23882F692EC5A871 /* Pods_seafile_appstore.framework */,
+				4ACD3447FE5E0640E429047C /* Pods_SeafAction.framework */,
+				4C677FE666B0F9A2D590D760 /* Pods_SeafProvider.framework */,
+				D3B12755B1AF232A60E2F0F4 /* Pods_SeafProviderFileProvider.framework */,
+				6B180032AFF762FA052F88BD /* Pods_seafile_appstore.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -466,21 +481,6 @@
 			name = ui;
 			sourceTree = "<group>";
 		};
-		AE44785A448058FD1D2A64F9 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				006C6ACA1508C099E405C7CD /* Pods-SeafAction.debug.xcconfig */,
-				73B0C64609EFAB37F69E06D7 /* Pods-SeafAction.release.xcconfig */,
-				CB47AC9608C6180503D508C4 /* Pods-SeafProvider.debug.xcconfig */,
-				009044694A9211AA47F1EF8F /* Pods-SeafProvider.release.xcconfig */,
-				2ACB4718F3EFBA2F0492D5D5 /* Pods-SeafProviderFileProvider.debug.xcconfig */,
-				8836AC1D19165F5CD5103F6D /* Pods-SeafProviderFileProvider.release.xcconfig */,
-				D49307F8D7ED338F5FBB6FF2 /* Pods-seafile-appstore.debug.xcconfig */,
-				13A0007FB5DF2F8394F711C6 /* Pods-seafile-appstore.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -488,13 +488,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 571D8DB71677881400F1A22C /* Build configuration list for PBXNativeTarget "seafile-appstore" */;
 			buildPhases = (
-				32124561E080EF4835F7BE2E /* [CP] Check Pods Manifest.lock */,
+				D1313DED94C84DC1B7EC6BB2 /* [CP] Check Pods Manifest.lock */,
 				571D8CAA1677881400F1A22C /* Sources */,
 				571D8CDC1677881400F1A22C /* Frameworks */,
 				571D8CE51677881400F1A22C /* Resources */,
 				57E228E51A0F4EE700C92330 /* Embed App Extensions */,
-				C48A9C25024159741DDDD8CD /* [CP] Embed Pods Frameworks */,
-				B50E8EBD84D3D9F9314EC923 /* [CP] Copy Pods Resources */,
+				1F75F090A18D9ABEEFE2E88B /* [CP] Embed Pods Frameworks */,
+				F236EE56087E9FD45F9B71A2 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 				57E22B341A126D6A00C92330 /* PBXBuildRule */,
@@ -513,12 +513,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 57A0297E1A16F8AD009C9D7B /* Build configuration list for PBXNativeTarget "SeafProvider" */;
 			buildPhases = (
-				61CB181D573203D9E81C10A3 /* [CP] Check Pods Manifest.lock */,
+				7ECF7E879787EC2E419BCCDA /* [CP] Check Pods Manifest.lock */,
 				57A0295B1A16F8AC009C9D7B /* Sources */,
 				57A0295C1A16F8AC009C9D7B /* Frameworks */,
 				57A0295D1A16F8AC009C9D7B /* Resources */,
 				571617B61BE2695A00792316 /* ShellScript */,
-				6878081526A69B2CC2656E9D /* [CP] Copy Pods Resources */,
+				CC0459C0E7898A7256AC60F6 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -533,12 +533,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 57A0297B1A16F8AD009C9D7B /* Build configuration list for PBXNativeTarget "SeafProviderFileProvider" */;
 			buildPhases = (
-				470503F194C4F685AB58AECA /* [CP] Check Pods Manifest.lock */,
+				29FCE177FCAD2CDEAE1201BA /* [CP] Check Pods Manifest.lock */,
 				57A029691A16F8AD009C9D7B /* Sources */,
 				57A0296A1A16F8AD009C9D7B /* Frameworks */,
 				57A0296B1A16F8AD009C9D7B /* Resources */,
 				571617B71BE2696800792316 /* ShellScript */,
-				54EC8F1960E6C7200C94D916 /* [CP] Copy Pods Resources */,
+				F62D41B5DF1B8FC1F15235C3 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -553,12 +553,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 57B14B781DF5325B0045112E /* Build configuration list for PBXNativeTarget "SeafAction" */;
 			buildPhases = (
-				15B34E6A19F2D4C82298CF11 /* [CP] Check Pods Manifest.lock */,
+				4395CF2AA687FC03A34BF3C1 /* [CP] Check Pods Manifest.lock */,
 				57B14B661DF5325A0045112E /* Sources */,
 				57B14B671DF5325A0045112E /* Frameworks */,
 				57B14B681DF5325A0045112E /* Resources */,
 				57A81C031E01138A0084AF99 /* ShellScript */,
-				B2598B04682D6468AE1D67D8 /* [CP] Copy Pods Resources */,
+				2751675686D0E0D96E3511C1 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -718,52 +718,22 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		15B34E6A19F2D4C82298CF11 /* [CP] Check Pods Manifest.lock */ = {
+		1F75F090A18D9ABEEFE2E88B /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "[CP] Check Pods Manifest.lock";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-seafile-appstore/Pods-seafile-appstore-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		32124561E080EF4835F7BE2E /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		470503F194C4F685AB58AECA /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		54EC8F1960E6C7200C94D916 /* [CP] Copy Pods Resources */ = {
+		2751675686D0E0D96E3511C1 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -775,7 +745,37 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SeafProviderFileProvider/Pods-SeafProviderFileProvider-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SeafAction/Pods-SeafAction-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		29FCE177FCAD2CDEAE1201BA /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		4395CF2AA687FC03A34BF3C1 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		571617B61BE2695A00792316 /* ShellScript */ = {
@@ -817,7 +817,7 @@
 			shellPath = /bin/sh;
 			shellScript = "cd \"${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"\nif [[ -d \"Frameworks\" ]]; then\nrm -fr Frameworks\nfi";
 		};
-		61CB181D573203D9E81C10A3 /* [CP] Check Pods Manifest.lock */ = {
+		7ECF7E879787EC2E419BCCDA /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -832,7 +832,7 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		6878081526A69B2CC2656E9D /* [CP] Copy Pods Resources */ = {
+		CC0459C0E7898A7256AC60F6 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -847,22 +847,22 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SeafProvider/Pods-SeafProvider-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		B2598B04682D6468AE1D67D8 /* [CP] Copy Pods Resources */ = {
+		D1313DED94C84DC1B7EC6BB2 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "[CP] Copy Pods Resources";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SeafAction/Pods-SeafAction-resources.sh\"\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		B50E8EBD84D3D9F9314EC923 /* [CP] Copy Pods Resources */ = {
+		F236EE56087E9FD45F9B71A2 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -877,19 +877,19 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-seafile-appstore/Pods-seafile-appstore-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		C48A9C25024159741DDDD8CD /* [CP] Embed Pods Frameworks */ = {
+		F62D41B5DF1B8FC1F15235C3 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "[CP] Embed Pods Frameworks";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-seafile-appstore/Pods-seafile-appstore-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SeafProviderFileProvider/Pods-SeafProviderFileProvider-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -1015,7 +1015,7 @@
 /* Begin XCBuildConfiguration section */
 		571D8DB81677881400F1A22C /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D49307F8D7ED338F5FBB6FF2 /* Pods-seafile-appstore.debug.xcconfig */;
+			baseConfigurationReference = A76462E752454430E3112C61 /* Pods-seafile-appstore.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1047,7 +1047,7 @@
 		};
 		571D8DB91677881400F1A22C /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 13A0007FB5DF2F8394F711C6 /* Pods-seafile-appstore.release.xcconfig */;
+			baseConfigurationReference = E7053A9F36FBE323D59BF0D9 /* Pods-seafile-appstore.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1079,7 +1079,7 @@
 		};
 		57A0297C1A16F8AD009C9D7B /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2ACB4718F3EFBA2F0492D5D5 /* Pods-SeafProviderFileProvider.debug.xcconfig */;
+			baseConfigurationReference = BAA7F4F4CA29D6AC00B10471 /* Pods-SeafProviderFileProvider.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1116,7 +1116,7 @@
 		};
 		57A0297D1A16F8AD009C9D7B /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8836AC1D19165F5CD5103F6D /* Pods-SeafProviderFileProvider.release.xcconfig */;
+			baseConfigurationReference = 8B45850D32B59CBAE13E4E15 /* Pods-SeafProviderFileProvider.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1151,7 +1151,7 @@
 		};
 		57A0297F1A16F8AD009C9D7B /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CB47AC9608C6180503D508C4 /* Pods-SeafProvider.debug.xcconfig */;
+			baseConfigurationReference = 7E8B8F3EC1FB2446F671E1FD /* Pods-SeafProvider.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1190,7 +1190,7 @@
 		};
 		57A029801A16F8AD009C9D7B /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 009044694A9211AA47F1EF8F /* Pods-SeafProvider.release.xcconfig */;
+			baseConfigurationReference = 52BEB2A93FEFDBF1D2A0A446 /* Pods-SeafProvider.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1224,7 +1224,7 @@
 		};
 		57B14B761DF5325B0045112E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 006C6ACA1508C099E405C7CD /* Pods-SeafAction.debug.xcconfig */;
+			baseConfigurationReference = 1BDBC3F71F5F001A4EEA076F /* Pods-SeafAction.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = ExtActionIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -1260,7 +1260,7 @@
 		};
 		57B14B771DF5325B0045112E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 73B0C64609EFAB37F69E06D7 /* Pods-SeafAction.release.xcconfig */;
+			baseConfigurationReference = 81DCFD41100BA631840FD70E /* Pods-SeafAction.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = ExtActionIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;

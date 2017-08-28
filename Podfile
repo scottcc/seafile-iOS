@@ -9,13 +9,11 @@ def shared
 end
 
 target :"seafile-appstore" do
-  pod 'SVPullToRefresh', :git => 'https://github.com/lilthree/SVPullToRefresh.git', :branch => 'master'
+  pod 'SVPullToRefreshPlus', '0.4.4.1'
   pod 'SVProgressHUD', '~> 1.1.3'
   pod 'SWTableViewCell', :git => 'https://github.com/haiwen/SWTableViewCell.git', :branch => 'master'
-  pod 'MWPhotoBrowser', :git => 'https://github.com/haiwen/MWPhotoBrowser.git', :branch => 'master'
-#  pod 'MWPhotoBrowserPlus', '2.1.6'
+  pod 'MWPhotoBrowserPlus', :git => 'https://github.com/scottcc/MWPhotoBrowserPlus.git', :branch => 'master'
   pod 'QBImagePickerController', :git => 'https://github.com/haiwen/QBImagePickerController.git', :branch => 'master'
-#  pod 'QBImagePickerControllerPlus', :git => 'https://github.com/scottcc/QBImagePickerControllerPlus.git', :branch => 'master'
   shared
 end
 
@@ -29,7 +27,7 @@ target :"SeafProviderFileProvider" do
 end
 
 target :"SeafAction" do
-  pod 'SVPullToRefresh', :git => 'https://github.com/lilthree/SVPullToRefresh.git', :branch => 'master'
+  pod 'SVPullToRefreshPlus', '0.4.4.1'
   shared
 end
 
@@ -60,7 +58,7 @@ post_install do |installer|
             if target.name == "SVProgressHUD"
                 config.build_settings['APPLICATION_EXTENSION_API_ONLY'] = 'NO'
             end
-            if target.name == "MWPhotoBrowser"
+            if target.name == "MWPhotoBrowserPlus"
                 config.build_settings['APPLICATION_EXTENSION_API_ONLY'] = 'NO'
             end
         end

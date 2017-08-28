@@ -7,7 +7,7 @@
 //
 #import <MessageUI/MessageUI.h>
 
-@import MWPhotoBrowser;
+@import MWPhotoBrowserPlus;
 #import "SVProgressHUD.h"
 
 #import "SeafDetailViewController.h"
