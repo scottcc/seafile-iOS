@@ -33,6 +33,11 @@
 
 
 + (SeafGlobal *)sharedObject;
+/// @note   If not called, `group.com.seafile.seafilePro` is used
++ (void)setGroupName:(NSString *)groupName;
++ (NSString *)appId;
+/// @note   If not called, `com.seafile.seafilePro` is used
++ (void)setAppId:(NSString *)appId;
 
 /**
  * @note    This will perform its execution on a background (non main) queue.
