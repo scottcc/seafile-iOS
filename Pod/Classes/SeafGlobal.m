@@ -42,16 +42,8 @@ static NSError * NewNSErrorFromException(NSException * exc) {
 
 @implementation SeafGlobal
 
-static SeafGlobal * sharedInstance;
 static NSString *groupName = @"group.com.seafile.seafilePro";
 static NSString *appName = @"com.seafile.seafilePro";
-
-+ (void)initialize
-{
-    if (self == [SeafGlobal class]) {
-        sharedInstance = [[SeafGlobal alloc] init];
-    }
-}
 
 + (void)setGroupName:(NSString *)group
 {
@@ -152,7 +144,11 @@ static NSString *appName = @"com.seafile.seafilePro";
 
 + (SeafGlobal *)sharedObject
 {
-    return sharedInstance;
+    static SeafGlobal *object = nil;
+    if (!object) {
+        object = [[SeafGlobal alloc] init];
+    }
+    return object;
 }
 
 - (NSString *)fileProviderStorageDir
