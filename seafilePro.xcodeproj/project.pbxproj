@@ -50,10 +50,6 @@
 		57F0AAFE16D8935800364D18 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57F0AAFC16D8913600364D18 /* AssetsLibrary.framework */; };
 		57F143931B886B96009C1BC8 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57F143921B886B96009C1BC8 /* CoreLocation.framework */; };
 		583F23C21E3E6EAC00F9FE07 /* Contacts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 583F23C11E3E6EAC00F9FE07 /* Contacts.framework */; };
-		58D40A6E1E9AF7A400A68BEF /* seafile.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 58D40A6C1E9AF7A400A68BEF /* seafile.xcdatamodeld */; };
-		58D40A791E9AF84400A68BEF /* seafile.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 58D40A6C1E9AF7A400A68BEF /* seafile.xcdatamodeld */; };
-		58D40A7A1E9AF84C00A68BEF /* seafile.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 58D40A6C1E9AF7A400A68BEF /* seafile.xcdatamodeld */; };
-		58D40A7B1E9AF85100A68BEF /* seafile.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 58D40A6C1E9AF7A400A68BEF /* seafile.xcdatamodeld */; };
 		627A245F1F54879C00DB5D6A /* SeafActivityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 627A245E1F54879C00DB5D6A /* SeafActivityViewController.m */; };
 		627A24621F54A63B00DB5D6A /* SeafShibbolethViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 627A24611F54A63B00DB5D6A /* SeafShibbolethViewController.m */; };
 		627A24651F54A6DD00DB5D6A /* SeafSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 627A24641F54A6DD00DB5D6A /* SeafSettingsViewController.m */; };
@@ -191,7 +187,6 @@
 		57F0AAFC16D8913600364D18 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		57F143921B886B96009C1BC8 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		583F23C11E3E6EAC00F9FE07 /* Contacts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Contacts.framework; path = System/Library/Frameworks/Contacts.framework; sourceTree = SDKROOT; };
-		58D40A6D1E9AF7A400A68BEF /* seafile.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = seafile.xcdatamodel; sourceTree = "<group>"; };
 		627A245D1F54879C00DB5D6A /* SeafActivityViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SeafActivityViewController.h; sourceTree = "<group>"; };
 		627A245E1F54879C00DB5D6A /* SeafActivityViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SeafActivityViewController.m; sourceTree = "<group>"; };
 		627A24601F54A63B00DB5D6A /* SeafShibbolethViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SeafShibbolethViewController.h; sourceTree = "<group>"; };
@@ -468,7 +463,6 @@
 		58D40A5F1E9AF70D00A68BEF /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				58D40A6C1E9AF7A400A68BEF /* seafile.xcdatamodeld */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -905,7 +899,6 @@
 				627A24621F54A63B00DB5D6A /* SeafShibbolethViewController.m in Sources */,
 				627A24651F54A6DD00DB5D6A /* SeafSettingsViewController.m in Sources */,
 				627AB71D1F5485A40064762C /* SeafAccountViewController.m in Sources */,
-				58D40A6E1E9AF7A400A68BEF /* seafile.xcdatamodeld in Sources */,
 				627A245F1F54879C00DB5D6A /* SeafActivityViewController.m in Sources */,
 				5704C6D31753A1380028F4FE /* IntelligentSplitViewController.m in Sources */,
 			);
@@ -915,7 +908,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				58D40A791E9AF84400A68BEF /* seafile.xcdatamodeld in Sources */,
 				57A029A41A170147009C9D7B /* SeafProviderFileViewController.m in Sources */,
 				57A029861A16F91F009C9D7B /* DocumentPickerViewController.m in Sources */,
 			);
@@ -925,7 +917,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				58D40A7A1E9AF84C00A68BEF /* seafile.xcdatamodeld in Sources */,
 				57A0298E1A16F935009C9D7B /* FileProvider.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -934,7 +925,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				58D40A7B1E9AF85100A68BEF /* seafile.xcdatamodeld in Sources */,
 				574D3DC81DFA88CF0093C18C /* SeafActionDirViewController.m in Sources */,
 				57B14B6E1DF5325B0045112E /* ActionViewController.m in Sources */,
 			);
@@ -1432,20 +1422,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCVersionGroup section */
-		58D40A6C1E9AF7A400A68BEF /* seafile.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				58D40A6D1E9AF7A400A68BEF /* seafile.xcdatamodel */,
-			);
-			currentVersion = 58D40A6D1E9AF7A400A68BEF /* seafile.xcdatamodel */;
-			name = seafile.xcdatamodeld;
-			path = common/Resources/seafile.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = 57DB826415A833F900097CEC /* Project object */;
 }
