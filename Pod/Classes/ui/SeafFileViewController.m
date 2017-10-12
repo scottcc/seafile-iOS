@@ -180,9 +180,8 @@ static SeafDetailViewControllerResolver detailViewControllerResolver = ^SeafDeta
 
     self.formatter = [[NSDateFormatter alloc] init];
     [self.formatter setDateFormat:@"yyyy-MM-dd HH.mm.ss"];
-    // SCC_CONFIRM: Do we still not set automatic, and leave at 50 instead of 55?
-    // self.tableView.rowHeight = UITableViewAutomaticDimension;
-    self.tableView.estimatedRowHeight = 50.0;
+    self.tableView.rowHeight = UITableViewAutomaticDimension;
+    self.tableView.estimatedRowHeight = 55.0;
     self.state = STATE_INIT;
 
     self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectZero];
