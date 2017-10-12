@@ -13,7 +13,7 @@ target :"seafile-appstore" do
   pod 'SVProgressHUD', '~> 1.1.3'
   pod 'SWTableViewCell', :git => 'https://github.com/haiwen/SWTableViewCell.git', :branch => 'master'
   pod 'MWPhotoBrowserPlus', :git => 'https://github.com/scottcc/MWPhotoBrowserPlus.git', :branch => 'master'
-  pod 'QBImagePickerController', :git => 'https://github.com/scottcc/QBImagePickerController.git', :branch => 'master'
+  pod 'QBImagePickerControllerPlus', '~> 2.2'
   shared
 end
 
