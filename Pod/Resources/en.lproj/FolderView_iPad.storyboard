@@ -742,7 +742,9 @@
                         </connections>
                     </tableView>
                     <tabBarItem key="tabBarItem" title="" id="39k-6q-dJ1"/>
-                    <navigationItem key="navigationItem" id="40"/>
+                    <navigationItem key="navigationItem" id="40">
+                        <barButtonItem key="backBarButtonItem" title=" " id="P9H-Wz-6zu"/>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="23" sceneMemberID="firstResponder"/>
             </objects>
