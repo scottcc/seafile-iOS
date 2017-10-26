@@ -88,7 +88,9 @@
                         </connections>
                     </tableView>
                     <tabBarItem key="tabBarItem" title="" id="bX7-Zj-bqY"/>
-                    <navigationItem key="navigationItem" id="jmS-LH-3qj"/>
+                    <navigationItem key="navigationItem" id="jmS-LH-3qj">
+                        <barButtonItem key="backBarButtonItem" title=" " id="cy3-XU-hfa"/>
+                    </navigationItem>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5tQ-Ax-AdV" sceneMemberID="firstResponder"/>
