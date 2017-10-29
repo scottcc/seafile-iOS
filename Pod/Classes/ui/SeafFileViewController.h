@@ -69,6 +69,7 @@ typedef SeafDetailViewController *(^SeafDetailViewControllerResolver)(void);
 + (void)setSeafDetailViewControllerResolver:(SeafDetailViewControllerResolver)resolver;
 /// If set, these will be compared to the macros, ie pass in @[@"S_STAR", @"S_DOWNLOAD"] etc.
 + (void)setSheetSkippedItems:(NSArray <NSString *> *)skippedItems;
++ (NSArray <NSString *> *)sheetSkippedItems;
 
 - (void)refreshView;
 - (void)uploadFile:(SeafUploadFile *)file;

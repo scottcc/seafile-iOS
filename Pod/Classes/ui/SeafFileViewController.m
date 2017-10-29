@@ -110,6 +110,11 @@ static NSMutableArray <NSString *> *sheetSkippedItems;
         sheetSkippedItems = [NSMutableArray new];
     }
 }
+
++ (NSArray <NSString *> *)sheetSkippedItems
+{
+    return [sheetSkippedItems copy];
+}
 + (void)setSheetSkippedItems:(NSArray <NSString *> *)skippedItems
 {
     [sheetSkippedItems removeAllObjects];

@@ -107,13 +107,15 @@ static BOOL prefersQuickLookModal = NO;
          [self.navigationItem setLeftBarButtonItem:self.backItem animated:NO];
     self.title = self.preViewItem.previewItemTitle;
     NSMutableArray *array = [[NSMutableArray alloc] init];
+    
     if ([self.preViewItem isKindOfClass:[SeafFile class]]) {
-        SeafFile *sfile = (SeafFile *)self.preViewItem;
-        if ([sfile isStarred])
-            [array addObjectsFromArray:self.barItemsStar];
-        else
-            [array addObjectsFromArray:self.barItemsUnStar];
-
+        if (![[SeafFileViewController sheetSkippedItems] containsObject:@"S_STAR"]) {
+            SeafFile *sfile = (SeafFile *)self.preViewItem;
+            if ([sfile isStarred])
+                [array addObjectsFromArray:self.barItemsStar];
+            else
+                [array addObjectsFromArray:self.barItemsUnStar];
+        }
         [self.exportItem setEnabled:([self.preViewItem exportURL] != nil)];
     }
     if ([self.preViewItem editable] && [self previewSuccess])
