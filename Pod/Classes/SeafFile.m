@@ -11,6 +11,7 @@
 #import "SeafThumb.h"
 #import "SeafDataTaskManager.h"
 #import "SeafStorage.h"
+#import "SeafDetailViewController.h"
 
 #import "FileMimeType.h"
 #import "ExtentedString.h"
@@ -659,7 +660,8 @@ typedef void (^SeafThumbCompleteBlock)(BOOL ret);
 {
     return ([[connection getRepo:self.repoId] editable] &&
             _editable &&
-            [self.mime hasPrefix:@"text/"]);
+            ([self.mime hasPrefix:@"text/"] ||
+             ([self.mime hasPrefix:@"image/"] && [SeafDetailViewController editImageBlock] != nil)));
 }
 
 - (UIImage *)image

@@ -36,6 +36,7 @@ enum SHARE_STATUS {
 #define SHARE_TITLE NSLocalizedString(@"How would you like to share this file?", @"Seafile")
 
 static BOOL prefersQuickLookModal = NO;
+static UIViewController *(^editImageBlock)(UIImage *) = nil;
 
 @interface SeafDetailViewController ()<UIWebViewDelegate, UIPrintInteractionControllerDelegate, MFMailComposeViewControllerDelegate, MWPhotoBrowserDelegate>
 @property (strong, nonatomic) UIPopoverController *masterPopoverController;
@@ -69,6 +70,14 @@ static BOOL prefersQuickLookModal = NO;
 + (void)setPrefersQuickLookModal:(BOOL)prefersModal
 {
     prefersQuickLookModal = prefersModal;
+}
++ (UIViewController * (^)(UIImage *))editImageBlock
+{
+    return editImageBlock;
+}
++ (void)setEditImageBlock:(UIViewController * (^)(UIImage *))block
+{
+    editImageBlock = [block copy];
 }
 
 - (id)initWithCoder:(NSCoder *)decoder
@@ -520,8 +529,17 @@ static BOOL prefersQuickLookModal = NO;
         [self alertWithTitle:[NSString stringWithFormat:NSLocalizedString(@"Failed to identify the coding of '%@'", @"Seafile"), self.preViewItem.name]];
         return;
     }
-    SeafTextEditorViewController *editViewController = [[SeafTextEditorViewController alloc] initWithFile:self.preViewItem];
-    editViewController.detailViewController = self;
+    // Check if we're editing an image, as otherwise below this it's all text
+    UIViewController *editViewController = nil;
+    UIViewController *(^editImageBlock)(UIImage *) = [SeafDetailViewController editImageBlock];
+    if (self.preViewItem.isImageFile && editImageBlock) {
+        editViewController = editImageBlock(self.preViewItem.image);
+    }
+    else {
+        SeafTextEditorViewController *textEditorViewController = [[SeafTextEditorViewController alloc] initWithFile:self.preViewItem];
+        textEditorViewController.detailViewController = self;
+        editViewController = textEditorViewController;
+    }
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editViewController];
     [navController setModalPresentationStyle:UIModalPresentationFullScreen];
     [self presentViewController:navController animated:YES completion:nil];

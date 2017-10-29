@@ -30,6 +30,9 @@ enum PREVIEW_STATE {
 
 + (void)setPrefersQuickLookModal:(BOOL)prefersQuickLookModal;
 
++ (UIViewController * (^)(UIImage *))editImageBlock;
++ (void)setEditImageBlock:(UIViewController * (^)(UIImage *))editImageBlock;
+
 - (void)refreshView;
 - (void)setPreViewItem:(id<SeafPreView>)item master:(UIViewController<SeafDentryDelegate> *)c;
 
