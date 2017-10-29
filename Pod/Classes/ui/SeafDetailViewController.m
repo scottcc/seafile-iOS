@@ -109,13 +109,11 @@ static BOOL prefersQuickLookModal = NO;
     NSMutableArray *array = [[NSMutableArray alloc] init];
     
     if ([self.preViewItem isKindOfClass:[SeafFile class]]) {
-        if (![[SeafFileViewController sheetSkippedItems] containsObject:@"S_STAR"]) {
-            SeafFile *sfile = (SeafFile *)self.preViewItem;
-            if ([sfile isStarred])
-                [array addObjectsFromArray:self.barItemsStar];
-            else
-                [array addObjectsFromArray:self.barItemsUnStar];
-        }
+        SeafFile *sfile = (SeafFile *)self.preViewItem;
+        if ([sfile isStarred])
+            [array addObjectsFromArray:self.barItemsStar];
+        else
+            [array addObjectsFromArray:self.barItemsUnStar];
         [self.exportItem setEnabled:([self.preViewItem exportURL] != nil)];
     }
     if ([self.preViewItem editable] && [self previewSuccess])
@@ -305,8 +303,16 @@ static BOOL prefersQuickLookModal = NO;
     UIBarButtonItem *starItem = [self getBarItem:@"star".navItemImgName action:@selector(unstarFile:)size:24];
     UIBarButtonItem *unstarItem = [self getBarItem:@"unstar".navItemImgName action:@selector(starFile:)size:24];
     UIBarButtonItem *space = [self getSpaceBarItem];
-    self.barItemsStar  = [NSArray arrayWithObjects:self.exportItem, space, self.shareItem, space, starItem, space, nil];
-    self.barItemsUnStar  = [NSArray arrayWithObjects:self.exportItem, space, self.shareItem, space, unstarItem, space, nil];
+    NSMutableArray *barItemsStar = [NSMutableArray arrayWithObjects:self.exportItem, space, self.shareItem, space, nil];
+    NSMutableArray *barItemsUnStar = [NSMutableArray arrayWithObjects:self.exportItem, space, self.shareItem, space, nil];
+    
+    if (![[SeafFileViewController sheetSkippedItems] containsObject:@"S_STAR"]) {
+        [barItemsStar addObjectsFromArray:@[starItem, space]];
+        [barItemsUnStar addObjectsFromArray:@[unstarItem, space]];
+    }
+    
+    self.barItemsStar  = [barItemsStar copy];
+    self.barItemsUnStar  = [barItemsUnStar copy];
 
     if(IsIpad()) {
         NSArray *views = [SeafileBundle() loadNibNamed:@"FailToPreview_iPad" owner:self options:nil];
