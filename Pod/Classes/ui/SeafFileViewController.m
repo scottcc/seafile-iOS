@@ -952,6 +952,13 @@ static NSMutableArray <NSString *> *sheetSkippedItems;
             [self alertWithTitle:NSLocalizedString(@"File name invalid", @"Seafile")];
             return;
         }
+        NSString *priorExtension = newName.pathExtension;
+        // SCC: Ensure the same file extension is used! Otherwise you can rename foo.jpg to bar
+        //      and it will no longer display quite right, loses preview, etc.
+        if (priorExtension.length > 0 && ![priorExtension isEqualToString:input.pathExtension]) {
+            input = [input stringByAppendingPathExtension:priorExtension];
+        }
+        
         [_directory renameFile:(SeafFile *)_curEntry newName:input];
         [SVProgressHUD showWithStatus:NSLocalizedString(@"Renaming file ...", @"Seafile")];
     }];
