@@ -597,9 +597,13 @@ static NSMutableArray <NSString *> *sheetSkippedItems;
 }
 
 #pragma mark - Sheet
-- (void)showActionSheetWithIndexPath:(NSIndexPath *)indexPath
+- (BOOL)shouldShowActionSheetWithIndexPath:(NSIndexPath *)indexPath
 {
-    _selectedindex = indexPath;
+    return [self sheetTitlesForIndexPath:indexPath].count > 0;
+}
+
+- (NSArray <NSString *> *)sheetTitlesForIndexPath:(NSIndexPath *)indexPath
+{
     id entry = [self getDentrybyIndexPath:indexPath tableView:self.tableView];
     SeafCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
     NSArray *titles;
@@ -651,7 +655,14 @@ static NSMutableArray <NSString *> *sheetSkippedItems;
         }
         titles = [modTitles copy];
     }
+    return titles;
+}
 
+- (void)showActionSheetWithIndexPath:(NSIndexPath *)indexPath
+{
+    _selectedindex = indexPath;
+    SeafCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    NSArray *titles = [self sheetTitlesForIndexPath:indexPath];
     [self showSheetWithTitles:titles andFromView:cell];
 }
 
@@ -774,6 +785,9 @@ static NSMutableArray <NSString *> *sheetSkippedItems;
     [sfile loadCache];
     SeafCell *cell = [self getCellForTableView:tableView];
     cell.cellIndexPath = indexPath;
+    // Do we hide the more ... button in the cell? We only show it if there is
+    // at least one action you could perform.
+    cell.moreButton.hidden = ![self shouldShowActionSheetWithIndexPath:indexPath];
     cell.moreButtonBlock = ^(NSIndexPath *indexPath) {
         Debug(@"%@", indexPath);
         [self showActionSheetWithIndexPath:indexPath];
@@ -795,6 +809,7 @@ static NSMutableArray <NSString *> *sheetSkippedItems;
     cell.detailTextLabel.text = @"";
     cell.imageView.image = sdir.icon;
     cell.cellIndexPath = indexPath;
+    cell.moreButton.hidden = ![self shouldShowActionSheetWithIndexPath:indexPath];
     cell.moreButtonBlock = ^(NSIndexPath *indexPath) {
         Debug(@"%@", indexPath);
         [self showActionSheetWithIndexPath:indexPath];
@@ -811,6 +826,7 @@ static NSMutableArray <NSString *> *sheetSkippedItems;
     cell.textLabel.text = srepo.name;
     [cell.cacheStatusWidthConstraint setConstant:0.0f];
     cell.cellIndexPath = indexPath;
+    cell.moreButton.hidden = ![self shouldShowActionSheetWithIndexPath:indexPath];
     cell.moreButtonBlock = ^(NSIndexPath *indexPath) {
         Debug(@"%@", indexPath);
         [self showActionSheetWithIndexPath:indexPath];
