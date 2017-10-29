@@ -596,19 +596,28 @@ static SeafDetailViewControllerResolver detailViewControllerResolver = ^SeafDeta
             titles = [NSArray arrayWithObjects:S_DOWNLOAD, nil];
         }
     } else if ([entry isKindOfClass:[SeafDir class]]) {
-        titles = [NSArray arrayWithObjects:S_DOWNLOAD, S_DELETE, S_RENAME, S_SHARE_EMAIL, S_SHARE_LINK, nil];
+        NSMutableArray *modTitles = [@[S_DOWNLOAD, S_DELETE, S_RENAME, S_SHARE_EMAIL, S_SHARE_LINK] mutableCopy];
+        if (!((SeafDir *)entry).editable) {
+            [modTitles removeObjectsInArray:@[S_DELETE, S_RENAME]]; // no mods for you!
+        }
+        titles = [modTitles copy];
     } else if ([entry isKindOfClass:[SeafFile class]]) {
         SeafFile *file = (SeafFile *)entry;
         NSString *star = file.isStarred ? S_UNSTAR : S_STAR;
+        NSMutableArray *modTitles = [NSMutableArray new];
         if (file.mpath)
-            titles = [NSArray arrayWithObjects:star, S_DELETE, S_UPLOAD, S_SHARE_EMAIL, S_SHARE_LINK, nil];
+            [modTitles addObjectsFromArray:@[star, S_DELETE, S_UPLOAD, S_SHARE_EMAIL, S_SHARE_LINK]];
         else
-            titles = [NSArray arrayWithObjects:star, S_DELETE, S_REDOWNLOAD, S_RENAME, S_SHARE_EMAIL, S_SHARE_LINK, nil];
-        
+            [modTitles addObjectsFromArray:@[star, S_DELETE, S_REDOWNLOAD, S_RENAME, S_SHARE_EMAIL, S_SHARE_LINK]];
+        if (!file.editable) {
+            [modTitles removeObjectsInArray:@[S_DELETE, S_RENAME]]; // no mods for you!
+        }
+        titles = [modTitles copy];
     } else if ([entry isKindOfClass:[SeafUploadFile class]]) {
+        // SCC_CONFIRM: Do we need to remove S_DELETE if not editable?
         titles = [NSArray arrayWithObjects:S_DOWNLOAD, S_DELETE, S_RENAME, S_SHARE_EMAIL, S_SHARE_LINK, nil];
     }
-    
+
     [self showSheetWithTitles:titles andFromView:cell];
 }
 
@@ -810,6 +819,11 @@ static SeafDetailViewControllerResolver detailViewControllerResolver = ^SeafDeta
 {
     if (tableView != self.tableView) return NO;
     NSObject *entry  = [self getDentrybyIndexPath:indexPath tableView:tableView];
+    // This is the binnj "editable override" flag check.
+    if (([entry isKindOfClass:[SeafDir class]] && !((SeafDir *)entry).editable) ||
+        ([entry isKindOfClass:[SeafFile class]] && !((SeafFile *)entry).editable)) {
+        return NO;
+    }
     return ![entry isKindOfClass:[SeafUploadFile class]];
 }
 
@@ -1298,6 +1312,7 @@ static SeafDetailViewControllerResolver detailViewControllerResolver = ^SeafDeta
 
 - (void)renameFile:(SeafFile *)file
 {
+    if (!file.editable) return;
     _curEntry = file;
     [self popupRenameView:file.name];
 }
