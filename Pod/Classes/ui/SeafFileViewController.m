@@ -102,6 +102,21 @@ enum {
 @synthesize popoverController;
 
 static SeafDetailViewControllerResolver detailViewControllerResolver = ^SeafDetailViewController *{ return nil; };
+static NSMutableArray <NSString *> *sheetSkippedItems;
+
++ (void)initialize
+{
+    if (self == [SeafFileViewController class]) {
+        sheetSkippedItems = [NSMutableArray new];
+    }
+}
++ (void)setSheetSkippedItems:(NSArray <NSString *> *)skippedItems
+{
+    [sheetSkippedItems removeAllObjects];
+    if (skippedItems) {
+        [sheetSkippedItems addObjectsFromArray:skippedItems];
+    }
+}
 
 + (void)setSeafDetailViewControllerResolver:(SeafDetailViewControllerResolver)resolver
 {
@@ -590,32 +605,51 @@ static SeafDetailViewControllerResolver detailViewControllerResolver = ^SeafDeta
     NSArray *titles;
     if ([entry isKindOfClass:[SeafRepo class]]) {
         SeafRepo *repo = (SeafRepo *)entry;
-        if (repo.encrypted) {
-            titles = [NSArray arrayWithObjects:S_DOWNLOAD, S_RESET_PASSWORD, nil];
-        } else {
-            titles = [NSArray arrayWithObjects:S_DOWNLOAD, nil];
+        NSMutableArray *modTitles = [NSMutableArray new];
+        if (![sheetSkippedItems containsObject:@"S_DOWNLOAD"]) {
+            [modTitles addObject:S_DOWNLOAD];
         }
+        if (repo.encrypted) {
+            [modTitles addObject:S_RESET_PASSWORD];
+        }
+        titles = [modTitles copy];
     } else if ([entry isKindOfClass:[SeafDir class]]) {
         NSMutableArray *modTitles = [@[S_DOWNLOAD, S_DELETE, S_RENAME, S_SHARE_EMAIL, S_SHARE_LINK] mutableCopy];
         if (!((SeafDir *)entry).editable) {
             [modTitles removeObjectsInArray:@[S_DELETE, S_RENAME]]; // no mods for you!
         }
+        if ([sheetSkippedItems containsObject:@"S_DOWNLOAD"]) {
+            [modTitles removeObject:S_DOWNLOAD];
+        }
         titles = [modTitles copy];
     } else if ([entry isKindOfClass:[SeafFile class]]) {
         SeafFile *file = (SeafFile *)entry;
-        NSString *star = file.isStarred ? S_UNSTAR : S_STAR;
+        
         NSMutableArray *modTitles = [NSMutableArray new];
+        if (![sheetSkippedItems containsObject:@"S_STAR"]) {
+            NSString *star = file.isStarred ? S_UNSTAR : S_STAR;
+            [modTitles addObject:star];
+        }
+        
         if (file.mpath)
-            [modTitles addObjectsFromArray:@[star, S_DELETE, S_UPLOAD, S_SHARE_EMAIL, S_SHARE_LINK]];
+            [modTitles addObjectsFromArray:@[S_DELETE, S_UPLOAD, S_SHARE_EMAIL, S_SHARE_LINK]];
         else
-            [modTitles addObjectsFromArray:@[star, S_DELETE, S_REDOWNLOAD, S_RENAME, S_SHARE_EMAIL, S_SHARE_LINK]];
+            [modTitles addObjectsFromArray:@[S_DELETE, S_REDOWNLOAD, S_RENAME, S_SHARE_EMAIL, S_SHARE_LINK]];
+        
         if (!file.editable) {
-            [modTitles removeObjectsInArray:@[S_DELETE, S_RENAME]]; // no mods for you!
+            [modTitles removeObjectsInArray:@[S_DELETE, S_RENAME, S_UPLOAD]]; // no mods for you!
+        }
+        if ([sheetSkippedItems containsObject:@"S_REDOWNLOAD"]) {
+            [modTitles removeObject:S_REDOWNLOAD];
         }
         titles = [modTitles copy];
     } else if ([entry isKindOfClass:[SeafUploadFile class]]) {
         // SCC_CONFIRM: Do we need to remove S_DELETE if not editable?
-        titles = [NSArray arrayWithObjects:S_DOWNLOAD, S_DELETE, S_RENAME, S_SHARE_EMAIL, S_SHARE_LINK, nil];
+        NSMutableArray *modTitles = [NSMutableArray arrayWithObjects:S_DOWNLOAD, S_DELETE, S_RENAME, S_SHARE_EMAIL, S_SHARE_LINK, nil];
+        if ([sheetSkippedItems containsObject:@"S_DOWNLOAD"]) {
+            [modTitles removeObject:S_DOWNLOAD];
+        }
+        titles = [modTitles copy];
     }
 
     [self showSheetWithTitles:titles andFromView:cell];
