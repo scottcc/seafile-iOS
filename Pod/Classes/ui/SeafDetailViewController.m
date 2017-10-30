@@ -36,7 +36,7 @@ enum SHARE_STATUS {
 #define SHARE_TITLE NSLocalizedString(@"How would you like to share this file?", @"Seafile")
 
 static BOOL prefersQuickLookModal = NO;
-static UIViewController *(^editImageBlock)(UIImage *) = nil;
+static UIViewController *(^editImageBlock)(SeafFile *, UIImage *) = nil;
 
 @interface SeafDetailViewController ()<UIWebViewDelegate, UIPrintInteractionControllerDelegate, MFMailComposeViewControllerDelegate, MWPhotoBrowserDelegate>
 @property (strong, nonatomic) UIPopoverController *masterPopoverController;
