@@ -71,11 +71,11 @@ static UIViewController *(^editImageBlock)(UIImage *) = nil;
 {
     prefersQuickLookModal = prefersModal;
 }
-+ (UIViewController * (^)(UIImage *))editImageBlock
++ (UIViewController * (^)(SeafFile *, UIImage *))editImageBlock
 {
     return editImageBlock;
 }
-+ (void)setEditImageBlock:(UIViewController * (^)(UIImage *))block
++ (void)setEditImageBlock:(UIViewController * (^)(SeafFile *, UIImage *))block
 {
     editImageBlock = [block copy];
 }
@@ -91,7 +91,11 @@ static UIViewController *(^editImageBlock)(UIImage *) = nil;
 #pragma mark - Managing the detail item
 - (BOOL)previewSuccess
 {
-    return (self.state == PREVIEW_QL_SUBVIEW) || (self.state == PREVIEW_WEBVIEW) || (self.state == PREVIEW_WEBVIEW_JS);
+    // if we have an Edit-image block, then we can ALSO preview a PHOTO..
+    return ((self.state == PREVIEW_QL_SUBVIEW) ||
+            (self.state == PREVIEW_WEBVIEW) ||
+            (self.state == PREVIEW_WEBVIEW_JS) ||
+            (self.state == PREVIEW_PHOTO && [SeafDetailViewController editImageBlock] != nil));
 }
 
 - (BOOL)isPrintable:(SeafFile *)file
@@ -531,9 +535,10 @@ static UIViewController *(^editImageBlock)(UIImage *) = nil;
     }
     // Check if we're editing an image, as otherwise below this it's all text
     UIViewController *editViewController = nil;
-    UIViewController *(^editImageBlock)(UIImage *) = [SeafDetailViewController editImageBlock];
-    if (self.preViewItem.isImageFile && editImageBlock) {
-        editViewController = editImageBlock(self.preViewItem.image);
+    UIViewController *(^editImageBlock)(SeafFile *, UIImage *) = [SeafDetailViewController editImageBlock];
+    if (self.preViewItem.isImageFile && editImageBlock && [self.preViewItem isKindOfClass:[SeafFile class]]) {
+        SeafFile *seafFile = (SeafFile *)self.preViewItem;
+        editViewController = editImageBlock(seafFile, self.preViewItem.image);
     }
     else {
         SeafTextEditorViewController *textEditorViewController = [[SeafTextEditorViewController alloc] initWithFile:self.preViewItem];
