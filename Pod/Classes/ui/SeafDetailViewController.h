@@ -27,6 +27,8 @@ enum PREVIEW_STATE {
 @property (nonatomic) id<SeafPreView> preViewItem;
 @property (nonatomic) UIViewController<SeafDentryDelegate> *masterVc;
 @property (retain) QLPreviewController *qlViewController;
+/// Default is 10 MB, set to <= zero to disable (not recommended!)
+@property (nonatomic) int maxEditFilesizeMB;
 
 + (void)setPrefersQuickLookModal:(BOOL)prefersQuickLookModal;
 

@@ -86,6 +86,7 @@ static UIViewController *(^editImageBlock)(SeafFile *, UIImage *) = nil;
     self.qlViewController = [[QLPreviewController alloc] init];
     self.qlViewController.delegate = self;
     self.qlViewController.dataSource = self;
+    self.maxEditFilesizeMB = 10;
     return self;
 }
 #pragma mark - Managing the detail item
@@ -525,7 +526,8 @@ static UIViewController *(^editImageBlock)(SeafFile *, UIImage *) = nil;
 
 - (IBAction)editFile:(id)sender
 {
-    if (self.preViewItem.filesize > 10 * 1024 * 1024) {
+    if (self.maxEditFilesizeMB > 0 &&
+        self.preViewItem.filesize > self.maxEditFilesizeMB * 1024 * 1024) {
         [self alertWithTitle:[NSString stringWithFormat:NSLocalizedString(@"File '%@' is too large to edit", @"Seafile"), self.preViewItem.name]];
         return;
     }
