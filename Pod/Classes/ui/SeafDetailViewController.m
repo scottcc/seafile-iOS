@@ -274,6 +274,7 @@ static UIViewController *(^editImageBlock)(SeafFile *, UIImage *) = nil;
     SeafPhoto *currentPhoto = self.photos[self.currentPageIndex];
     [currentPhoto refreshImage];
     [self.mwPhotoBrowser reloadData];
+    [self refreshView];
 }
 
 - (void)setPreViewPhotos:(NSArray *)items current:(id<SeafPreView>)item master:(UIViewController<SeafDentryDelegate> *)c
