@@ -265,6 +265,17 @@ static UIViewController *(^editImageBlock)(SeafFile *, UIImage *) = nil;
     [self refreshView];
 }
 
+- (void)refreshCurrentPhotoImage
+{
+    if (self.state != PREVIEW_PHOTO || self.currentPageIndex >= self.photos.count) {
+        Debug("SKIPPING refreshCurrentPhotoImage, not in PREVIEW_PHOTO state (is: %d) %@ or is past the index of %@ (count is %@)", self.state, [self.preViewItem name], @(self.currentPageIndex), @(self.photos.count));
+        return;
+    }
+    SeafPhoto *currentPhoto = self.photos[self.currentPageIndex];
+    [currentPhoto refreshImage];
+    [self.mwPhotoBrowser reloadData];
+}
+
 - (void)setPreViewPhotos:(NSArray *)items current:(id<SeafPreView>)item master:(UIViewController<SeafDentryDelegate> *)c
 {
     [self clearPreView];

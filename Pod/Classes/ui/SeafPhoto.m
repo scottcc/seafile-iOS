@@ -26,6 +26,14 @@
     return self;
 }
 
+- (void)refreshImage
+{
+    @synchronized(_file) {
+        _underlyingImage = nil;
+    }
+    [self loadUnderlyingImageAndNotify];
+}
+
 - (void)loadCache
 {
     @synchronized(_file) {

@@ -14,6 +14,9 @@
 
 - (id)initWithSeafPreviewIem:(id<SeafPreView>)file;
 
+/// If an image has been updated, calling this will allow MWPhotoBrowser to notice the updated one.
+- (void)refreshImage;
+
 - (void)setProgress: (float)progress;
 - (void)complete:(BOOL)updated error:(NSError *)error;
 @end
