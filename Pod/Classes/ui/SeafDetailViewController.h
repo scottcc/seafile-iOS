@@ -36,6 +36,9 @@ enum PREVIEW_STATE {
 + (void)setEditImageBlock:(UIViewController * (^)(SeafFile *, UIImage *))editImageBlock;
 
 - (void)refreshView;
+/// Does nothing if not in PREVIEW_PHOTO state, otherwise reloads the image from cache
+/// and instructs the photo viewer to reload its data.
+- (void)refreshCurrentPhotoImage;
 - (void)setPreViewItem:(id<SeafPreView>)item master:(UIViewController<SeafDentryDelegate> *)c;
 
 - (void)setPreViewPhotos:(NSArray *)items current:(id<SeafPreView>)item master:(UIViewController<SeafDentryDelegate> *)c;
