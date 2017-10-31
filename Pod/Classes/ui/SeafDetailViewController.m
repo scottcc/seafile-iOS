@@ -273,23 +273,8 @@ static UIViewController *(^editImageBlock)(SeafFile *, UIImage *) = nil;
     }
     SeafPhoto *currentPhoto = self.photos[self.currentPageIndex];
     [currentPhoto refreshImage];
-    // Sadly, this is insufficient on it's own.. appears to need a complete teardown/recreate
-//    [self.mwPhotoBrowser reloadData];
-    [self recreateMWPhotoBrowser];
-    [self.view setNeedsLayout];
-    [self refreshView];
-}
-
-- (void)recreateMWPhotoBrowser
-{
-    if (_mwPhotoBrowser && [_mwPhotoBrowser viewIfLoaded]) {
-        [[_mwPhotoBrowser viewIfLoaded] removeFromSuperview];
-    }
-    _mwPhotoBrowser = nil;// force recreate mwPhotoBrowser on next ask of self.mwPhotoBrowser
+    [self.mwPhotoBrowser reloadData];
     [self.mwPhotoBrowser setCurrentPhotoIndex:self.currentPageIndex];
-    [self.view addSubview:self.mwPhotoBrowser.view];
-    self.mwPhotoBrowser.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
-    [self.mwPhotoBrowser viewDidAppear:false];
 }
 
 - (void)setPreViewPhotos:(NSArray *)items current:(id<SeafPreView>)item master:(UIViewController<SeafDentryDelegate> *)c
@@ -308,7 +293,11 @@ static UIViewController *(^editImageBlock)(SeafFile *, UIImage *) = nil;
     Debug("Preview photos PREVIEW_PHOTO: %d, %@ hasCache:%d", self.state, [item name], [item hasCache]);
     self.preViewItem = item;
     self.currentPageIndex = [items indexOfObject:item];
-    [self recreateMWPhotoBrowser];
+    _mwPhotoBrowser = nil;// force recreate mwPhotoBrowser on next ask of self.mwPhotoBrowser
+    [self.mwPhotoBrowser setCurrentPhotoIndex:self.currentPageIndex];
+    [self.view addSubview:self.mwPhotoBrowser.view];
+    self.mwPhotoBrowser.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+    [self.mwPhotoBrowser viewDidAppear:false];
     [self updateNavigation];
     [self.view setNeedsLayout];
 }

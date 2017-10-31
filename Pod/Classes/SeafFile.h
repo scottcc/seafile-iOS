@@ -56,6 +56,9 @@ typedef void (^SeafFileDidDownloadBlock)(SeafFile* _Nonnull file, BOOL result);
 - (void)update:(nullable id<SeafFileUpdateDelegate>)dg;
 - (void)cancelAnyLoading;
 - (BOOL)itemChangedAtURL:(nonnull NSURL *)url;
+// Allow for regeneration from updated images, say - needed if you use `itemChangedAtURL`
+- (void)clearIcon;
+
 - (nonnull NSDictionary *)toDict;
 
 - (nullable NSString *)cachePath;

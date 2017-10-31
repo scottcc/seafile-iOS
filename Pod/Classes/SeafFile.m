@@ -509,6 +509,11 @@ typedef void (^SeafThumbCompleteBlock)(BOOL ret);
     return [super icon];
 }
 
+- (void)clearIcon
+{
+    _icon = nil;
+}
+
 - (void)genThumb
 {
     _icon = [Utils reSizeImage:self.image toSquare:THUMB_SIZE];
@@ -669,7 +674,11 @@ typedef void (^SeafThumbCompleteBlock)(BOOL ret);
     if (!self.ooid)
         return nil;
     NSString *path = [SeafStorage.sharedObject documentPath:self.ooid];
-    NSString *cachePath = [[SeafStorage.sharedObject tempDir] stringByAppendingPathComponent:self.ooid];
+    // Check the mpath first, as we can now modify images too, otherwise fall back on cache
+    NSString *cachePath = (self.mpath && [[NSFileManager new] fileExistsAtPath:self.mpath]
+                           ? self.mpath
+                           : [[SeafStorage.sharedObject tempDir] stringByAppendingPathComponent:self.ooid]);
+    
     return [Utils imageFromPath:path withMaxSize:IMAGE_MAX_SIZE cachePath:cachePath andFileName:self.name];
 }
 
