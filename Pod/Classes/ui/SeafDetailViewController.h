@@ -38,6 +38,7 @@ enum PREVIEW_STATE {
 - (void)refreshView;
 /// Does nothing if not in PREVIEW_PHOTO state, otherwise reloads the image from cache
 /// and instructs the photo viewer to reload its data.
+/// @note: Also calls `[self refreshView]`.
 - (void)refreshCurrentPhotoImage;
 - (void)setPreViewItem:(id<SeafPreView>)item master:(UIViewController<SeafDentryDelegate> *)c;
 

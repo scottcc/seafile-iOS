@@ -273,7 +273,9 @@ static UIViewController *(^editImageBlock)(SeafFile *, UIImage *) = nil;
     }
     SeafPhoto *currentPhoto = self.photos[self.currentPageIndex];
     [currentPhoto refreshImage];
+    // Sadly, this is insufficient on it's own..
     [self.mwPhotoBrowser reloadData];
+    [self.view setNeedsLayout];
     [self refreshView];
 }
 
