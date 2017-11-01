@@ -455,6 +455,9 @@ static NSMutableArray <NSString *> *sheetSkippedItems;
         titles = [NSMutableArray arrayWithObjects:S_SORT_NAME, S_SORT_MTIME, nil];
     } else if (_directory.editable) {
         titles = [NSMutableArray arrayWithObjects:S_EDIT, S_NEWFILE, S_MKDIR, S_SORT_NAME, S_SORT_MTIME, S_PHOTOS_ALBUM, nil];
+        if ([sheetSkippedItems containsObject:@"S_NEWFILE"]) {
+            [titles removeObject:S_NEWFILE];
+        }
         if (self.photos.count >= 3) [titles addObject:S_PHOTOS_BROWSER];
     } else {
         titles = [NSMutableArray arrayWithObjects:S_SORT_NAME, S_SORT_MTIME, S_PHOTOS_ALBUM, nil];
