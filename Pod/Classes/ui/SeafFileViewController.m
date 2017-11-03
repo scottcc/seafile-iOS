@@ -50,7 +50,7 @@ enum {
 #define STR_12 NSLocalizedString(@"A file with the same name already exists, do you want to overwrite?", @"Seafile")
 #define STR_13 NSLocalizedString(@"Files with the same name already exist, do you want to overwrite?", @"Seafile")
 
-@interface SeafFileViewController ()<QBImagePickerControllerDelegate, UIPopoverControllerDelegate, SeafUploadDelegate, SeafDirDelegate, SeafShareDelegate, UISearchBarDelegate, UISearchDisplayDelegate, MFMailComposeViewControllerDelegate, SWTableViewCellDelegate, MWPhotoBrowserDelegate>
+@interface SeafFileViewController ()<QBImagePickerControllerDelegate, UIPopoverControllerDelegate, SeafUploadDelegate, SeafDirDelegate, SeafShareDelegate, UISearchBarDelegate, UISearchDisplayDelegate, MFMailComposeViewControllerDelegate, SWTableViewCellDelegate, MWPhotoBrowserDelegate, SeafilePHPhotoFileViewController>
 - (UITableViewCell *)getSeafFileCell:(SeafFile *)sfile forTableView:(UITableView *)tableView andIndexPath:(NSIndexPath *)indexPath;
 - (UITableViewCell *)getSeafDirCell:(SeafDir *)sdir forTableView:(UITableView *)tableView andIndexPath:(NSIndexPath *)indexPath;
 - (UITableViewCell *)getSeafRepoCell:(SeafRepo *)srepo forTableView:(UITableView *)tableView andIndexPath:(NSIndexPath *)indexPath;
@@ -412,11 +412,19 @@ static NSMutableArray <NSString *> *sheetSkippedItems;
         return [self alertWithTitle:NSLocalizedString(@"This app does not have access to your photos and videos.", @"Seafile") message:NSLocalizedString(@"You can enable access in Privacy Settings", @"Seafile")];
     }
 
-    QBImagePickerController *imagePickerController = [[QBImagePickerController alloc] init];
-    imagePickerController.title = NSLocalizedString(@"Photos", @"Seafile");
-    imagePickerController.delegate = self;
-    imagePickerController.allowsMultipleSelection = YES;
-    imagePickerController.filterType = QBImagePickerControllerFilterTypeNone;
+    UIViewController *imagePickerController = nil;
+    if (self.customImagePicker) {
+        self.customImagePicker.delegate = self;
+        imagePickerController = self.customImagePicker.imagePickerViewController;
+    }
+    else {
+        QBImagePickerController *qbImagePickerController = [[QBImagePickerController alloc] init];
+        qbImagePickerController.title = NSLocalizedString(@"Photos", @"Seafile");
+        qbImagePickerController.delegate = self;
+        qbImagePickerController.allowsMultipleSelection = YES;
+        qbImagePickerController.filterType = QBImagePickerControllerFilterTypeNone;
+        imagePickerController = qbImagePickerController;
+    }
 
     if (IsIpad()) {
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:imagePickerController];
@@ -426,11 +434,6 @@ static NSMutableArray <NSString *> *sheetSkippedItems;
     } else {
         [[SeafUI appdelegate] showDetailView:imagePickerController];
     }
-}
-
-- (void)addPhotosViaPHPhotoLibrary
-{
-    
 }
 
 - (void)editDone:(id)sender

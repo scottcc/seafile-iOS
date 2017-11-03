@@ -59,11 +59,17 @@ enum {
 
 typedef SeafDetailViewController *(^SeafDetailViewControllerResolver)(void);
 
-/// Setting one of these into the `customImagePicker` property of SeafFileViewController will
-/// enable a swap-in replacement with the newer PHPhotos library used.3
+/// These two methods will be available to the `CustomImagePicker` delegate.
 @protocol SeafilePHPhotoFileViewController
 - (void)phAssetImagePickerControllerDidCancel:(UIViewController *)imagePickerController;
 - (void)phAssetImagePickerController:(UIViewController *)imagePickerController didSelectAssets:(NSArray <PHAsset *> *)assets;
+@end
+
+/// Setting a `CustomImagePicker` as the `customImagePicker` property of SeafFileViewController will
+/// enable a swap-in replacement with the newer PHPhotos library used.
+@protocol CustomImagePicker
+@property (weak, nonatomic) id <SeafilePHPhotoFileViewController> delegate;
+@property (strong, readonly) UIViewController *imagePickerViewController;
 @end
 
 @interface SeafFileViewController : UITableViewController <SeafDentryDelegate, SeafFileUpdateDelegate> {
@@ -73,7 +79,7 @@ typedef SeafDetailViewController *(^SeafDetailViewControllerResolver)(void);
 
 @property (strong, readonly) SeafDetailViewController *detailViewController;
 /// @see: SeafilePHPhotoFileViewController
-@property (weak, nonatomic) id <SeafilePHPhotoFileViewController> customImagePicker;
+@property (weak, nonatomic) id <CustomImagePicker> customImagePicker;
 
 + (void)setSeafDetailViewControllerResolver:(SeafDetailViewControllerResolver)resolver;
 /// If set, these will be compared to the macros, ie pass in @[@"S_STAR", @"S_DOWNLOAD"] etc.
