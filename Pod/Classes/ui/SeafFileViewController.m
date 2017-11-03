@@ -55,7 +55,6 @@ enum {
 - (UITableViewCell *)getSeafDirCell:(SeafDir *)sdir forTableView:(UITableView *)tableView andIndexPath:(NSIndexPath *)indexPath;
 - (UITableViewCell *)getSeafRepoCell:(SeafRepo *)srepo forTableView:(UITableView *)tableView andIndexPath:(NSIndexPath *)indexPath;
 
-@property (strong, nonatomic) SeafDir *directory;
 @property (strong) id<SeafItem> curEntry;
 @property (strong, nonatomic) IBOutlet UIActivityIndicatorView *loadingView;
 

@@ -78,6 +78,9 @@ typedef SeafDetailViewController *(^SeafDetailViewControllerResolver)(void);
 
 @property (strong, nonatomic) SeafConnection *connection;
 
+/// @brief Handy for setting before display, or getting to allow reloading content
+@property (strong, nonatomic) SeafDir *directory;
+
 @property (strong, readonly) SeafDetailViewController *detailViewController;
 
 /// If this factory is set, it will be called when the "Add Photos" action is initiated and
@@ -97,10 +100,5 @@ typedef SeafDetailViewController *(^SeafDetailViewControllerResolver)(void);
 - (void)photoSelectedChanged:(id<SeafPreView>)preViewItem to:(id<SeafPreView>)to;
 
 - (BOOL)goTo:(NSString *)repo path:(NSString *)path;
-
-/**
- * @brief   Allow setting the directory chosen before display.
- */
-- (void)setDirectory:(SeafDir *)directory;
 
 @end
