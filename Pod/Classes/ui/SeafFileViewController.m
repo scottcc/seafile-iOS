@@ -1701,12 +1701,12 @@ static NSMutableArray <NSString *> *sheetSkippedItems;
 
 #pragma mark - SeafilePHPhotoFileViewController
 
-- (void)phAssetImagePickerControllerDidCancel:(UIViewController *)imagePickerController;
+- (void)phAssetImagePickerControllerDidCancel;
 {
     self.customImagePicker = nil;
 }
 
-- (void)phAssetImagePickerController:(UIViewController *)imagePickerController didSelectAssets:(NSArray <PHAsset *> *)phAssets
+- (void)phAssetImagePickerControllerDidSelectAssets:(NSArray <PHAsset *> *)phAssets
 {
     if (phAssets.count == 0) return;
     NSSet *nameSet = [self getExistedNameSet];
