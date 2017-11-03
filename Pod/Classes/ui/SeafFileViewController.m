@@ -1003,7 +1003,7 @@ static id <CustomImagePicker> (^customImagePickerFactoryBlock)(UIViewController 
         if (tableView != self.tableView) {
             return [self.searchResults objectAtIndex:indexPath.row];
         } else if (![_directory isKindOfClass:[SeafRepos class]])
-            return [_directory.allItems objectAtIndex:[indexPath row]];
+            return (indexPath.row < _directory.allItems.count ? [_directory.allItems objectAtIndex:[indexPath row]] : nil);
         NSArray *repos = [[((SeafRepos *)_directory) repoGroups] objectAtIndex:[indexPath section]];
         return [repos objectAtIndex:[indexPath row]];
     } @catch(NSException *exception) {
