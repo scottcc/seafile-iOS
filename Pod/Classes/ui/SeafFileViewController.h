@@ -68,8 +68,9 @@ typedef SeafDetailViewController *(^SeafDetailViewControllerResolver)(void);
 /// Setting a `CustomImagePicker` as the `customImagePicker` property of SeafFileViewController will
 /// enable a swap-in replacement with the newer PHPhotos library used.
 @protocol CustomImagePicker
-@property (weak, nonatomic) id <SeafilePHPhotoFileViewController> delegate;
-@property (strong, readonly) UIViewController *imagePickerViewController;
+/// This will be called when "Add Photos" is touched. After that, one of the two `SeafilePHPhotoFileViewController` methods will
+/// be called. The CustomImagePicker takes care of dismissing itself.
+- (void)presentImagePickerSheet;
 @end
 
 @interface SeafFileViewController : UITableViewController <SeafDentryDelegate, SeafFileUpdateDelegate> {
@@ -80,8 +81,8 @@ typedef SeafDetailViewController *(^SeafDetailViewControllerResolver)(void);
 @property (strong, readonly) SeafDetailViewController *detailViewController;
 
 /// If this factory is set, it will be called when the "Add Photos" action is initiated and
-/// will pass itself to it (as the presenting view controller).
-@property (copy, nonatomic) id <CustomImagePicker>  (^customImagePickerFactoryBlock)(UIViewController *);
+/// will pass itself to it (as the presenting view controller) and an explicit protocol refernce
+@property (copy, nonatomic) id <CustomImagePicker>  (^customImagePickerFactoryBlock)(UIViewController *, id <SeafilePHPhotoFileViewController>);
 
 + (void)setSeafDetailViewControllerResolver:(SeafDetailViewControllerResolver)resolver;
 /// If set, these will be compared to the macros, ie pass in @[@"S_STAR", @"S_DOWNLOAD"] etc.

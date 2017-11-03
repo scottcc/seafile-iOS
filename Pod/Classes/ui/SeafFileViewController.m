@@ -415,21 +415,18 @@ static NSMutableArray <NSString *> *sheetSkippedItems;
         return [self alertWithTitle:NSLocalizedString(@"This app does not have access to your photos and videos.", @"Seafile") message:NSLocalizedString(@"You can enable access in Privacy Settings", @"Seafile")];
     }
 
-    UIViewController *imagePickerController = nil;
     if (self.customImagePickerFactoryBlock != nil) {
-        self.customImagePicker = self.customImagePickerFactoryBlock(self);
-        self.customImagePicker.delegate = self;
-        imagePickerController = self.customImagePicker.imagePickerViewController;
+        self.customImagePicker = self.customImagePickerFactoryBlock(self, self);
+        [self.customImagePicker presentImagePickerSheet];
+        return;
     }
     
-    if (!imagePickerController) {
-        QBImagePickerController *qbImagePickerController = [[QBImagePickerController alloc] init];
-        qbImagePickerController.title = NSLocalizedString(@"Photos", @"Seafile");
-        qbImagePickerController.delegate = self;
-        qbImagePickerController.allowsMultipleSelection = YES;
-        qbImagePickerController.filterType = QBImagePickerControllerFilterTypeNone;
-        imagePickerController = qbImagePickerController;
-    }
+    QBImagePickerController *imagePickerController = [[QBImagePickerController alloc] init];
+    imagePickerController.title = NSLocalizedString(@"Photos", @"Seafile");
+    imagePickerController.delegate = self;
+    imagePickerController.allowsMultipleSelection = YES;
+    imagePickerController.filterType = QBImagePickerControllerFilterTypeNone;
+    imagePickerController = imagePickerController;
 
     if (IsIpad()) {
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:imagePickerController];
@@ -1706,7 +1703,6 @@ static NSMutableArray <NSString *> *sheetSkippedItems;
 
 - (void)phAssetImagePickerControllerDidCancel:(UIViewController *)imagePickerController;
 {
-    [self dismissImagePickerController:imagePickerController];
     self.customImagePicker = nil;
 }
 
@@ -1722,7 +1718,6 @@ static NSMutableArray <NSString *> *sheetSkippedItems;
             duplicated++;
         [pickedAssets addObject:phAsset];
     }
-    [self dismissImagePickerController:imagePickerController];
     if (duplicated > 0) {
         NSString *title = duplicated == 1 ? STR_12 : STR_13;
         [self alertWithTitle:title message:nil yes:^{
