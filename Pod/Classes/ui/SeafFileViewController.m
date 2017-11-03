@@ -1633,7 +1633,6 @@ static id <CustomImagePicker> (^customImagePickerFactoryBlock)(UIViewController 
         NSString *path = [uploadDir stringByAppendingPathComponent:filename];
         SeafUploadFile *file =  [self.connection getUploadfile:path];
         file.overwrite = overwrite;
-        // next line causes a write of (possibly .heic converted -> .jpeg) bytes to disk
         [file setPHAsset:phAsset];
         file.delegate = self;
         [files addObject:file];

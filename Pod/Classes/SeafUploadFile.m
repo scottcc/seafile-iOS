@@ -537,8 +537,7 @@ static NSMutableDictionary *uploadFileAttrs = nil;
 - (void)setPHAsset:(PHAsset *)asset
 {
     _phAsset = asset;
-    // at this point, we'll copy the bytes to disk at the _lpath spot.
-    [Utils writeDataToPath:self.lpath andPHAsset:asset];
+    NSAssert(self.lpath.length > 0, @"Can't upload PHAsset when lpath is empty!");
     _assetURL = [[NSURL alloc] initFileURLWithPath:self.lpath];
 }
 
