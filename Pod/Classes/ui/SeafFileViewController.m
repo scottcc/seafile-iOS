@@ -428,6 +428,11 @@ static NSMutableArray <NSString *> *sheetSkippedItems;
     }
 }
 
+- (void)addPhotosViaPHPhotoLibrary
+{
+    
+}
+
 - (void)editDone:(id)sender
 {
     [self setEditing:NO animated:YES];
@@ -1600,6 +1605,36 @@ static NSMutableArray <NSString *> *sheetSkippedItems;
     }
 }
 
+- (void)uploadPickedPHAssets:(NSArray <PHAsset *> *)phAssets overwrite:(BOOL)overwrite
+{
+    NSMutableSet *nameSet = overwrite ? [NSMutableSet new] : [self getExistedNameSet];
+    NSMutableArray *files = [[NSMutableArray alloc] init];
+    NSString *uploadDir = [self.connection uniqueUploadDir];
+    for (PHAsset *phAsset in phAssets) {
+        NSString *filename = [Utils assertPHAssetName:phAsset];
+        Debug("Upload picked file : %@", filename);
+        if (!overwrite && [nameSet containsObject:filename]) {
+            NSString *name = filename.stringByDeletingPathExtension;
+            NSString *ext = filename.pathExtension;
+            filename = [self getUniqueFilename:name ext:ext nameSet:nameSet];
+        }
+        [nameSet addObject:filename];
+        NSString *path = [uploadDir stringByAppendingPathComponent:filename];
+        SeafUploadFile *file =  [self.connection getUploadfile:path];
+        file.overwrite = overwrite;
+        // next line causes a write of (possibly .heic converted -> .jpeg) bytes to disk
+        [file setPHAsset:phAsset];
+        file.delegate = self;
+        [files addObject:file];
+        [self.directory addUploadFile:file flush:false];
+    }
+    [SeafUploadFile saveAttrs];
+    [self.tableView reloadData];
+    for (SeafUploadFile *file in files) {
+        [SeafDataTaskManager.sharedObject addBackgroundUploadTask:file];
+    }
+}
+
 - (void)uploadPickedAssetsUrl:(NSArray *)urls overwrite:(BOOL)overwrite
 {
     if (urls.count == 0) return;
@@ -1616,7 +1651,7 @@ static NSMutableArray <NSString *> *sheetSkippedItems;
     }
 }
 
-- (void)dismissImagePickerController:(QBImagePickerController *)imagePickerController
+- (void)dismissImagePickerController:(UIViewController *)imagePickerController
 {
     if (IsIpad()) {
         [self.popoverController dismissPopoverAnimated:YES];
@@ -1657,6 +1692,37 @@ static NSMutableArray <NSString *> *sheetSkippedItems;
         }];
     } else
         [self uploadPickedAssetsUrl:urls overwrite:false];
+}
+
+#pragma mark - SeafilePHPhotoFileViewController
+
+- (void)phAssetImagePickerControllerDidCancel:(UIViewController *)imagePickerController;
+{
+    [self dismissImagePickerController:imagePickerController];
+}
+
+- (void)phAssetImagePickerController:(UIViewController *)imagePickerController didSelectAssets:(NSArray <PHAsset *> *)phAssets
+{
+    if (phAssets.count == 0) return;
+    NSSet *nameSet = [self getExistedNameSet];
+    NSMutableArray <PHAsset *> *pickedAssets = [[NSMutableArray alloc] init];
+    int duplicated = 0;
+    for (PHAsset *phAsset in phAssets) {
+        NSString *filename = [Utils assertPHAssetName:phAsset];
+        if ([nameSet containsObject:filename])
+            duplicated++;
+        [pickedAssets addObject:phAsset];
+    }
+    [self dismissImagePickerController:imagePickerController];
+    if (duplicated > 0) {
+        NSString *title = duplicated == 1 ? STR_12 : STR_13;
+        [self alertWithTitle:title message:nil yes:^{
+            [self uploadPickedPHAssets:pickedAssets overwrite:true];
+        } no:^{
+            [self uploadPickedPHAssets:pickedAssets overwrite:false];
+        }];
+    } else
+        [self uploadPickedPHAssets:pickedAssets overwrite:false];
 }
 
 #pragma mark - UIPopoverControllerDelegate

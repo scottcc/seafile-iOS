@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <AssetsLibrary/AssetsLibrary.h>
+#import <Photos/Photos.h>
 #import <UIKit/UIKit.h>
 
 #define IMAGE_MAX_SIZE 2048
@@ -39,6 +40,7 @@
 + (BOOL)isVideoExt:(NSString *)ext;
 
 + (BOOL)writeDataToPath:(NSString*)filePath andAsset:(ALAsset*)asset;
++ (BOOL)writeDataToPath:(NSString*)filePath andPHAsset:(PHAsset*)asset;
 
 
 + (CGSize)textSizeForText:(NSString *)txt font:(UIFont *)font width:(float)width;
@@ -55,4 +57,5 @@
 + (NSDictionary *)queryToDict:(NSString *)query;
 + (void)dict:(NSMutableDictionary *)dict setObject:(id)value forKey:(NSString *)defaultName;
 + (NSString *)assertName:(ALAsset *)asset;
++ (NSString *)assertPHAssetName:(PHAsset *)phAsset;
 @end
