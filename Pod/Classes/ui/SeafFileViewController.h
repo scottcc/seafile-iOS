@@ -81,8 +81,8 @@ typedef SeafDetailViewController *(^SeafDetailViewControllerResolver)(void);
 @property (strong, readonly) SeafDetailViewController *detailViewController;
 
 /// If this factory is set, it will be called when the "Add Photos" action is initiated and
-/// will pass itself to it (as the presenting view controller) and an explicit protocol refernce
-@property (copy, nonatomic) id <CustomImagePicker>  (^customImagePickerFactoryBlock)(UIViewController *, id <SeafilePHPhotoFileViewController>);
+/// will pass itself to it (as the presenting view controller) and an explicit protocol reference
++ (void)setCustomImagePickerFactoryBlock:(id <CustomImagePicker> (^)(UIViewController *, id <SeafilePHPhotoFileViewController>))customImagePickerFactoryBlock;
 
 + (void)setSeafDetailViewControllerResolver:(SeafDetailViewControllerResolver)resolver;
 /// If set, these will be compared to the macros, ie pass in @[@"S_STAR", @"S_DOWNLOAD"] etc.

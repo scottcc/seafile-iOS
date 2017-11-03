@@ -106,6 +106,7 @@ enum {
 
 static SeafDetailViewControllerResolver detailViewControllerResolver = ^SeafDetailViewController *{ return nil; };
 static NSMutableArray <NSString *> *sheetSkippedItems;
+static id <CustomImagePicker> (^customImagePickerFactoryBlock)(UIViewController *, id <SeafilePHPhotoFileViewController>) = nil;
 
 + (void)initialize
 {
@@ -130,6 +131,11 @@ static NSMutableArray <NSString *> *sheetSkippedItems;
 {
     NSAssert(resolver != NULL, @"You must provide a way to create the SeafDetailViewController");
     detailViewControllerResolver = resolver;
+}
+
++ (void)setCustomImagePickerFactoryBlock:(id <CustomImagePicker> (^)(UIViewController *, id <SeafilePHPhotoFileViewController>))block
+{
+    customImagePickerFactoryBlock = [block copy];
 }
 
 - (SeafDetailViewController *)detailViewController
@@ -415,8 +421,8 @@ static NSMutableArray <NSString *> *sheetSkippedItems;
         return [self alertWithTitle:NSLocalizedString(@"This app does not have access to your photos and videos.", @"Seafile") message:NSLocalizedString(@"You can enable access in Privacy Settings", @"Seafile")];
     }
 
-    if (self.customImagePickerFactoryBlock != nil) {
-        self.customImagePicker = self.customImagePickerFactoryBlock(self, self);
+    if (customImagePickerFactoryBlock != nil) {
+        self.customImagePicker = customImagePickerFactoryBlock(self, self);
         [self.customImagePicker presentImagePickerSheet];
         return;
     }
