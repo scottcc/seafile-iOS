@@ -86,6 +86,9 @@ enum {
 
 @property SeafUploadFile *ufile;
 
+/// This is only created/held while it's used, then it's nilified.
+@property (strong, nonatomic) id <CustomImagePicker> customImagePicker;
+
 @end
 
 @implementation SeafFileViewController
@@ -413,11 +416,13 @@ static NSMutableArray <NSString *> *sheetSkippedItems;
     }
 
     UIViewController *imagePickerController = nil;
-    if (self.customImagePicker) {
+    if (self.customImagePickerFactoryBlock != nil) {
+        self.customImagePicker = self.customImagePickerFactoryBlock(self);
         self.customImagePicker.delegate = self;
         imagePickerController = self.customImagePicker.imagePickerViewController;
     }
-    else {
+    
+    if (!imagePickerController) {
         QBImagePickerController *qbImagePickerController = [[QBImagePickerController alloc] init];
         qbImagePickerController.title = NSLocalizedString(@"Photos", @"Seafile");
         qbImagePickerController.delegate = self;
@@ -1702,6 +1707,7 @@ static NSMutableArray <NSString *> *sheetSkippedItems;
 - (void)phAssetImagePickerControllerDidCancel:(UIViewController *)imagePickerController;
 {
     [self dismissImagePickerController:imagePickerController];
+    self.customImagePicker = nil;
 }
 
 - (void)phAssetImagePickerController:(UIViewController *)imagePickerController didSelectAssets:(NSArray <PHAsset *> *)phAssets
@@ -1724,8 +1730,11 @@ static NSMutableArray <NSString *> *sheetSkippedItems;
         } no:^{
             [self uploadPickedPHAssets:pickedAssets overwrite:false];
         }];
-    } else
+    }
+    else {
         [self uploadPickedPHAssets:pickedAssets overwrite:false];
+    }
+    self.customImagePicker = nil;
 }
 
 #pragma mark - UIPopoverControllerDelegate
