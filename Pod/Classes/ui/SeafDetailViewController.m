@@ -36,7 +36,7 @@ enum SHARE_STATUS {
 #define SHARE_TITLE NSLocalizedString(@"How would you like to share this file?", @"Seafile")
 
 static BOOL prefersQuickLookModal = NO;
-static UIViewController *(^editImageBlock)(SeafFile *, UIImage *) = nil;
+static UIViewController *(^editImageBlock)(SeafDetailViewController *, SeafFile *, UIImage *) = nil;
 
 @interface SeafDetailViewController ()<UIWebViewDelegate, UIPrintInteractionControllerDelegate, MFMailComposeViewControllerDelegate, MWPhotoBrowserDelegate>
 @property (strong, nonatomic) UIPopoverController *masterPopoverController;
@@ -71,11 +71,11 @@ static UIViewController *(^editImageBlock)(SeafFile *, UIImage *) = nil;
 {
     prefersQuickLookModal = prefersModal;
 }
-+ (UIViewController * (^)(SeafFile *, UIImage *))editImageBlock
++ (UIViewController * (^)(SeafDetailViewController *, SeafFile *, UIImage *))editImageBlock
 {
     return editImageBlock;
 }
-+ (void)setEditImageBlock:(UIViewController * (^)(SeafFile *, UIImage *))block
++ (void)setEditImageBlock:(UIViewController * (^)(SeafDetailViewController *, SeafFile *, UIImage *))block
 {
     editImageBlock = [block copy];
 }
@@ -549,10 +549,10 @@ static UIViewController *(^editImageBlock)(SeafFile *, UIImage *) = nil;
     }
     // Check if we're editing an image, as otherwise below this it's all text
     UIViewController *editViewController = nil;
-    UIViewController *(^editImageBlock)(SeafFile *, UIImage *) = [SeafDetailViewController editImageBlock];
+    UIViewController *(^editImageBlock)(SeafDetailViewController *, SeafFile *, UIImage *) = [SeafDetailViewController editImageBlock];
     if (self.preViewItem.isImageFile && editImageBlock && [self.preViewItem isKindOfClass:[SeafFile class]]) {
         SeafFile *seafFile = (SeafFile *)self.preViewItem;
-        editViewController = editImageBlock(seafFile, self.preViewItem.image);
+        editViewController = editImageBlock(self, seafFile, self.preViewItem.image);
     }
     else {
         SeafTextEditorViewController *textEditorViewController = [[SeafTextEditorViewController alloc] initWithFile:self.preViewItem];

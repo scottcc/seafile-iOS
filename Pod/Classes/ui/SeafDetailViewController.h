@@ -32,8 +32,9 @@ enum PREVIEW_STATE {
 
 + (void)setPrefersQuickLookModal:(BOOL)prefersQuickLookModal;
 
-+ (UIViewController * (^)(SeafFile *, UIImage *))editImageBlock;
-+ (void)setEditImageBlock:(UIViewController * (^)(SeafFile *, UIImage *))editImageBlock;
++ (UIViewController * (^)(SeafDetailViewController *, SeafFile *, UIImage *))editImageBlock;
+/// If this block is set, it will allow editing images.
++ (void)setEditImageBlock:(UIViewController * (^)(SeafDetailViewController *, SeafFile *, UIImage *))editImageBlock;
 
 - (void)refreshView;
 /// Does nothing if not in PREVIEW_PHOTO state, otherwise reloads the image from cache
