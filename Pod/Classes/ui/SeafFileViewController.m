@@ -1063,8 +1063,20 @@ static id <CustomImagePicker> (^customImagePickerFactoryBlock)(UIViewController 
         // disabling below.
 //        if (!IsIpad()) {
         if (self.detailViewController.state == PREVIEW_QL_MODAL) { // Use fullscreen preview for doc, xls, etc.
-            [self.detailViewController.qlViewController reloadData];
-            [self presentViewController:self.detailViewController.qlViewController animated:true completion:nil];
+
+            UINavigationController *pdfViewController = self.detailViewController.qlViewController;
+            if (item.isPDFFile &&
+                [SeafDetailViewController editPDFBlock] != nil &&
+                [_curEntry isKindOfClass:[SeafFile class]]) {
+                SeafFile *seafFile = (SeafFile *)item;
+                pdfViewController = [SeafDetailViewController editPDFBlock](self.detailViewController,
+                                                                            seafFile,
+                                                                            seafFile.exportURL);
+            }
+            else {
+                [self.detailViewController.qlViewController reloadData];
+            }
+            [self presentViewController:pdfViewController animated:true completion:nil];
         } else {
             [[SeafUI appdelegate] showDetailView:self.detailViewController];
         }
