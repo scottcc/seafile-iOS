@@ -35,6 +35,7 @@
 + (id)JSONDecode:(NSData *)data error:(NSError **)error;
 + (NSString *)JSONEncodeDictionary:(NSDictionary *)dict;
 + (BOOL)isImageFile:(NSString *)name;
++ (BOOL)isPDFFile:(NSString *)name;
 + (BOOL)isVideoFile:(NSString *)name;
 
 + (BOOL)isVideoExt:(NSString *)ext;

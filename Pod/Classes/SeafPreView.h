@@ -48,6 +48,7 @@ enum SET_REPO_PASSWORD_RET {
 - (void)unload;
 - (BOOL)hasCache;
 - (BOOL)isImageFile;
+- (BOOL)isPDFFile;
 - (long long) mtime;
 - (void)cancelAnyLoading;
 

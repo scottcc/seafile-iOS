@@ -37,6 +37,7 @@ enum SHARE_STATUS {
 
 static BOOL prefersQuickLookModal = NO;
 static UIViewController *(^editImageBlock)(SeafDetailViewController *, SeafFile *, UIImage *) = nil;
+static UIViewController *(^editPDFBlock)(SeafDetailViewController *, SeafFile *, NSURL *) = nil;
 
 @interface SeafDetailViewController ()<UIWebViewDelegate, UIPrintInteractionControllerDelegate, MFMailComposeViewControllerDelegate, MWPhotoBrowserDelegate>
 @property (strong, nonatomic) UIPopoverController *masterPopoverController;
@@ -78,6 +79,15 @@ static UIViewController *(^editImageBlock)(SeafDetailViewController *, SeafFile 
 + (void)setEditImageBlock:(UIViewController * (^)(SeafDetailViewController *, SeafFile *, UIImage *))block
 {
     editImageBlock = [block copy];
+}
+
++ (UIViewController * (^)(SeafDetailViewController *, SeafFile *, NSURL *))editPDFBlock
+{
+    return editPDFBlock;
+}
++ (void)setEditPDFBlock:(UIViewController * (^)(SeafDetailViewController *, SeafFile *, NSURL *))block
+{
+    editPDFBlock = [block copy];
 }
 
 - (id)initWithCoder:(NSCoder *)decoder
@@ -543,18 +553,24 @@ static UIViewController *(^editImageBlock)(SeafDetailViewController *, SeafFile 
         [self alertWithTitle:[NSString stringWithFormat:NSLocalizedString(@"File '%@' is too large to edit", @"Seafile"), self.preViewItem.name]];
         return;
     }
-    if (!self.preViewItem.strContent) {
-        [self alertWithTitle:[NSString stringWithFormat:NSLocalizedString(@"Failed to identify the coding of '%@'", @"Seafile"), self.preViewItem.name]];
-        return;
-    }
+    
     // Check if we're editing an image, as otherwise below this it's all text
     UIViewController *editViewController = nil;
-    UIViewController *(^editImageBlock)(SeafDetailViewController *, SeafFile *, UIImage *) = [SeafDetailViewController editImageBlock];
-    if (self.preViewItem.isImageFile && editImageBlock && [self.preViewItem isKindOfClass:[SeafFile class]]) {
+    BOOL isSeafFile = [self.preViewItem isKindOfClass:[SeafFile class]];
+    
+    if (self.preViewItem.isImageFile && editImageBlock && isSeafFile) {
         SeafFile *seafFile = (SeafFile *)self.preViewItem;
         editViewController = editImageBlock(self, seafFile, self.preViewItem.image);
     }
+    else if (self.preViewItem.isPDFFile && editPDFBlock && isSeafFile) {
+        SeafFile *seafFile = (SeafFile *)self.preViewItem;
+        editViewController = editPDFBlock(self, seafFile, self.preViewItem.exportURL);
+    }
     else {
+        if (!self.preViewItem.strContent) {
+            [self alertWithTitle:[NSString stringWithFormat:NSLocalizedString(@"Failed to identify the coding of '%@'", @"Seafile"), self.preViewItem.name]];
+            return;
+        }
         SeafTextEditorViewController *textEditorViewController = [[SeafTextEditorViewController alloc] initWithFile:self.preViewItem];
         textEditorViewController.detailViewController = self;
         editViewController = textEditorViewController;

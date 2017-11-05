@@ -312,6 +312,13 @@ static NSDateFormatter *assetDateNameFormatter = nil;
     return [Utils isVideoExt:name.pathExtension.lowercaseString];
 }
 
++ (BOOL)isPDFFile:(NSString *)name
+{
+    static NSString *pdfexts[] = {@"pdf", nil};
+    NSString *ext = name.pathExtension.lowercaseString;
+    return [Utils isExt:ext In:pdfexts];
+}
+
 + (BOOL)isVideoExt:(NSString *)ext
 {
     static NSString *videoexts[] = {@"mp4", @"mov", @"m4v", nil};

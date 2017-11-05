@@ -103,6 +103,11 @@ static NSMutableDictionary *uploadFileAttrs = nil;
     return [Utils isImageFile:self.name];
 }
 
+- (BOOL)isPDFFile
+{
+    return [Utils isPDFFile:self.name];
+}
+
 - (void)load:(id<SeafDentryDelegate>)delegate force:(BOOL)force
 {
     [self checkAsset];
