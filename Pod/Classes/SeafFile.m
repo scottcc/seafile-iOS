@@ -490,6 +490,11 @@ typedef void (^SeafThumbCompleteBlock)(BOOL ret);
     return [Utils isImageFile:self.name];
 }
 
+- (BOOL)isPDFFile
+{
+    return [Utils isPDFFile:self.name];
+}
+
 - (UIImage *)icon
 {
     if (_icon) return _icon;
