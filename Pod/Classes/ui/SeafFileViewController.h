@@ -101,4 +101,9 @@ typedef SeafDetailViewController *(^SeafDetailViewControllerResolver)(void);
 
 - (BOOL)goTo:(NSString *)repo path:(NSString *)path;
 
+/// This allows callers to push/present the right viewer for an item. completion can be nil.
+- (void)presentOrPushDetailViewController:(id <SeafPreView>)item
+                                 animated:(BOOL)animated
+                               completion:(void (^)(void))completion;
+
 @end

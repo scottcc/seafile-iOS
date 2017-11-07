@@ -224,10 +224,24 @@ static UIViewController *(^editPDFBlock)(SeafDetailViewController *, SeafFile *,
             if (!self.qlViewController.presentingViewController) {
                 if (self.isModal && self.isVisible) { // For preview from SeafFileViewController and SeafStarredFileViewController
                     UIViewController *vc = self.presentingViewController;
+                    
+                    // We need to unload/reload the current presentingViewController.. so we also hand off to
+                    // our masterVC as it knows whether to present a QLViewController *or* a custom PDF editor VC.
+                    // NOTE: no animating things here - do this fast/quick out from under you!
+                    __weak SeafDetailViewController *welf = self;
                     [vc dismissViewControllerAnimated:NO completion:^{
-                        [vc presentViewController:self.qlViewController animated:NO completion:^{
-                            [self clearPreView];
-                        }];
+                        if (_masterVc && [_masterVc isKindOfClass:[SeafFileViewController class]]) {
+                            SeafFileViewController *seafFileViewController  = (SeafFileViewController *)_masterVc;
+                            [seafFileViewController presentOrPushDetailViewController:welf.preViewItem animated:NO completion:^{
+                                [welf clearPreView];
+                            }];
+                        }
+                        else {
+                            // standard way? Not sure this should even be possible.
+                            [vc presentViewController:welf.qlViewController animated:NO completion:^{
+                                [welf clearPreView];
+                            }];
+                        }
                     }];
                 }
             }

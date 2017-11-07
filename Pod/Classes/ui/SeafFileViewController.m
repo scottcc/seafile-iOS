@@ -1063,19 +1063,7 @@ static id <CustomImagePicker> (^customImagePickerFactoryBlock)(UIViewController 
         // disabling below.
 //        if (!IsIpad()) {
         if (self.detailViewController.state == PREVIEW_QL_MODAL) { // Use fullscreen preview for doc, xls, etc.
-            if (item.isPDFFile &&
-                [SeafDetailViewController editPDFBlock] != nil &&
-                [_curEntry isKindOfClass:[SeafFile class]]) {
-                SeafFile *seafFile = (SeafFile *)item;
-                UIViewController *pdfViewController = [SeafDetailViewController editPDFBlock](self.detailViewController,
-                                                                            seafFile,
-                                                                            seafFile.exportURL);
-                [self.navigationController pushViewController:pdfViewController animated:YES];
-            }
-            else {
-                [self.detailViewController.qlViewController reloadData];
-                [self presentViewController:self.detailViewController.qlViewController animated:true completion:nil];
-            }
+            [self presentOrPushDetailViewController:item animated:YES completion:nil];
         } else {
             [[SeafUI appdelegate] showDetailView:self.detailViewController];
         }
@@ -1084,6 +1072,36 @@ static id <CustomImagePicker> (^customImagePickerFactoryBlock)(UIViewController 
         SeafFileViewController *controller = [[UIStoryboard storyboardWithName:@"FolderView_iPad" bundle:SeafileBundle()] instantiateViewControllerWithIdentifier:@"MASTERVC"];
         [controller setDirectory:(SeafDir *)_curEntry];
         [self.navigationController pushViewController:controller animated:YES];
+    }
+}
+
+- (void)presentOrPushDetailViewController:(id <SeafPreView>)item
+                                 animated:(BOOL)animated
+                               completion:(void (^)(void))completion
+{
+    if (item.isPDFFile &&
+        [SeafDetailViewController editPDFBlock] != nil &&
+        [_curEntry isKindOfClass:[SeafFile class]]) {
+        SeafFile *seafFile = (SeafFile *)item;
+        UIViewController *pdfViewController = [SeafDetailViewController editPDFBlock](self.detailViewController,
+                                                                                      seafFile,
+                                                                                      seafFile.exportURL);
+        // If we have a completion block, we have to wrap this with CATransaction calls
+        if (completion) {
+            [CATransaction begin];
+        }
+        [self.navigationController pushViewController:pdfViewController animated:animated];
+        if (completion) {
+            [CATransaction setCompletionBlock:completion];
+            [CATransaction commit];
+        }
+    }
+    else {
+        // We only need to call reloadData if there is a presentingViewController on the qlViewController
+        if (self.detailViewController.qlViewController.presentingViewController) {
+            [self.detailViewController.qlViewController reloadData];
+        }
+        [self presentViewController:self.detailViewController.qlViewController animated:animated completion:completion];
     }
 }
 
