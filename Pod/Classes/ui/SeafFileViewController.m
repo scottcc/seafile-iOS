@@ -440,7 +440,7 @@ static SeafDetailViewControllerResolver detailViewControllerResolver = ^SeafDeta
         titles = [NSMutableArray arrayWithObjects:S_SORT_NAME, S_SORT_MTIME, S_PHOTOS_ALBUM, nil];
         if (self.photos.count >= 3) [titles addObject:S_PHOTOS_BROWSER];
     }
-    [self showSheetWithTitles:titles andFromView:self.editItem];
+    [self showAlertWithAction:titles fromBarItem:self.editItem withTitle:nil];
 }
 
 - (void)initNavigationItems:(SeafDir *)directory
@@ -662,6 +662,15 @@ static SeafDetailViewControllerResolver detailViewControllerResolver = ^SeafDeta
         UIView *topView = [[[UIApplication sharedApplication] keyWindow].subviews firstObject];
         [actionSheet showInView:topView animated:YES];
     }
+}
+
+- (void)showAlertWithAction:(NSArray *)arr fromBarItem:(UIBarButtonItem *)item withTitle:(NSString *)title
+{
+    UIAlertController *alert = [self generateAlert:arr withTitle:title handler:^(UIAlertAction *action) {
+        [self handleAction:action.title];
+    }];
+    alert.popoverPresentationController.barButtonItem = item;
+    [self presentViewController:alert animated:true completion:nil];
 }
 
 - (UITableViewCell *)getSeafUploadFileCell:(SeafUploadFile *)file forTableView:(UITableView *)tableView
