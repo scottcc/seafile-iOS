@@ -123,7 +123,6 @@
         [self alertWithTitle:NSLocalizedString(@"Server must not be empty", @"Seafile")];
         return;
     }
-
     NSString *url = [NSString stringWithFormat:@"%@%@",self.prefixLabel.text,serverTextField.text];
     if (![url hasPrefix:HTTP] && ![url hasPrefix:HTTPS]) {
         [self alertWithTitle:NSLocalizedString(@"Invalid Server", @"Seafile")];

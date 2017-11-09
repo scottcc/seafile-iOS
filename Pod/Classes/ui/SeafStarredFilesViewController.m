@@ -79,7 +79,7 @@ static SeafDetailViewControllerResolver detailViewControllerResolver = ^SeafDeta
     self.title = NSLocalizedString(@"Starred", @"Seafile");
     [self.tableView registerNib:[UINib nibWithNibName:@"SeafCell" bundle:SeafileBundle()]
          forCellReuseIdentifier:@"SeafCell"];
-        if([self respondsToSelector:@selector(edgesForExtendedLayout)])
+    if([self respondsToSelector:@selector(edgesForExtendedLayout)])
         self.edgesForExtendedLayout = UIRectEdgeAll;
     if ([self.tableView respondsToSelector:@selector(setSeparatorInset:)])
         [self.tableView setSeparatorInset:UIEdgeInsetsMake(0, 0, 0, 0)];

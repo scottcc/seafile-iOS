@@ -193,7 +193,7 @@ static NSMutableArray <NSString *> *sheetSkippedItems;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self.tableView registerNib:[UINib nibWithNibName:@"SeafCell" bundle:nil]
+    [self.tableView registerNib:[UINib nibWithNibName:@"SeafCell" bundle:SeafileBundle()]
          forCellReuseIdentifier:@"SeafCell"];
     if([self respondsToSelector:@selector(edgesForExtendedLayout)])
         self.edgesForExtendedLayout = UIRectEdgeAll;
@@ -579,7 +579,7 @@ static NSMutableArray <NSString *> *sheetSkippedItems;
 {
     SeafCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        NSArray *cells = [[NSBundle mainBundle] loadNibNamed:CellIdentifier owner:self options:nil];
+        NSArray *cells = [SeafileBundle() loadNibNamed:CellIdentifier owner:self options:nil];
         cell = [cells objectAtIndex:0];
     }
     [cell reset];
@@ -840,7 +840,7 @@ static NSMutableArray <NSString *> *sheetSkippedItems;
     [self popupSetRepoPassword:repo handler:^{
             [SVProgressHUD dismiss];
             self.state = STATE_INIT;
-            SeafFileViewController *controller = [[UIStoryboard storyboardWithName:@"FolderView_iPad" bundle:nil] instantiateViewControllerWithIdentifier:@"MASTERVC"];
+            SeafFileViewController *controller = [[UIStoryboard storyboardWithName:@"FolderView_iPad" bundle:SeafileBundle()] instantiateViewControllerWithIdentifier:@"MASTERVC"];
             [self.navigationController pushViewController:controller animated:YES];
             [controller setDirectory:(SeafDir *)repo];
     }];
@@ -986,7 +986,7 @@ static NSMutableArray <NSString *> *sheetSkippedItems;
             }
         }
     } else if ([_curEntry isKindOfClass:[SeafDir class]]) {
-        SeafFileViewController *controller = [[UIStoryboard storyboardWithName:@"FolderView_iPad" bundle:nil] instantiateViewControllerWithIdentifier:@"MASTERVC"];
+        SeafFileViewController *controller = [[UIStoryboard storyboardWithName:@"FolderView_iPad" bundle:SeafileBundle()] instantiateViewControllerWithIdentifier:@"MASTERVC"];
         [controller setDirectory:(SeafDir *)_curEntry];
         [self.navigationController pushViewController:controller animated:YES];
     }

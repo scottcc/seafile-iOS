@@ -40,7 +40,7 @@
     NSString *CellIdentifier = @"SeafAccountCell2";
     SeafAccountCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        NSArray *cells = [[NSBundle mainBundle] loadNibNamed:@"SeafAccountCell" owner:owner options:nil];
+        NSArray *cells = [SeafileBundle() loadNibNamed:@"SeafAccountCell" owner:owner options:nil];
         cell = [cells objectAtIndex:0];
     }
     cell.contentView.backgroundColor = [UIColor whiteColor];

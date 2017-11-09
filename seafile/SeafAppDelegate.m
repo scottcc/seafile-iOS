@@ -6,10 +6,10 @@
 //  Copyright (c) 2012 Seafile Ltd. All rights reserved.
 //
 
+@import AFNetworking;
 @import Contacts;
 #import <Photos/Photos.h>
 #import "SVProgressHUD.h"
-@import AFNetworking;
 
 #import "SeafAppDelegate.h"
 #import "SeafDataTaskManager.h"
@@ -262,7 +262,6 @@
     [_global migrate];
     // Ensure UI component methods can instantiate the appropriate controllers
     [self setupUIResolvers];
-
     [self initTabController];
     [[UITabBar appearance] setTintColor:[UIColor colorWithRed:238.0f/256 green:136.0f/256 blue:51.0f/255 alpha:1.0]];
     [SeafGlobal.sharedObject loadAccounts];
@@ -431,9 +430,9 @@
 {
     UITabBarController *tabs;
     if (IsIpad()) {
-        tabs = [[UIStoryboard storyboardWithName:@"FolderView_iPad" bundle:nil] instantiateViewControllerWithIdentifier:@"TABVC"];
+        tabs = [[UIStoryboard storyboardWithName:@"FolderView_iPad" bundle:SeafileBundle()] instantiateViewControllerWithIdentifier:@"TABVC"];
     } else {
-        tabs = [[UIStoryboard storyboardWithName:@"FolderView_iPhone" bundle:nil] instantiateViewControllerWithIdentifier:@"TABVC"];
+        tabs = [[UIStoryboard storyboardWithName:@"FolderView_iPhone" bundle:SeafileBundle()] instantiateViewControllerWithIdentifier:@"TABVC"];
     }
     UIViewController *fileController = [tabs.viewControllers objectAtIndex:TABBED_SEAFILE];
     UIViewController *starredController = [tabs.viewControllers objectAtIndex:TABBED_STARRED];
@@ -500,7 +499,7 @@
         return [[[[self.viewControllers objectAtIndex:index] viewControllers] lastObject] topViewController];
     } else {
         if (!_detailVC) {
-            _detailVC = [[UIStoryboard storyboardWithName:@"FolderView_iPhone" bundle:nil] instantiateViewControllerWithIdentifier:@"DETAILVC"];
+            _detailVC = [[UIStoryboard storyboardWithName:@"FolderView_iPhone" bundle:SeafileBundle()] instantiateViewControllerWithIdentifier:@"DETAILVC"];
         }
 
         return _detailVC;
@@ -664,6 +663,5 @@
     SeafAppDelegate *appdelegate = (SeafAppDelegate *)[[UIApplication sharedApplication] delegate];
     [appdelegate checkOpenLinkAfterAHalfSecond:c];
 }
-
 
 @end
