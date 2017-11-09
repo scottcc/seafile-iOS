@@ -1088,9 +1088,11 @@ static id <CustomImagePicker> (^customImagePickerFactoryBlock)(UIViewController 
                                  animated:(BOOL)animated
                                completion:(void (^)(void))completion
 {
-    if (item.isPDFFile &&
+    if (item.editable &&
+        item.isPDFFile &&
         [SeafDetailViewController editPDFBlock] != nil &&
-        [_curEntry isKindOfClass:[SeafFile class]]) {
+        [_curEntry isKindOfClass:[SeafFile class]])
+    {
         SeafFile *seafFile = (SeafFile *)item;
         UIViewController *pdfViewController = [SeafDetailViewController editPDFBlock](self.detailViewController,
                                                                                       seafFile,
