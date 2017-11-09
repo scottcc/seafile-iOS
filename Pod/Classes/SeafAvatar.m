@@ -134,7 +134,17 @@ static NSMutableDictionary *avatarAttrs = nil;
              Debug("avatar not modified\n");
              return completeBlock(self, true);
          }
-         url = [[url stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding] escapedUrlPath];;
+         // For some odd reason, the URL may be pointing to the internal IP address. Stop that.
+         NSInteger mediaIndexStart = [url rangeOfString:@"/media/avatars"].location;
+         if (![url containsString:self.connection.address] &&
+             NSNotFound != mediaIndexStart) {
+             // Grab the /media/.... part
+             NSString *relativeAvatarPart = [[[url substringFromIndex:mediaIndexStart] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding] escapedUrlPath];
+             url = [self.connection.address stringByAppendingPathComponent:relativeAvatarPart];
+         }
+         else {
+             url = [[url stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding] escapedUrlPath];
+         }
          NSURLRequest *downloadRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
          self.task = [_connection.sessionMgr downloadTaskWithRequest:downloadRequest progress:nil destination:^NSURL *(NSURL *targetPath, NSURLResponse *response) {
              return [NSURL fileURLWithPath:self.path];
