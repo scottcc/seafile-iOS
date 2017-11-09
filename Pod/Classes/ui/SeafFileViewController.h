@@ -55,17 +55,36 @@ enum {
 
 #import "SeafDir.h"
 #import "SeafFile.h"
+#import "SeafUI.h"
 
 typedef SeafDetailViewController *(^SeafDetailViewControllerResolver)(void);
+
+/// Setting a `CustomImagePicker` as the `customImagePicker` property of SeafFileViewController will
+/// enable a swap-in replacement with the newer PHPhotos library used.
+@protocol CustomImagePicker
+/// This will be called when "Add Photos" is touched. After that, one of the two `SeafilePHPhotoFileViewController` methods will
+/// be called. The CustomImagePicker takes care of dismissing itself.
+- (void)presentImagePickerSheet;
+@end
 
 @interface SeafFileViewController : UITableViewController <SeafDentryDelegate, SeafFileUpdateDelegate> {
 }
 
 @property (strong, nonatomic) SeafConnection *connection;
 
+/// @brief Handy for setting before display, or getting to allow reloading content
+@property (strong, nonatomic) SeafDir *directory;
+
 @property (strong, readonly) SeafDetailViewController *detailViewController;
 
+/// If this factory is set, it will be called when the "Add Photos" action is initiated and
+/// will pass itself to it (as the presenting view controller) and an explicit protocol reference
++ (void)setCustomImagePickerFactoryBlock:(id <CustomImagePicker> (^)(SeafFileViewController *, id <SeafilePHPhotoFileViewController>))customImagePickerFactoryBlock;
+
 + (void)setSeafDetailViewControllerResolver:(SeafDetailViewControllerResolver)resolver;
+/// If set, these will be compared to the macros, ie pass in @[@"S_STAR", @"S_DOWNLOAD"] etc.
++ (void)setSheetSkippedItems:(NSArray <NSString *> *)skippedItems;
++ (NSArray <NSString *> *)sheetSkippedItems;
 
 - (void)refreshView;
 - (void)uploadFile:(SeafUploadFile *)file;
@@ -75,5 +94,10 @@ typedef SeafDetailViewController *(^SeafDetailViewControllerResolver)(void);
 - (void)photoSelectedChanged:(id<SeafPreView>)preViewItem to:(id<SeafPreView>)to;
 
 - (BOOL)goTo:(NSString *)repo path:(NSString *)path;
+
+/// This allows callers to push/present the right viewer for an item. completion can be nil.
+- (void)presentOrPushDetailViewController:(id <SeafPreView>)item
+                                 animated:(BOOL)animated
+                               completion:(void (^)(void))completion;
 
 @end

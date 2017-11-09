@@ -518,6 +518,11 @@
     return [super icon];
 }
 
+- (void)clearIcon
+{
+    _icon = nil;
+}
+
 - (void)genThumb
 {
     _icon = [Utils reSizeImage:self.image toSquare:THUMB_SIZE];

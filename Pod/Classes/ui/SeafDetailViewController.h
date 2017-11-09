@@ -30,6 +30,7 @@ enum PREVIEW_STATE {
 /// Default is 10 MB, set to <= zero to disable (not recommended!)
 @property (nonatomic) int maxEditFilesizeMB;
 
++ (void)setPrefersQuickLookModal:(BOOL)prefersQuickLookModal;
 
 - (void)refreshView;
 /// Does nothing if not in PREVIEW_PHOTO state, otherwise reloads the image from cache

@@ -22,7 +22,6 @@
 #import "SeafPhotoThumb.h"
 #import "SeafStorage.h"
 #import "SeafDataTaskManager.h"
-#import "SeafGlobal.h"
 #import "SeafUI.h"
 
 #import "FileSizeFormatter.h"
@@ -56,7 +55,6 @@ enum {
 - (UITableViewCell *)getSeafDirCell:(SeafDir *)sdir forTableView:(UITableView *)tableView andIndexPath:(NSIndexPath *)indexPath;
 - (UITableViewCell *)getSeafRepoCell:(SeafRepo *)srepo forTableView:(UITableView *)tableView andIndexPath:(NSIndexPath *)indexPath;
 
-@property (strong, nonatomic) SeafDir *directory;
 @property (strong) id<SeafItem> curEntry;
 @property (strong, nonatomic) IBOutlet UIActivityIndicatorView *loadingView;
 
@@ -87,6 +85,9 @@ enum {
 
 @property SeafUploadFile *ufile;
 
+/// This is only created/held while it's used, then it's nilified.
+@property (strong, nonatomic) id <CustomImagePicker> customImagePicker;
+
 @end
 
 @implementation SeafFileViewController
@@ -104,6 +105,7 @@ enum {
 
 static SeafDetailViewControllerResolver detailViewControllerResolver = ^SeafDetailViewController *{ return nil; };
 static NSMutableArray <NSString *> *sheetSkippedItems;
+static id <CustomImagePicker> (^customImagePickerFactoryBlock)(UIViewController *, id <SeafilePHPhotoFileViewController>) = nil;
 
 + (void)initialize
 {
@@ -130,11 +132,17 @@ static NSMutableArray <NSString *> *sheetSkippedItems;
     detailViewControllerResolver = resolver;
 }
 
++ (void)setCustomImagePickerFactoryBlock:(id <CustomImagePicker> (^)(UIViewController *, id <SeafilePHPhotoFileViewController>))block
+{
+    customImagePickerFactoryBlock = [block copy];
+}
+
 - (SeafDetailViewController *)detailViewController
 {
     return detailViewControllerResolver();
 }
 
+// Note this only shows up if the directory/thing-on-this-controller is editable to begin with
 - (NSArray *)editToolItems
 {
     if (!_editToolItems) {
@@ -200,11 +208,13 @@ static NSMutableArray <NSString *> *sheetSkippedItems;
 
     self.formatter = [[NSDateFormatter alloc] init];
     [self.formatter setDateFormat:@"yyyy-MM-dd HH.mm.ss"];
-
-    self.tableView.estimatedRowHeight = 55;
+    self.tableView.rowHeight = UITableViewAutomaticDimension;
+    self.tableView.estimatedRowHeight = 55.0;
     self.state = STATE_INIT;
 
     self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectZero];
+    // SCC_CONFIRM - might need the adjustment to offsets still...
+    // self.searchBar.searchTextPositionAdjustment = UIOffsetMake(0, 0);
     Debug("repoId:%@, %@, path:%@, loading ... cached:%d %@\n", _directory.repoId, _directory.name, _directory.path, _directory.hasCache, _directory.ooid);
     self.searchBar.delegate = self;
     self.searchBar.barTintColor = [UIColor colorWithRed:240/255.0 green:239/255.0 blue:246/255.0 alpha:1.0];
@@ -217,6 +227,7 @@ static NSMutableArray <NSString *> *sheetSkippedItems;
     self.searchDisplayController.searchResultsDataSource = self;
     self.searchDisplayController.searchResultsDelegate = self;
     self.searchDisplayController.delegate = self;
+    self.searchDisplayController.searchResultsTableView.rowHeight = UITableViewAutomaticDimension;
     self.searchDisplayController.searchResultsTableView.estimatedRowHeight = 50.0;
     self.searchDisplayController.searchResultsTableView.sectionHeaderHeight = 0;
 
@@ -407,6 +418,12 @@ static NSMutableArray <NSString *> *sheetSkippedItems;
         return [self alertWithTitle:NSLocalizedString(@"This app does not have access to your photos and videos.", @"Seafile") message:NSLocalizedString(@"You can enable access in Privacy Settings", @"Seafile")];
     }
 
+    if (customImagePickerFactoryBlock != nil) {
+        self.customImagePicker = customImagePickerFactoryBlock(self, self);
+        [self.customImagePicker presentImagePickerSheet];
+        return;
+    }
+    
     QBImagePickerController *imagePickerController = [[QBImagePickerController alloc] init];
     imagePickerController.title = NSLocalizedString(@"Photos", @"Seafile");
     imagePickerController.delegate = self;
@@ -450,12 +467,15 @@ static NSMutableArray <NSString *> *sheetSkippedItems;
         titles = [NSMutableArray arrayWithObjects:S_SORT_NAME, S_SORT_MTIME, nil];
     } else if (_directory.editable) {
         titles = [NSMutableArray arrayWithObjects:S_EDIT, S_NEWFILE, S_MKDIR, S_SORT_NAME, S_SORT_MTIME, S_PHOTOS_ALBUM, nil];
+        if ([sheetSkippedItems containsObject:@"S_NEWFILE"]) {
+            [titles removeObject:S_NEWFILE];
+        }
         if (self.photos.count >= 3) [titles addObject:S_PHOTOS_BROWSER];
     } else {
         titles = [NSMutableArray arrayWithObjects:S_SORT_NAME, S_SORT_MTIME, S_PHOTOS_ALBUM, nil];
         if (self.photos.count >= 3) [titles addObject:S_PHOTOS_BROWSER];
     }
-    [self showSheetWithTitles:titles andFromView:self.editItem];
+    [self showAlertWithAction:titles fromBarItem:self.editItem withTitle:nil];
 }
 
 - (void)initNavigationItems:(SeafDir *)directory
@@ -593,33 +613,72 @@ static NSMutableArray <NSString *> *sheetSkippedItems;
 }
 
 #pragma mark - Sheet
-- (void)showActionSheetWithIndexPath:(NSIndexPath *)indexPath
+- (BOOL)shouldShowActionSheetWithIndexPath:(NSIndexPath *)indexPath
 {
-    _selectedindex = indexPath;
+    return [self sheetTitlesForIndexPath:indexPath].count > 0;
+}
+
+- (NSArray <NSString *> *)sheetTitlesForIndexPath:(NSIndexPath *)indexPath
+{
     id entry = [self getDentrybyIndexPath:indexPath tableView:self.tableView];
     SeafCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
     NSArray *titles;
     if ([entry isKindOfClass:[SeafRepo class]]) {
         SeafRepo *repo = (SeafRepo *)entry;
-        if (repo.encrypted) {
-            titles = [NSArray arrayWithObjects:S_DOWNLOAD, S_RESET_PASSWORD, nil];
-        } else {
-            titles = [NSArray arrayWithObjects:S_DOWNLOAD, nil];
+        NSMutableArray *modTitles = [NSMutableArray new];
+        if (![sheetSkippedItems containsObject:@"S_DOWNLOAD"]) {
+            [modTitles addObject:S_DOWNLOAD];
         }
+        if (repo.encrypted) {
+            [modTitles addObject:S_RESET_PASSWORD];
+        }
+        titles = [modTitles copy];
     } else if ([entry isKindOfClass:[SeafDir class]]) {
-        titles = [NSArray arrayWithObjects:S_DOWNLOAD, S_DELETE, S_RENAME, S_SHARE_EMAIL, S_SHARE_LINK, nil];
+        NSMutableArray *modTitles = [@[S_DOWNLOAD, S_DELETE, S_RENAME, S_SHARE_EMAIL, S_SHARE_LINK] mutableCopy];
+        if (!((SeafDir *)entry).editable) {
+            [modTitles removeObjectsInArray:@[S_DELETE, S_RENAME]]; // no mods for you!
+        }
+        if ([sheetSkippedItems containsObject:@"S_DOWNLOAD"]) {
+            [modTitles removeObject:S_DOWNLOAD];
+        }
+        titles = [modTitles copy];
     } else if ([entry isKindOfClass:[SeafFile class]]) {
         SeafFile *file = (SeafFile *)entry;
-        NSString *star = file.isStarred ? S_UNSTAR : S_STAR;
+        
+        NSMutableArray *modTitles = [NSMutableArray new];
+        if (![sheetSkippedItems containsObject:@"S_STAR"]) {
+            NSString *star = file.isStarred ? S_UNSTAR : S_STAR;
+            [modTitles addObject:star];
+        }
+        
         if (file.mpath)
-            titles = [NSArray arrayWithObjects:star, S_DELETE, S_UPLOAD, S_SHARE_EMAIL, S_SHARE_LINK, nil];
+            [modTitles addObjectsFromArray:@[S_DELETE, S_UPLOAD, S_SHARE_EMAIL, S_SHARE_LINK]];
         else
-            titles = [NSArray arrayWithObjects:star, S_DELETE, S_REDOWNLOAD, S_RENAME, S_SHARE_EMAIL, S_SHARE_LINK, nil];
-
+            [modTitles addObjectsFromArray:@[S_DELETE, S_REDOWNLOAD, S_RENAME, S_SHARE_EMAIL, S_SHARE_LINK]];
+        
+        if (!file.editable) {
+            [modTitles removeObjectsInArray:@[S_DELETE, S_RENAME, S_UPLOAD]]; // no mods for you!
+        }
+        if ([sheetSkippedItems containsObject:@"S_REDOWNLOAD"]) {
+            [modTitles removeObject:S_REDOWNLOAD];
+        }
+        titles = [modTitles copy];
     } else if ([entry isKindOfClass:[SeafUploadFile class]]) {
-        titles = [NSArray arrayWithObjects:S_DOWNLOAD, S_DELETE, S_RENAME, S_SHARE_EMAIL, S_SHARE_LINK, nil];
+        // SCC_CONFIRM: Do we need to remove S_DELETE if not editable?
+        NSMutableArray *modTitles = [NSMutableArray arrayWithObjects:S_DOWNLOAD, S_DELETE, S_RENAME, S_SHARE_EMAIL, S_SHARE_LINK, nil];
+        if ([sheetSkippedItems containsObject:@"S_DOWNLOAD"]) {
+            [modTitles removeObject:S_DOWNLOAD];
+        }
+        titles = [modTitles copy];
     }
+    return titles;
+}
 
+- (void)showActionSheetWithIndexPath:(NSIndexPath *)indexPath
+{
+    _selectedindex = indexPath;
+    SeafCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    NSArray *titles = [self sheetTitlesForIndexPath:indexPath];
     [self showSheetWithTitles:titles andFromView:cell];
 }
 
@@ -664,6 +723,15 @@ static NSMutableArray <NSString *> *sheetSkippedItems;
         UIView *topView = [[[UIApplication sharedApplication] keyWindow].subviews firstObject];
         [actionSheet showInView:topView animated:YES];
     }
+}
+
+- (void)showAlertWithAction:(NSArray *)arr fromBarItem:(UIBarButtonItem *)item withTitle:(NSString *)title
+{
+    UIAlertController *alert = [self generateAlert:arr withTitle:title handler:^(UIAlertAction *action) {
+        [self handleAction:action.title];
+    }];
+    alert.popoverPresentationController.barButtonItem = item;
+    [self presentViewController:alert animated:true completion:nil];
 }
 
 - (UITableViewCell *)getSeafUploadFileCell:(SeafUploadFile *)file forTableView:(UITableView *)tableView
@@ -742,6 +810,9 @@ static NSMutableArray <NSString *> *sheetSkippedItems;
     [sfile loadCache];
     SeafCell *cell = [self getCellForTableView:tableView];
     cell.cellIndexPath = indexPath;
+    // Do we hide the more ... button in the cell? We only show it if there is
+    // at least one action you could perform.
+    cell.moreButton.hidden = ![self shouldShowActionSheetWithIndexPath:indexPath];
     cell.moreButtonBlock = ^(NSIndexPath *indexPath) {
         Debug(@"%@", indexPath);
         [self showActionSheetWithIndexPath:indexPath];
@@ -763,6 +834,7 @@ static NSMutableArray <NSString *> *sheetSkippedItems;
     cell.detailTextLabel.text = @"";
     cell.imageView.image = sdir.icon;
     cell.cellIndexPath = indexPath;
+    cell.moreButton.hidden = ![self shouldShowActionSheetWithIndexPath:indexPath];
     cell.moreButtonBlock = ^(NSIndexPath *indexPath) {
         Debug(@"%@", indexPath);
         [self showActionSheetWithIndexPath:indexPath];
@@ -779,6 +851,7 @@ static NSMutableArray <NSString *> *sheetSkippedItems;
     cell.textLabel.text = srepo.name;
     [cell.cacheStatusWidthConstraint setConstant:0.0f];
     cell.cellIndexPath = indexPath;
+    cell.moreButton.hidden = ![self shouldShowActionSheetWithIndexPath:indexPath];
     cell.moreButtonBlock = ^(NSIndexPath *indexPath) {
         Debug(@"%@", indexPath);
         [self showActionSheetWithIndexPath:indexPath];
@@ -1558,7 +1631,7 @@ static NSMutableArray <NSString *> *sheetSkippedItems;
     }
 }
 
-- (void)dismissImagePickerController:(QBImagePickerController *)imagePickerController
+- (void)dismissImagePickerController:(UIViewController *)imagePickerController
 {
     if (IsIpad()) {
         [self.popoverController dismissPopoverAnimated:YES];
