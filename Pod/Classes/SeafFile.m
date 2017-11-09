@@ -671,7 +671,9 @@ typedef void (^SeafThumbCompleteBlock)(BOOL ret);
     return ([[connection getRepo:self.repoId] editable] &&
             _editable &&
             ([self.mime hasPrefix:@"text/"] ||
-             ([self.mime hasPrefix:@"image/"] && [SeafDetailViewController editImageBlock] != nil)));
+             ([self.mime hasPrefix:@"image/"] && [SeafDetailViewController editImageBlock] != nil) ||
+             ([self.mime isEqualToString:@"application/pdf"] && [SeafDetailViewController editPDFBlock] != nil))
+            );
 }
 
 - (UIImage *)image
