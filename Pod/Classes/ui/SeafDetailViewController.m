@@ -35,6 +35,8 @@ enum SHARE_STATUS {
 #define SHARE_TITLE NSLocalizedString(@"How would you like to share this file?", @"Seafile")
 
 static BOOL prefersQuickLookModal = NO;
+static UIViewController *(^editImageBlock)(SeafDetailViewController *, SeafFile *, UIImage *) = nil;
+static UIViewController *(^editPDFBlock)(SeafDetailViewController *, SeafFile *, NSURL *) = nil;
 
 @interface SeafDetailViewController ()<UIWebViewDelegate, MFMailComposeViewControllerDelegate, MWPhotoBrowserDelegate>
 @property (strong, nonatomic) UIPopoverController *masterPopoverController;
@@ -69,6 +71,23 @@ static BOOL prefersQuickLookModal = NO;
 {
     prefersQuickLookModal = prefersModal;
 }
++ (UIViewController * (^)(SeafDetailViewController *, SeafFile *, UIImage *))editImageBlock
+{
+    return editImageBlock;
+}
++ (void)setEditImageBlock:(UIViewController * (^)(SeafDetailViewController *, SeafFile *, UIImage *))block
+{
+    editImageBlock = [block copy];
+}
+
++ (UIViewController * (^)(SeafDetailViewController *, SeafFile *, NSURL *))editPDFBlock
+{
+    return editPDFBlock;
+}
++ (void)setEditPDFBlock:(UIViewController * (^)(SeafDetailViewController *, SeafFile *, NSURL *))block
+{
+    editPDFBlock = [block copy];
+}
 
 - (id)initWithCoder:(NSCoder *)decoder
 {
@@ -82,7 +101,11 @@ static BOOL prefersQuickLookModal = NO;
 #pragma mark - Managing the detail item
 - (BOOL)previewSuccess
 {
-    return (self.state == PREVIEW_QL_SUBVIEW) || (self.state == PREVIEW_WEBVIEW) || (self.state == PREVIEW_WEBVIEW_JS);
+    // if we have an Edit-image block, then we can ALSO preview a PHOTO..
+    return ((self.state == PREVIEW_QL_SUBVIEW) ||
+            (self.state == PREVIEW_WEBVIEW) ||
+            (self.state == PREVIEW_WEBVIEW_JS) ||
+            (self.state == PREVIEW_PHOTO && [SeafDetailViewController editImageBlock] != nil));
 }
 
 - (BOOL)isModal
@@ -189,10 +212,24 @@ static BOOL prefersQuickLookModal = NO;
             if (!self.qlViewController.presentingViewController) {
                 if (self.isModal && self.isVisible) { // For preview from SeafFileViewController and SeafStarredFileViewController
                     UIViewController *vc = self.presentingViewController;
+                    
+                    // We need to unload/reload the current presentingViewController.. so we also hand off to
+                    // our masterVC as it knows whether to present a QLViewController *or* a custom PDF editor VC.
+                    // NOTE: no animating things here - do this fast/quick out from under you!
+                    __weak SeafDetailViewController *welf = self;
                     [vc dismissViewControllerAnimated:NO completion:^{
-                        [vc presentViewController:self.qlViewController animated:NO completion:^{
-                            [self clearPreView];
-                        }];
+                        if (_masterVc && [_masterVc isKindOfClass:[SeafFileViewController class]]) {
+                            SeafFileViewController *seafFileViewController  = (SeafFileViewController *)_masterVc;
+                            [seafFileViewController presentOrPushDetailViewController:welf.preViewItem animated:NO completion:^{
+                                [welf clearPreView];
+                            }];
+                        }
+                        else {
+                            // standard way? Not sure this should even be possible.
+                            [vc presentViewController:welf.qlViewController animated:NO completion:^{
+                                [welf clearPreView];
+                            }];
+                        }
                     }];
                 }
             }
@@ -519,12 +556,28 @@ static BOOL prefersQuickLookModal = NO;
         [self alertWithTitle:[NSString stringWithFormat:NSLocalizedString(@"File '%@' is too large to edit", @"Seafile"), previewItem.name]];
         return;
     }
-    if (!self.preViewItem.strContent) {
-        [self alertWithTitle:[NSString stringWithFormat:NSLocalizedString(@"Failed to identify the coding of '%@'", @"Seafile"), self.preViewItem.name]];
-        return;
+    
+    // Check if we're editing an image, as otherwise below this it's all text
+    UIViewController *editViewController = nil;
+    BOOL isSeafFile = [previewItem isKindOfClass:[SeafFile class]];
+    
+    if (previewItem.editable && previewItem.isImageFile && editImageBlock && isSeafFile) {
+        SeafFile *seafFile = (SeafFile *)previewItem;
+        editViewController = editImageBlock(self, seafFile, previewItem.image);
     }
-    SeafTextEditorViewController *editViewController = [[SeafTextEditorViewController alloc] initWithFile:self.preViewItem];
-    editViewController.detailViewController = self;
+    else if (previewItem.editable && previewItem.isPDFFile && editPDFBlock && isSeafFile) {
+        SeafFile *seafFile = (SeafFile *)previewItem;
+        editViewController = editPDFBlock(self, seafFile, previewItem.exportURL);
+    }
+    else {
+        if (!previewItem.strContent) {
+            [self alertWithTitle:[NSString stringWithFormat:NSLocalizedString(@"Failed to identify the coding of '%@'", @"Seafile"), previewItem.name]];
+            return;
+        }
+        SeafTextEditorViewController *textEditorViewController = [[SeafTextEditorViewController alloc] initWithFile:previewItem];
+        textEditorViewController.detailViewController = self;
+        editViewController = textEditorViewController;
+    }
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editViewController];
     [navController setModalPresentationStyle:UIModalPresentationFullScreen];
     [self presentViewController:navController animated:YES completion:nil];

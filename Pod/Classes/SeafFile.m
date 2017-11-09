@@ -11,6 +11,7 @@
 #import "SeafThumb.h"
 #import "SeafDataTaskManager.h"
 #import "SeafStorage.h"
+#import "SeafDetailViewController.h"
 
 #import "FileMimeType.h"
 #import "ExtentedString.h"
@@ -499,6 +500,11 @@
     return [Utils isImageFile:self.name];
 }
 
+- (BOOL)isPDFFile
+{
+    return [Utils isPDFFile:self.name];
+}
+
 - (UIImage *)icon
 {
     if (_icon) return _icon;
@@ -672,7 +678,12 @@
 
 - (BOOL)editable
 {
-    return [[connection getRepo:self.repoId] editable] && [self.mime hasPrefix:@"text/"];
+    return ([[connection getRepo:self.repoId] editable] &&
+            _editable &&
+            ([self.mime hasPrefix:@"text/"] ||
+             ([self.mime hasPrefix:@"image/"] && [SeafDetailViewController editImageBlock] != nil) ||
+             ([self.mime isEqualToString:@"application/pdf"] && [SeafDetailViewController editPDFBlock] != nil))
+            );
 }
 
 - (UIImage *)image
@@ -680,7 +691,11 @@
     if (!self.ooid)
         return nil;
     NSString *path = [SeafStorage.sharedObject documentPath:self.ooid];
-    NSString *cachePath = [[SeafStorage.sharedObject tempDir] stringByAppendingPathComponent:self.ooid];
+    // Check the mpath first, as we can now modify images too, otherwise fall back on cache
+    NSString *cachePath = (self.mpath && [[NSFileManager new] fileExistsAtPath:self.mpath]
+                           ? self.mpath
+                           : [[SeafStorage.sharedObject tempDir] stringByAppendingPathComponent:self.ooid]);
+    
     return [Utils imageFromPath:path withMaxSize:IMAGE_MAX_SIZE cachePath:cachePath andFileName:self.name];
 }
 

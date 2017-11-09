@@ -32,6 +32,14 @@ enum PREVIEW_STATE {
 
 + (void)setPrefersQuickLookModal:(BOOL)prefersQuickLookModal;
 
++ (UIViewController * (^)(SeafDetailViewController *, SeafFile *, UIImage *))editImageBlock;
+/// If this block is set, it will allow editing images.
++ (void)setEditImageBlock:(UIViewController * (^)(SeafDetailViewController *, SeafFile *, UIImage *))editImageBlock;
+
++ (UIViewController * (^)(SeafDetailViewController *, SeafFile *, NSURL *))editPDFBlock;
+/// If this block is set, it will allow editing PDF files.
++ (void)setEditPDFBlock:(UIViewController * (^)(SeafDetailViewController *, SeafFile *, NSURL *))editPDFBlock;
+
 - (void)refreshView;
 /// Does nothing if not in PREVIEW_PHOTO state, otherwise reloads the image from cache
 /// and instructs the photo viewer to reload its data.

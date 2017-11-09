@@ -1077,6 +1077,38 @@ static id <CustomImagePicker> (^customImagePickerFactoryBlock)(UIViewController 
     }
 }
 
+- (void)presentOrPushDetailViewController:(id <SeafPreView>)item
+                                 animated:(BOOL)animated
+                               completion:(void (^)(void))completion
+{
+    if (item.editable &&
+        item.isPDFFile &&
+        [SeafDetailViewController editPDFBlock] != nil &&
+        [_curEntry isKindOfClass:[SeafFile class]])
+    {
+        SeafFile *seafFile = (SeafFile *)item;
+        UIViewController *pdfViewController = [SeafDetailViewController editPDFBlock](self.detailViewController,
+                                                                                      seafFile,
+                                                                                      seafFile.exportURL);
+        // If we have a completion block, we have to wrap this with CATransaction calls
+        if (completion) {
+            [CATransaction begin];
+        }
+        [self.navigationController pushViewController:pdfViewController animated:animated];
+        if (completion) {
+            [CATransaction setCompletionBlock:completion];
+            [CATransaction commit];
+        }
+    }
+    else {
+        // We only need to call reloadData if there is a presentingViewController on the qlViewController
+        if (self.detailViewController.qlViewController.presentingViewController) {
+            [self.detailViewController.qlViewController reloadData];
+        }
+        [self presentViewController:self.detailViewController.qlViewController animated:animated completion:completion];
+    }
+}
+
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {
     [self tableView:tableView didSelectRowAtIndexPath:indexPath];
