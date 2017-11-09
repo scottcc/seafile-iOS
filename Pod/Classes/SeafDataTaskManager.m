@@ -187,10 +187,14 @@
 
             __weak typeof(self) weakSelf = self;
             accountQueue.uploadQueue.taskCompleteBlock = ^(id<SeafTask>  _Nonnull task, BOOL result) {
-                weakSelf.finishBlock(task);
+                if (weakSelf.finishBlock) {
+                    weakSelf.finishBlock(task);
+                }
             };
             accountQueue.fileQueue.taskCompleteBlock = ^(id<SeafTask>  _Nonnull task, BOOL result) {
-                weakSelf.finishBlock(task);
+                if (weakSelf.finishBlock) {
+                    weakSelf.finishBlock(task);
+                }
             };
 
             [self.accountQueueDict setObject:accountQueue forKey:identifier];
