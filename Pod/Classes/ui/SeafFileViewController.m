@@ -621,6 +621,14 @@ static SeafDetailViewControllerResolver detailViewControllerResolver = ^SeafDeta
     [self showSheetWithTitles:titles andFromView:cell];
 }
 
+- (void)showAlertWithIndexPath:(NSIndexPath *)indexPath
+{
+    _selectedindex = indexPath;
+    SeafCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    NSArray *titles = [self sheetTitlesForIndexPath:indexPath];
+    [self showAlertWithAction:titles fromBarItem:cell withTitle:nil];
+}
+
 - (void)showSheetWithTitles:(NSArray*)titles andFromView:(id)view
 {
     SeafActionSheetSection *section = [SeafActionSheetSection sectionWithTitle:nil message:nil buttonTitles:titles buttonStyle:SFActionSheetButtonStyleDefault];
@@ -751,7 +759,7 @@ static SeafDetailViewControllerResolver detailViewControllerResolver = ^SeafDeta
     cell.cellIndexPath = indexPath;
     cell.moreButtonBlock = ^(NSIndexPath *indexPath) {
         Debug(@"%@", indexPath);
-        [self showActionSheetWithIndexPath:indexPath];
+        [self showAlertWithIndexPath:indexPath];
     };
     [self updateCellContent:cell file:sfile];
     sfile.delegate = self;
