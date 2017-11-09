@@ -15,9 +15,9 @@
 
 @property (strong, nonatomic) SeafConnection *connection;
 
++ (void)setSeafDetailViewControllerResolver:(SeafDetailViewControllerResolver)resolver;
+
 - (void)refreshView;
 - (void)selectFile:(SeafStarredFile *)sfile;
-
-+ (void)setSeafDetailViewControllerResolver:(SeafDetailViewControllerResolver)resolver;
 
 @end

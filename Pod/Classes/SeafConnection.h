@@ -201,5 +201,10 @@ BOOL SeafServerTrustIsValid(SecTrustRef _Nonnull serverTrust);
 - (void)clearRepoPasswords;
 
 + (AFHTTPRequestSerializer <AFURLRequestSerialization> * _Nonnull)requestSerializer;
+/**
+ * @brief   If not set, uses `kTLSProtocol1` which you probably DON'T WANT as it's NOT SECURE.
+ * @note    Seriously, use `kTLSProtocol12` already.
+ */
++ (void)setTLSMinimumSupportedProtocol:(SSLProtocol)tlsMinimumSupportedProtocol;
 
 @end
