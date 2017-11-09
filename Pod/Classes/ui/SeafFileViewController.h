@@ -59,6 +59,12 @@ enum {
 
 typedef SeafDetailViewController *(^SeafDetailViewControllerResolver)(void);
 
+/// These two methods will be available to the `CustomImagePicker` delegate.
+@protocol SeafilePHPhotoFileViewController
+- (void)phAssetImagePickerControllerDidCancel;
+- (void)phAssetImagePickerControllerDidSelectAssets:(NSArray <PHAsset *> *)phAssets;
+@end
+
 /// Setting a `CustomImagePicker` as the `customImagePicker` property of SeafFileViewController will
 /// enable a swap-in replacement with the newer PHPhotos library used.
 @protocol CustomImagePicker

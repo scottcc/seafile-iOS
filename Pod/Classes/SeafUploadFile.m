@@ -536,10 +536,19 @@ static NSMutableDictionary *uploadFileAttrs = nil;
     _assetURL = url;
 }
 
+- (void)setPHAsset:(PHAsset *)asset
+{
+    _phAsset = asset;
+    NSAssert(self.lpath.length > 0, @"Can't upload PHAsset when lpath is empty!");
+    _assetURL = [[NSURL alloc] initFileURLWithPath:self.lpath];
+}
+
 - (void)checkAsset
 {
     NSMutableDictionary *dict = [SeafUploadFile uploadFileAttrs];
     if (_asset) {
+        NSAssert(_phAsset == nil, @"Can not use a single SeafUploadFile with BOTH ALAsset and PHAsset references!");
+        
         @synchronized(dict) {
             BOOL ret = [Utils writeDataToPath:self.lpath andAsset:self.asset];
             if (!ret) {
@@ -551,6 +560,21 @@ static NSMutableDictionary *uploadFileAttrs = nil;
         _filesize = [Utils fileSizeAtPath1:self.lpath];
         Debug("asset file %@ size: %lld, lpath: %@", _asset.defaultRepresentation.url, _filesize, self.lpath);
         _asset = nil;
+    }
+    if (_phAsset) {
+        NSAssert(_asset == nil, @"Can not use a single SeafUploadFile with BOTH ALAsset and PHAsset references!");
+        
+        @synchronized(dict) {
+            BOOL ret = [Utils writeDataToPath:self.lpath andPHAsset:self.phAsset];
+            if (!ret) {
+                Warning("Failed to write phAsset to file.");
+                [self finishUpload:false oid:nil];
+                return;
+            }
+        }
+        _filesize = [Utils fileSizeAtPath1:self.lpath];
+        Debug("phAsset file %@ size: %lld, lpath: %@", _asset.defaultRepresentation.url, _filesize, self.lpath);
+        _phAsset = nil;
     }
 }
 #pragma mark - QLPreviewItem

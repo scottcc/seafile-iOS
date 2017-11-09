@@ -50,7 +50,7 @@ enum {
 #define STR_12 NSLocalizedString(@"A file with the same name already exists, do you want to overwrite?", @"Seafile")
 #define STR_13 NSLocalizedString(@"Files with the same name already exist, do you want to overwrite?", @"Seafile")
 
-@interface SeafFileViewController ()<QBImagePickerControllerDelegate, UIPopoverControllerDelegate, SeafUploadDelegate, SeafDirDelegate, SeafShareDelegate, UISearchBarDelegate, UISearchDisplayDelegate, MFMailComposeViewControllerDelegate, SWTableViewCellDelegate, MWPhotoBrowserDelegate>
+@interface SeafFileViewController ()<QBImagePickerControllerDelegate, UIPopoverControllerDelegate, SeafUploadDelegate, SeafDirDelegate, SeafShareDelegate, UISearchBarDelegate, UISearchDisplayDelegate, MFMailComposeViewControllerDelegate, SWTableViewCellDelegate, MWPhotoBrowserDelegate, SeafilePHPhotoFileViewController>
 - (UITableViewCell *)getSeafFileCell:(SeafFile *)sfile forTableView:(UITableView *)tableView andIndexPath:(NSIndexPath *)indexPath;
 - (UITableViewCell *)getSeafDirCell:(SeafDir *)sdir forTableView:(UITableView *)tableView andIndexPath:(NSIndexPath *)indexPath;
 - (UITableViewCell *)getSeafRepoCell:(SeafRepo *)srepo forTableView:(UITableView *)tableView andIndexPath:(NSIndexPath *)indexPath;
@@ -1615,6 +1615,35 @@ static id <CustomImagePicker> (^customImagePickerFactoryBlock)(UIViewController 
     }
 }
 
+- (void)uploadPickedPHAssets:(NSArray <PHAsset *> *)phAssets overwrite:(BOOL)overwrite
+{
+    NSMutableSet *nameSet = overwrite ? [NSMutableSet new] : [self getExistedNameSet];
+    NSMutableArray *files = [[NSMutableArray alloc] init];
+    NSString *uploadDir = [self.connection uniqueUploadDir];
+    for (PHAsset *phAsset in phAssets) {
+        NSString *filename = [Utils assertPHAssetName:phAsset];
+        Debug("Upload picked file : %@", filename);
+        if (!overwrite && [nameSet containsObject:filename]) {
+            NSString *name = filename.stringByDeletingPathExtension;
+            NSString *ext = filename.pathExtension;
+            filename = [self getUniqueFilename:name ext:ext nameSet:nameSet];
+        }
+        [nameSet addObject:filename];
+        NSString *path = [uploadDir stringByAppendingPathComponent:filename];
+        SeafUploadFile *file =  [self.connection getUploadfile:path];
+        file.overwrite = overwrite;
+        [file setPHAsset:phAsset];
+        file.delegate = self;
+        [files addObject:file];
+        [self.directory addUploadFile:file flush:false];
+    }
+    [SeafUploadFile saveAttrs];
+    [self.tableView reloadData];
+    for (SeafUploadFile *file in files) {
+        [SeafDataTaskManager.sharedObject addUploadTask:file];
+    }
+}
+
 - (void)uploadPickedAssetsUrl:(NSArray *)urls overwrite:(BOOL)overwrite
 {
     if (urls.count == 0) return;
@@ -1672,6 +1701,39 @@ static id <CustomImagePicker> (^customImagePickerFactoryBlock)(UIViewController 
         }];
     } else
         [self uploadPickedAssetsUrl:urls overwrite:false];
+}
+
+#pragma mark - SeafilePHPhotoFileViewController
+
+- (void)phAssetImagePickerControllerDidCancel;
+{
+    self.customImagePicker = nil;
+}
+
+- (void)phAssetImagePickerControllerDidSelectAssets:(NSArray <PHAsset *> *)phAssets
+{
+    if (phAssets.count == 0) return;
+    NSSet *nameSet = [self getExistedNameSet];
+    NSMutableArray <PHAsset *> *pickedAssets = [[NSMutableArray alloc] init];
+    int duplicated = 0;
+    for (PHAsset *phAsset in phAssets) {
+        NSString *filename = [Utils assertPHAssetName:phAsset];
+        if ([nameSet containsObject:filename])
+            duplicated++;
+        [pickedAssets addObject:phAsset];
+    }
+    if (duplicated > 0) {
+        NSString *title = duplicated == 1 ? STR_12 : STR_13;
+        [self alertWithTitle:title message:nil yes:^{
+            [self uploadPickedPHAssets:pickedAssets overwrite:true];
+        } no:^{
+            [self uploadPickedPHAssets:pickedAssets overwrite:false];
+        }];
+    }
+    else {
+        [self uploadPickedPHAssets:pickedAssets overwrite:false];
+    }
+    self.customImagePicker = nil;
 }
 
 #pragma mark - UIPopoverControllerDelegate
