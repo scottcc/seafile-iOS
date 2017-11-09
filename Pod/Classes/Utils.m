@@ -632,8 +632,13 @@ static NSDateFormatter *assetDateNameFormatter = nil;
 {
     const int MAX_SIZE = 2048;
     if ([[NSFileManager defaultManager] fileExistsAtPath:cachePath]) {
-        UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@/%@",cachePath,fileName]];
-        return image;
+        // try appending the filename to the cachepath first
+        NSString *fullPathToCachedFile = [cachePath stringByAppendingPathComponent:fileName];
+        UIImage *image = ([UIImage imageWithContentsOfFile:fullPathToCachedFile] ?:
+                          [UIImage imageWithContentsOfFile:cachePath] );
+        if (image) {
+            return image;
+        }
     }
 
     if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {

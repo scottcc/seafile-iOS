@@ -691,9 +691,11 @@
     if (!self.ooid)
         return nil;
     NSString *path = [SeafStorage.sharedObject documentPath:self.ooid];
-    // Check the mpath first, as we can now modify images too, otherwise fall back on cache
+    // Check the mpath first, as we can now modify images too, otherwise fall back on cache.
+    // HOWEVER, in this case, we must strip off the last path component as cachePath is apparently
+    // not inclusive of the name...
     NSString *cachePath = (self.mpath && [[NSFileManager new] fileExistsAtPath:self.mpath]
-                           ? self.mpath
+                           ? [self.mpath stringByDeletingLastPathComponent]
                            : [[SeafStorage.sharedObject tempDir] stringByAppendingPathComponent:self.ooid]);
     
     return [Utils imageFromPath:path withMaxSize:IMAGE_MAX_SIZE cachePath:cachePath andFileName:self.name];
