@@ -63,6 +63,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.tableView.rowHeight = UITableViewAutomaticDimension;
     self.tableView.estimatedRowHeight = 50.0;
     [self.tableView registerNib:[UINib nibWithNibName:@"SeafDirCell" bundle:SeafileBundle()]
          forCellReuseIdentifier:@"SeafDirCell"];

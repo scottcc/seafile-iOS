@@ -5,7 +5,6 @@
 //  Created by Wei Wang on 7/7/12.
 //  Copyright (c) 2012 Seafile Ltd. All rights reserved.
 //
-
 #import <MessageUI/MessageUI.h>
 
 @import MWPhotoBrowserPlus;
@@ -17,12 +16,12 @@
 #import "SeafTextEditorViewController.h"
 #import "SeafUploadFile.h"
 #import "SeafFileViewController.h"
+#import "SeafUI.h"
 
 #import "SeafPhoto.h"
 #import "UIViewController+Extend.h"
 #import "ExtentedString.h"
 #import "Debug.h"
-#import "SeafUI.h"
 
 
 enum SHARE_STATUS {
@@ -77,6 +76,7 @@ static BOOL prefersQuickLookModal = NO;
     self.qlViewController = [[QLPreviewController alloc] init];
     self.qlViewController.delegate = self;
     self.qlViewController.dataSource = self;
+    self.maxEditFilesizeMB = 10;
     return self;
 }
 #pragma mark - Managing the detail item
@@ -241,6 +241,18 @@ static BOOL prefersQuickLookModal = NO;
     [self refreshView];
 }
 
+- (void)refreshCurrentPhotoImage
+{
+    if (self.state != PREVIEW_PHOTO || self.currentPageIndex >= self.photos.count) {
+        Debug("SKIPPING refreshCurrentPhotoImage, not in PREVIEW_PHOTO state (is: %d) %@ or is past the index of %@ (count is %@)", self.state, [self.preViewItem name], @(self.currentPageIndex), @(self.photos.count));
+        return;
+    }
+    SeafPhoto *currentPhoto = self.photos[self.currentPageIndex];
+    [currentPhoto refreshImage];
+    [self.mwPhotoBrowser reloadData];
+    [self.mwPhotoBrowser setCurrentPhotoIndex:self.currentPageIndex];
+}
+
 - (void)setPreViewPhotos:(NSArray *)items current:(id<SeafPreView>)item master:(UIViewController<SeafDentryDelegate> *)c
 {
     [self clearPreView];
@@ -297,7 +309,8 @@ static BOOL prefersQuickLookModal = NO;
     self.barItemsUnStar  = [NSArray arrayWithObjects:self.exportItem, space, self.shareItem, space, unstarItem, space, nil];
 
     if(IsIpad()) {
-        NSArray *views = [SeafileBundle() loadNibNamed:@"FailToPreview_iPad" owner:self options:nil];        self.failedView = [views objectAtIndex:0];
+        NSArray *views = [SeafileBundle() loadNibNamed:@"FailToPreview_iPad" owner:self options:nil];
+        self.failedView = [views objectAtIndex:0];
         views = [SeafileBundle() loadNibNamed:@"DownloadingProgress_iPad" owner:self options:nil];
         self.progressView = [views objectAtIndex:0];
     } else {
@@ -492,8 +505,10 @@ static BOOL prefersQuickLookModal = NO;
 
 - (IBAction)editFile:(id)sender
 {
-    if (self.preViewItem.filesize > 10 * 1024 * 1024) {
-        [self alertWithTitle:[NSString stringWithFormat:NSLocalizedString(@"File '%@' is too large to edit", @"Seafile"), self.preViewItem.name]];
+    id <SeafPreView> previewItem = self.preViewItem;
+    if (self.maxEditFilesizeMB > 0 &&
+        previewItem.filesize > self.maxEditFilesizeMB * 1024 * 1024) {
+        [self alertWithTitle:[NSString stringWithFormat:NSLocalizedString(@"File '%@' is too large to edit", @"Seafile"), previewItem.name]];
         return;
     }
     if (!self.preViewItem.strContent) {
