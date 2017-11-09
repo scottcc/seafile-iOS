@@ -49,12 +49,14 @@ enum {
 
 
 @class SeafDetailViewController;
+@class SeafFileViewController;
 
 #import <CoreData/CoreData.h>
 
 #import "SeafDir.h"
 #import "SeafFile.h"
 
+typedef SeafDetailViewController *(^SeafDetailViewControllerResolver)(void);
 
 @interface SeafFileViewController : UITableViewController <SeafDentryDelegate, SeafFileUpdateDelegate> {
 }
@@ -62,6 +64,8 @@ enum {
 @property (strong, nonatomic) SeafConnection *connection;
 
 @property (strong, readonly) SeafDetailViewController *detailViewController;
+
++ (void)setSeafDetailViewControllerResolver:(SeafDetailViewControllerResolver)resolver;
 
 - (void)refreshView;
 - (void)uploadFile:(SeafUploadFile *)file;

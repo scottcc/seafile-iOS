@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "SeafConnection.h"
 #import "SeafStarredFile.h"
-
+#import "SeafUI.h"
 
 @interface SeafStarredFilesViewController : UITableViewController<SeafStarFileDelegate, SeafFileUpdateDelegate, SeafDentryDelegate>
 
@@ -17,5 +17,7 @@
 
 - (void)refreshView;
 - (void)selectFile:(SeafStarredFile *)sfile;
+
++ (void)setSeafDetailViewControllerResolver:(SeafDetailViewControllerResolver)resolver;
 
 @end

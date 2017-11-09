@@ -41,12 +41,10 @@ enum {
 #define STR_9 NSLocalizedString(@"The certificate from this website is invalid. Would you like to connect to the server anyway?", @"Seafile");
 #define STR_10 NSLocalizedString(@"uploading", @"Seafile")
 #define STR_11 NSLocalizedString(@"modified", @"Seafile")
-#define STR_12 NSLocalizedString(@"A file with the same name already exists, do you want to overwrite?", @"Seafile")
-#define STR_13 NSLocalizedString(@"Files with the same name already exist, do you want to overwrite?", @"Seafile")
 #define STR_15 NSLocalizedString(@"Your device cannot authenticate using Touch ID.", @"Seafile")
 
 
-@interface SeafAppDelegate : UIResponder <UIApplicationDelegate, SeafConnectionDelegate>
+@interface SeafAppDelegate : UIResponder <SeafAppDelegateProxy>
 @property (strong, nonatomic) UIWindow *window;
 
 @property (readonly) UINavigationController *startNav;
@@ -74,5 +72,6 @@ enum {
 - (void)checkBackgroundUploadStatus;
 
 + (void)checkOpenLink:(SeafFileViewController *)c;
+- (void)checkOpenLinkAfterAHalfSecond:(SeafFileViewController *)c;
 
 @end

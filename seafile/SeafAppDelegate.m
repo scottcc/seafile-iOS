@@ -260,6 +260,9 @@
     Info("%@", [[NSBundle mainBundle] infoDictionary]);
     _global = [SeafGlobal sharedObject];
     [_global migrate];
+    // Ensure UI component methods can instantiate the appropriate controllers
+    [self setupUIResolvers];
+
     [self initTabController];
     [[UITabBar appearance] setTintColor:[UIColor colorWithRed:238.0f/256 green:136.0f/256 blue:51.0f/255 alpha:1.0]];
     [SeafGlobal.sharedObject loadAccounts];
@@ -302,6 +305,14 @@
 
     [UIApplication sharedApplication].delegate.window.backgroundColor = [UIColor whiteColor];
     return YES;
+}
+
+- (void)setupUIResolvers
+{
+    __weak SeafAppDelegate *welf = self;
+    [SeafFileViewController setSeafDetailViewControllerResolver:^SeafDetailViewController *(void) {
+        return (SeafDetailViewController *)[welf detailViewControllerAtIndex:TABBED_SEAFILE];
+    }];
 }
 
 - (void)enterBackground
@@ -640,12 +651,19 @@
     }
 }
 
+- (void)checkOpenLinkAfterAHalfSecond:(SeafFileViewController *)c
+{
+    __weak SeafAppDelegate *welf = self;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5*NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
+        [welf checkOpenLink:c];
+    });
+}
+
 + (void)checkOpenLink:(SeafFileViewController *)c
 {
     SeafAppDelegate *appdelegate = (SeafAppDelegate *)[[UIApplication sharedApplication] delegate];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5*NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
-        [appdelegate checkOpenLink:c];
-    });
+    [appdelegate checkOpenLinkAfterAHalfSecond:c];
 }
+
 
 @end
