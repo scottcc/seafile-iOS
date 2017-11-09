@@ -682,6 +682,14 @@ static id <CustomImagePicker> (^customImagePickerFactoryBlock)(UIViewController 
     [self showSheetWithTitles:titles andFromView:cell];
 }
 
+- (void)showAlertWithIndexPath:(NSIndexPath *)indexPath
+{
+    _selectedindex = indexPath;
+    SeafCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    NSArray *titles = [self sheetTitlesForIndexPath:indexPath];
+    [self showAlertWithAction:titles fromBarItem:cell withTitle:nil];
+}
+
 - (void)showSheetWithTitles:(NSArray*)titles andFromView:(id)view
 {
     SeafActionSheetSection *section = [SeafActionSheetSection sectionWithTitle:nil message:nil buttonTitles:titles buttonStyle:SFActionSheetButtonStyleDefault];
@@ -815,7 +823,7 @@ static id <CustomImagePicker> (^customImagePickerFactoryBlock)(UIViewController 
     cell.moreButton.hidden = ![self shouldShowActionSheetWithIndexPath:indexPath];
     cell.moreButtonBlock = ^(NSIndexPath *indexPath) {
         Debug(@"%@", indexPath);
-        [self showActionSheetWithIndexPath:indexPath];
+        [self showAlertWithIndexPath:indexPath];
     };
     [self updateCellContent:cell file:sfile];
     sfile.delegate = self;
