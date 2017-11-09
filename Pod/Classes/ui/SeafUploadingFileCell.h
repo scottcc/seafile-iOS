@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SWTableViewCell.h"
+@import NotDeadSWTableViewCell;
 
 @interface SeafUploadingFileCell : SWTableViewCell
 

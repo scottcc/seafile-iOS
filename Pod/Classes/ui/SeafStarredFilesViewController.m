@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 Seafile Ltd. All rights reserved.
 //
 
-#import "UIScrollView+SVPullToRefresh.h"
+@import SVPullToRefreshPlus;
 
 #import "SeafStarredFilesViewController.h"
 #import "SeafDetailViewController.h"
