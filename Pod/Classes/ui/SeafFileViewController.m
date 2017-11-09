@@ -899,6 +899,13 @@ static NSMutableArray <NSString *> *sheetSkippedItems;
             [self alertWithTitle:NSLocalizedString(@"File name invalid", @"Seafile")];
             return;
         }
+        NSString *priorExtension = newName.pathExtension;
+        // SCC: Ensure the same file extension is used! Otherwise you can rename foo.jpg to bar
+        //      and it will no longer display quite right, loses preview, etc.
+        if (priorExtension.length > 0 && ![priorExtension isEqualToString:input.pathExtension]) {
+            input = [input stringByAppendingPathExtension:priorExtension];
+        }
+        
         [_directory renameFile:(SeafFile *)_curEntry newName:input];
         [SVProgressHUD showWithStatus:NSLocalizedString(@"Renaming file ...", @"Seafile")];
     }];
@@ -925,7 +932,7 @@ static NSMutableArray <NSString *> *sheetSkippedItems;
         if (tableView != self.tableView) {
             return [self.searchResults objectAtIndex:indexPath.row];
         } else if (![_directory isKindOfClass:[SeafRepos class]])
-            return [_directory.allItems objectAtIndex:[indexPath row]];
+            return (indexPath.row < _directory.allItems.count ? [_directory.allItems objectAtIndex:[indexPath row]] : nil);
         NSArray *repos = [[((SeafRepos *)_directory) repoGroups] objectAtIndex:[indexPath section]];
         return [repos objectAtIndex:[indexPath row]];
     } @catch(NSException *exception) {
@@ -981,15 +988,15 @@ static NSMutableArray <NSString *> *sheetSkippedItems;
         } else {
             [self.detailViewController setPreViewItem:item master:self];
         }
-
-        if (!IsIpad()) {
-            if (self.detailViewController.state == PREVIEW_QL_MODAL) { // Use fullscreen preview for doc, xls, etc.
-                [self.detailViewController.qlViewController reloadData];
-                [self presentViewController:self.detailViewController.qlViewController animated:true completion:nil];
-            } else {
-                [[SeafUI appdelegate] showDetailView:self.detailViewController];
-            }
+        // Why would we only show previews on the phone and not iPad? Who knows! So we comment out the
+        // disabling below.
+//        if (!IsIpad()) {
+        if (self.detailViewController.state == PREVIEW_QL_MODAL) { // Use fullscreen preview for doc, xls, etc.
+            [self presentOrPushDetailViewController:item animated:YES completion:nil];
+        } else {
+            [[SeafUI appdelegate] showDetailView:self.detailViewController];
         }
+//        }
     } else if ([_curEntry isKindOfClass:[SeafDir class]]) {
         SeafFileViewController *controller = [[UIStoryboard storyboardWithName:@"FolderView_iPad" bundle:SeafileBundle()] instantiateViewControllerWithIdentifier:@"MASTERVC"];
         [controller setDirectory:(SeafDir *)_curEntry];
@@ -1802,6 +1809,7 @@ static NSMutableArray <NSString *> *sheetSkippedItems;
     }
 
     MFMailComposeViewController *mailPicker = [SeafUI appdelegate].globalMailComposer;
+    mailPicker.mailComposeDelegate = self;
     NSString *emailSubject, *emailBody;
     if ([entry isKindOfClass:[SeafFile class]]) {
         emailSubject = [NSString stringWithFormat:NSLocalizedString(@"File '%@' is shared with you using %@", @"Seafile"), entry.name, APP_NAME];
