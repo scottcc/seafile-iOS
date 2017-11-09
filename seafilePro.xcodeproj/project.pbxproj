@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		10CC62C9699DE05CBA3647E4 /* libPods-seafile-appstore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E2A39A0EBB6C3379F30D1A83 /* libPods-seafile-appstore.a */; };
-		11FAE5D19696AF534A19C252 /* libPods-SeafProvider.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 08E34A4BEBB32AD5D2CB9442 /* libPods-SeafProvider.a */; };
+		08C81221B93B2F77F1F85649 /* Pods_SeafAction.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDF111F289F29D4B6379A432 /* Pods_SeafAction.framework */; };
+		3F68C713782789ACD2E59825 /* Pods_SeafProvider.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FC7D160B75CAC7F84D36617 /* Pods_SeafProvider.framework */; };
 		5704C6D31753A1380028F4FE /* IntelligentSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5704C6D11753A1380028F4FE /* IntelligentSplitViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		5704C6F91756710F0028F4FE /* tab-account.png in Resources */ = {isa = PBXBuildFile; fileRef = 5704C6F51756710F0028F4FE /* tab-account.png */; };
 		5704C6FB1756710F0028F4FE /* tab-modify.png in Resources */ = {isa = PBXBuildFile; fileRef = 5704C6F61756710F0028F4FE /* tab-modify.png */; };
@@ -184,7 +184,8 @@
 		58D40A7A1E9AF84C00A68BEF /* seafile.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 58D40A6C1E9AF7A400A68BEF /* seafile.xcdatamodeld */; };
 		58D40A7B1E9AF85100A68BEF /* seafile.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 58D40A6C1E9AF7A400A68BEF /* seafile.xcdatamodeld */; };
 		58D40A7E1E9AF86D00A68BEF /* SeafData.m in Sources */ = {isa = PBXBuildFile; fileRef = 58D40A7C1E9AF86D00A68BEF /* SeafData.m */; };
-		7354777D2C3444E394BB2F31 /* libPods-SeafAction.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 159E0D2A7419F67E532A240F /* libPods-SeafAction.a */; };
+		96B5BCEAE026D3180E30E9D5 /* Pods_seafile_appstore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96AA918F0DB37BEFBB94059D /* Pods_seafile_appstore.framework */; };
+		D4BE633C902E318907D8AF69 /* Pods_SeafProviderFileProvider.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0B9C062F8425D95D2154FBB /* Pods_SeafProviderFileProvider.framework */; };
 		F53690381F13B5F90050D788 /* more_dot.png in Resources */ = {isa = PBXBuildFile; fileRef = F53690371F13B5F90050D788 /* more_dot.png */; };
 		F536DA191F30DB6F00F2EF3F /* SeafSyncInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F536DA171F30DB6F00F2EF3F /* SeafSyncInfoCell.m */; };
 		F536DA1A1F30DB6F00F2EF3F /* SeafSyncInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F536DA181F30DB6F00F2EF3F /* SeafSyncInfoCell.xib */; };
@@ -194,7 +195,6 @@
 		F575168B1EF4CA0B00BD633B /* arrowmore@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F57516891EF4CA0B00BD633B /* arrowmore@2x.png */; };
 		F575168C1EF4CA0B00BD633B /* arrowmore@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F575168A1EF4CA0B00BD633B /* arrowmore@3x.png */; };
 		F5CBCDC01F2C2F1500E8C35B /* SeafSyncInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5CBCDBF1F2C2F1500E8C35B /* SeafSyncInfoViewController.m */; };
-		FE5D80C9DA6AB7339F81D3AD /* libPods-SeafProviderFileProvider.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DFD7A698B44546A8DDD2D26 /* libPods-SeafProviderFileProvider.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -250,12 +250,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		08E34A4BEBB32AD5D2CB9442 /* libPods-SeafProvider.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SeafProvider.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0AC7D46EF997A8FF83A3AD84 /* Pods-SeafProvider.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SeafProvider.release.xcconfig"; path = "Pods/Target Support Files/Pods-SeafProvider/Pods-SeafProvider.release.xcconfig"; sourceTree = "<group>"; };
 		14F713F28AC94AB8901C31BF /* Pods-seafile-appstore.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-seafile-appstore.release.xcconfig"; path = "Pods/Target Support Files/Pods-seafile-appstore/Pods-seafile-appstore.release.xcconfig"; sourceTree = "<group>"; };
-		159E0D2A7419F67E532A240F /* libPods-SeafAction.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SeafAction.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2979DE872836DD67FEA29262 /* Pods-SeafProviderFileProvider.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SeafProviderFileProvider.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SeafProviderFileProvider/Pods-SeafProviderFileProvider.debug.xcconfig"; sourceTree = "<group>"; };
-		3DFD7A698B44546A8DDD2D26 /* libPods-SeafProviderFileProvider.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SeafProviderFileProvider.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5704C6D01753A1380028F4FE /* IntelligentSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IntelligentSplitViewController.h; sourceTree = "<group>"; };
 		5704C6D11753A1380028F4FE /* IntelligentSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IntelligentSplitViewController.m; sourceTree = "<group>"; };
 		5704C6F51756710F0028F4FE /* tab-account.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab-account.png"; sourceTree = "<group>"; };
@@ -467,12 +464,15 @@
 		58D40A7C1E9AF86D00A68BEF /* SeafData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SeafData.m; path = common/Classes/SeafData.m; sourceTree = "<group>"; };
 		58D40A7D1E9AF86D00A68BEF /* SeafData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SeafData.h; path = common/Classes/SeafData.h; sourceTree = "<group>"; };
 		67C8B56C448237DC7BB99D18 /* Pods-SeafProvider.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SeafProvider.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SeafProvider/Pods-SeafProvider.debug.xcconfig"; sourceTree = "<group>"; };
+		7FC7D160B75CAC7F84D36617 /* Pods_SeafProvider.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SeafProvider.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		96AA918F0DB37BEFBB94059D /* Pods_seafile_appstore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_seafile_appstore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AF30EE6039454E8B0967C09 /* Pods-SeafAction.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SeafAction.release.xcconfig"; path = "Pods/Target Support Files/Pods-SeafAction/Pods-SeafAction.release.xcconfig"; sourceTree = "<group>"; };
 		AB170391198116EFF77DDDA5 /* Pods-seafile-appstore.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-seafile-appstore.debug.xcconfig"; path = "Pods/Target Support Files/Pods-seafile-appstore/Pods-seafile-appstore.debug.xcconfig"; sourceTree = "<group>"; };
 		DE6E97E6F025F693FDC9CCB1 /* Pods-SeafProviderFileProvider.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SeafProviderFileProvider.release.xcconfig"; path = "Pods/Target Support Files/Pods-SeafProviderFileProvider/Pods-SeafProviderFileProvider.release.xcconfig"; sourceTree = "<group>"; };
-		E2A39A0EBB6C3379F30D1A83 /* libPods-seafile-appstore.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-seafile-appstore.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4F46F57187B44B200B80C36 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		EDF111F289F29D4B6379A432 /* Pods_SeafAction.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SeafAction.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EE1E1FA7502D3F04292B11CB /* Pods-SeafAction.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SeafAction.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SeafAction/Pods-SeafAction.debug.xcconfig"; sourceTree = "<group>"; };
+		F0B9C062F8425D95D2154FBB /* Pods_SeafProviderFileProvider.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SeafProviderFileProvider.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F53690371F13B5F90050D788 /* more_dot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = more_dot.png; sourceTree = "<group>"; };
 		F536DA161F30DB6F00F2EF3F /* SeafSyncInfoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SeafSyncInfoCell.h; sourceTree = "<group>"; };
 		F536DA171F30DB6F00F2EF3F /* SeafSyncInfoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SeafSyncInfoCell.m; sourceTree = "<group>"; };
@@ -507,7 +507,7 @@
 				571D8CE21677881400F1A22C /* Foundation.framework in Frameworks */,
 				571D8CE31677881400F1A22C /* CoreGraphics.framework in Frameworks */,
 				571D8CE41677881400F1A22C /* CoreData.framework in Frameworks */,
-				10CC62C9699DE05CBA3647E4 /* libPods-seafile-appstore.a in Frameworks */,
+				96B5BCEAE026D3180E30E9D5 /* Pods_seafile_appstore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -515,7 +515,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				11FAE5D19696AF534A19C252 /* libPods-SeafProvider.a in Frameworks */,
+				3F68C713782789ACD2E59825 /* Pods_SeafProvider.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -523,7 +523,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FE5D80C9DA6AB7339F81D3AD /* libPods-SeafProviderFileProvider.a in Frameworks */,
+				D4BE633C902E318907D8AF69 /* Pods_SeafProviderFileProvider.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -531,7 +531,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7354777D2C3444E394BB2F31 /* libPods-SeafAction.a in Frameworks */,
+				08C81221B93B2F77F1F85649 /* Pods_SeafAction.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -828,10 +828,10 @@
 				5725186117AE7D000078CD12 /* Security.framework */,
 				57335CF8160DA00000018AE8 /* SystemConfiguration.framework */,
 				57DB827115A833FA00097CEC /* UIKit.framework */,
-				08E34A4BEBB32AD5D2CB9442 /* libPods-SeafProvider.a */,
-				3DFD7A698B44546A8DDD2D26 /* libPods-SeafProviderFileProvider.a */,
-				159E0D2A7419F67E532A240F /* libPods-SeafAction.a */,
-				E2A39A0EBB6C3379F30D1A83 /* libPods-seafile-appstore.a */,
+				EDF111F289F29D4B6379A432 /* Pods_SeafAction.framework */,
+				7FC7D160B75CAC7F84D36617 /* Pods_SeafProvider.framework */,
+				F0B9C062F8425D95D2154FBB /* Pods_SeafProviderFileProvider.framework */,
+				96AA918F0DB37BEFBB94059D /* Pods_seafile_appstore.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -2051,7 +2051,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "";
 				"PRIVATE_HEADERS_FOLDER_PATH[sdk=*]" = "";
@@ -2099,7 +2099,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
