@@ -60,6 +60,7 @@
         _filesize = size;
         self.downloadingFileOid = nil;
         self.task = nil;
+        self.editable = YES;
         self.retryable = true;
     }
     return self;

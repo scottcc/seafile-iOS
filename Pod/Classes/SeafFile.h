@@ -47,6 +47,10 @@ typedef void (^SeafThumbCompleteBlock)(BOOL ret);
 @property (readonly) long long mtime;
 @property (strong, nullable) id <SeafFileUpdateDelegate> udelegate;
 @property (strong, nonatomic) NSProgress * _Nullable progress;
+/**
+ * @brief   Experimental method to skip checking the perm string - intended for read-only `NO` case, default is `YES`.
+ */
+@property (readwrite) BOOL editable;
 
 - (BOOL)isDownloading;
 - (BOOL)isStarred;

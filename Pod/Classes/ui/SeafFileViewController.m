@@ -821,6 +821,11 @@ static NSMutableArray <NSString *> *sheetSkippedItems;
 {
     if (tableView != self.tableView) return NO;
     NSObject *entry  = [self getDentrybyIndexPath:indexPath tableView:tableView];
+    // This is the binnj "editable override" flag check.
+    if (([entry isKindOfClass:[SeafDir class]] && !((SeafDir *)entry).editable) ||
+        ([entry isKindOfClass:[SeafFile class]] && !((SeafFile *)entry).editable)) {
+        return NO;
+    }
     return ![entry isKindOfClass:[SeafUploadFile class]];
 }
 
@@ -1307,6 +1312,7 @@ static NSMutableArray <NSString *> *sheetSkippedItems;
 
 - (void)renameFile:(SeafFile *)file
 {
+    if (!file.editable) return;
     _curEntry = file;
     [self popupRenameView:file.name];
 }

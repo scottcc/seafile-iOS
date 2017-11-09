@@ -17,8 +17,18 @@
 #import <dirent.h>
 #import <sys/xattr.h>
 
+// These things are expensive to create and do not change, so hang onto one at class creation time.
+static NSDateFormatter *assetDateNameFormatter = nil;
+
 @implementation Utils
 
++ (void)initialize
+{
+    if (self == [Utils class]) {
+        assetDateNameFormatter = [[NSDateFormatter alloc] init];
+        [assetDateNameFormatter setDateFormat:@"yyyyMMdd_HHmmss"];
+    }
+}
 
 + (BOOL)addSkipBackupAttributeToItemAtPath:(NSString *)path
 {
