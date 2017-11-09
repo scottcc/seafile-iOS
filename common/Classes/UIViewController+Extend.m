@@ -11,7 +11,7 @@
 #ifdef SEAFILE_APP
 #import "SVProgressHUD.h"
 #endif
-#import "AFNetworking.h"
+@import AFNetworking;
 #import "UIViewController+Extend.h"
 #import "Utils.h"
 #import "Debug.h"

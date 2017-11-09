@@ -9,7 +9,7 @@
 @import Contacts;
 #import <Photos/Photos.h>
 #import "SVProgressHUD.h"
-#import "AFNetworking.h"
+@import AFNetworking;
 
 #import "SeafAppDelegate.h"
 #import "SeafDataTaskManager.h"
