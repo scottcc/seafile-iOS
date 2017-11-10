@@ -524,10 +524,20 @@
     return [super icon];
 }
 
-- (void)clearIconAndThumb
+- (void)regenerateIconThumbInBackground:(BOOL)inBackground
 {
     _icon = nil;
     _thumb = nil;
+    if (!self.image) {
+        Debug("regenerateIconThumbInBackground %@ has nil self.image - skipping genThumb.", self.name);
+        return;
+    }
+    if (inBackground) {
+        [self performSelectorInBackground:@selector(genThumb) withObject:nil];
+    }
+    else {
+        [self genThumb];
+    }
 }
 
 - (void)genThumb
