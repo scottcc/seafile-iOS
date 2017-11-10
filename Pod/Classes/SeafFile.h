@@ -59,7 +59,7 @@ typedef void (^SeafThumbCompleteBlock)(BOOL ret);
 - (void)update:(nullable id<SeafFileUpdateDelegate>)dg;
 - (BOOL)itemChangedAtURL:(nonnull NSURL *)url;
 // Allow for regeneration from updated images, say - needed if you use `itemChangedAtURL`
-- (void)clearIcon;
+- (void)clearIconAndThumb;
 
 - (nonnull NSDictionary *)toDict;
 

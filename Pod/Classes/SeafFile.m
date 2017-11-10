@@ -524,9 +524,10 @@
     return [super icon];
 }
 
-- (void)clearIcon
+- (void)clearIconAndThumb
 {
     _icon = nil;
+    _thumb = nil;
 }
 
 - (void)genThumb
