@@ -9,7 +9,7 @@ def shared
 end
 
 target :"seafile-appstore" do
-  pod 'SVPullToRefreshPlus', '0.4.4.2'
+  pod 'SVPullToRefreshPlus', '0.4.4.1'
   pod 'SVProgressHUD', '~> 1.1.3'
   pod 'SWTableViewCell', :git => 'https://github.com/haiwen/SWTableViewCell.git', :branch => 'master'
   pod 'MWPhotoBrowserPlus', :git => 'https://github.com/scottcc/MWPhotoBrowserPlus.git', :branch => 'master'

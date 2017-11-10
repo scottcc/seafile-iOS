@@ -15,7 +15,7 @@ Pod::Spec.new do |s|
   s.frameworks       = 'AssetsLibrary'
   s.dependency 'AFNetworking', '~> 2.6.1'
   s.dependency 'OpenSSL-Universal', '~> 1.0.1.p'
-  s.dependency 'SVPullToRefreshPlus', '~> 0.4.4.2'
+  s.dependency 'SVPullToRefreshPlus', '~> 0.4.4.1'
   s.dependency 'SVProgressHUD', '~> 1.1.3'
   s.dependency 'NotDeadSWTableViewCell', '~> 0.3.9'
   s.dependency 'MWPhotoBrowserPlus', '~> 2.1.8'  
