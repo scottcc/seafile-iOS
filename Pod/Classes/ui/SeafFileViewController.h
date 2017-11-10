@@ -83,6 +83,9 @@ typedef SeafDetailViewController *(^SeafDetailViewControllerResolver)(void);
 
 @property (strong, readonly) SeafDetailViewController *detailViewController;
 
+/// This is what SVPullToRefresh uses, so you can now trigger it programmatically if you need to.
+@property (nonatomic, readonly) void (^pullToRefreshBlock)(void);
+
 /// If this factory is set, it will be called when the "Add Photos" action is initiated and
 /// will pass itself to it (as the presenting view controller) and an explicit protocol reference
 + (void)setCustomImagePickerFactoryBlock:(id <CustomImagePicker> (^)(SeafFileViewController *, id <SeafilePHPhotoFileViewController>))customImagePickerFactoryBlock;

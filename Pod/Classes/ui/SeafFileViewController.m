@@ -84,6 +84,7 @@ enum {
 @property BOOL inPhotoBrowser;
 
 @property SeafUploadFile *ufile;
+@property (nonatomic, copy, readwrite) void (^pullToRefreshBlock)(void);
 
 /// This is only created/held while it's used, then it's nilified.
 @property (strong, nonatomic) id <CustomImagePicker> customImagePicker;
@@ -550,6 +551,27 @@ static id <CustomImagePicker> (^customImagePickerFactoryBlock)(UIViewController 
     }
 }
 
+- (void (^)(void))pullToRefreshBlock
+{
+    if (!_pullToRefreshBlock) {
+        __weak typeof(self) weakSelf = self;
+        _pullToRefreshBlock = [^{
+            [weakSelf.tableView reloadData];
+            if (weakSelf.searchDisplayController.active)
+                return;
+            if (![weakSelf checkNetworkStatus]) {
+                [weakSelf performSelector:@selector(doneLoadingTableViewData) withObject:nil afterDelay:0.1];
+                return;
+            }
+            
+            weakSelf.state = STATE_LOADING;
+            weakSelf.directory.delegate = weakSelf;
+            [weakSelf.directory loadContent:YES];
+        } copy];
+    }
+    return _pullToRefreshBlock;
+}
+
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
@@ -559,19 +581,7 @@ static id <CustomImagePicker> (^customImagePickerFactoryBlock)(UIViewController 
     // This must be added here, not in viewDidLoad, see SVPullToRefresh author's recommendations:
     //  https://github.com/samvermette/SVPullToRefresh/issues/230
     __weak typeof(self) weakSelf = self;
-    [self.tableView addPullToRefresh:[SVArrowPullToRefreshView class] withActionHandler:^{
-        [weakSelf.tableView reloadData];
-        if (weakSelf.searchDisplayController.active)
-            return;
-        if (![weakSelf checkNetworkStatus]) {
-            [weakSelf performSelector:@selector(doneLoadingTableViewData) withObject:nil afterDelay:0.1];
-            return;
-        }
-        
-        weakSelf.state = STATE_LOADING;
-        weakSelf.directory.delegate = weakSelf;
-        [weakSelf.directory loadContent:YES];
-    }];
+    [self.tableView addPullToRefresh:[SVArrowPullToRefreshView class] withActionHandler:self.pullToRefreshBlock];
 }
 
 #pragma mark - Table View
