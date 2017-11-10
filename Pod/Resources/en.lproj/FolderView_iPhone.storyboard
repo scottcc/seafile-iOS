@@ -55,7 +55,7 @@
         <!--Seaf File View Controller-->
         <scene sceneID="UbQ-9W-oFk">
             <objects>
-                <tableViewController storyboardIdentifier="FILEMASTERVC" automaticallyAdjustsScrollViewInsets="NO" id="ZeC-X3-lth" customClass="SeafFileViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="FILEMASTERVC" id="ZeC-X3-lth" customClass="SeafFileViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelectionDuringEditing="YES" allowsMultipleSelectionDuringEditing="YES" rowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="zZ4-Jf-wgM">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

@@ -242,21 +242,6 @@ static id <CustomImagePicker> (^customImagePickerFactoryBlock)(UIViewController 
     self.navigationController.navigationBar.tintColor = BAR_COLOR;
     [self.navigationController setToolbarHidden:YES animated:NO];
 
-    __weak typeof(self) weakSelf = self;
-    [self.tableView addPullToRefresh:[SVArrowPullToRefreshView class] withActionHandler:^{
-        [weakSelf.tableView reloadData];
-        if (weakSelf.searchDisplayController.active)
-            return;
-        if (![weakSelf checkNetworkStatus]) {
-            [weakSelf performSelector:@selector(doneLoadingTableViewData) withObject:nil afterDelay:0.1];
-            return;
-        }
-
-        weakSelf.state = STATE_LOADING;
-        weakSelf.directory.delegate = weakSelf;
-        [weakSelf.directory loadContent:YES];
-    }];
-
     Debug(@"%@", self.view);
     [self refreshView];
 }
@@ -571,6 +556,22 @@ static id <CustomImagePicker> (^customImagePickerFactoryBlock)(UIViewController 
     if ([_directory hasCache]) {
         [[SeafUI appdelegate] checkOpenLinkAfterAHalfSecond:self];
     }
+    // This must be added here, not in viewDidLoad, see SVPullToRefresh author's recommendations:
+    //  https://github.com/samvermette/SVPullToRefresh/issues/230
+    __weak typeof(self) weakSelf = self;
+    [self.tableView addPullToRefresh:[SVArrowPullToRefreshView class] withActionHandler:^{
+        [weakSelf.tableView reloadData];
+        if (weakSelf.searchDisplayController.active)
+            return;
+        if (![weakSelf checkNetworkStatus]) {
+            [weakSelf performSelector:@selector(doneLoadingTableViewData) withObject:nil afterDelay:0.1];
+            return;
+        }
+        
+        weakSelf.state = STATE_LOADING;
+        weakSelf.directory.delegate = weakSelf;
+        [weakSelf.directory loadContent:YES];
+    }];
 }
 
 #pragma mark - Table View
