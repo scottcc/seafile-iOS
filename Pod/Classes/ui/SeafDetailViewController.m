@@ -161,6 +161,9 @@ static UIViewController *(^editPDFBlock)(SeafDetailViewController *, SeafFile *,
                 _state = PREVIEW_WEBVIEW;
             else if([self.preViewItem.mime isEqualToString:@"text/x-markdown"] || [self.preViewItem.mime isEqualToString:@"text/x-seafile"])
                 _state = PREVIEW_WEBVIEW_JS;
+            else if (self.preViewItem.isPDFFile && self.preViewItem.editable && [SeafDetailViewController editPDFBlock] !=  nil) {
+                _state = PREVIEW_QL_MODAL;
+            }
             else if (!IsIpad()) { // if (!IsIpad()) iPhone >= 10.0
                 _state = self.preViewItem.editable ? PREVIEW_WEBVIEW : PREVIEW_QL_MODAL;
             } else if ([self.presentingViewController isKindOfClass:[UITabBarController class]]){//open form 2nd tab

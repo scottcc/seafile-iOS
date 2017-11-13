@@ -1109,6 +1109,9 @@ static id <CustomImagePicker> (^customImagePickerFactoryBlock)(UIViewController 
         UIViewController *pdfViewController = [SeafDetailViewController editPDFBlock](self.detailViewController,
                                                                                       seafFile,
                                                                                       seafFile.exportURL);
+        // Can't do this as we have no nav bars up top, need to push directly
+        //   [self presentViewController:pdfViewController animated:animated completion:completion];
+        
         // If we have a completion block, we have to wrap this with CATransaction calls
         if (completion) {
             [CATransaction begin];
