@@ -406,7 +406,7 @@ static id <CustomImagePicker> (^customImagePickerFactoryBlock)(UIViewController 
 
     if (customImagePickerFactoryBlock != nil) {
         self.customImagePicker = customImagePickerFactoryBlock(self, self);
-        [self.customImagePicker presentImagePickerSheet];
+        [self.customImagePicker presentImagePickerSheet:self.photoItem];
         return;
     }
     

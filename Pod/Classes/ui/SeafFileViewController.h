@@ -69,8 +69,8 @@ typedef SeafDetailViewController *(^SeafDetailViewControllerResolver)(void);
 /// enable a swap-in replacement with the newer PHPhotos library used.
 @protocol CustomImagePicker
 /// This will be called when "Add Photos" is touched. After that, one of the two `SeafilePHPhotoFileViewController` methods will
-/// be called. The CustomImagePicker takes care of dismissing itself.
-- (void)presentImagePickerSheet;
+/// be called. The CustomImagePicker takes care of dismissing itself. Sender may be nil, or it may be a UIView or UIBarButtonItem subclass.
+- (void)presentImagePickerSheet:(id)sender;
 @end
 
 @interface SeafFileViewController : UITableViewController <SeafDentryDelegate, SeafFileUpdateDelegate> {
