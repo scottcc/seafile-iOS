@@ -36,6 +36,9 @@ typedef SeafDetailViewController *(^SeafDetailViewControllerResolver)(void);
 
 @interface SeafUI : NSObject
 
+/// Allows setting something /else/ other than the AppDelegate as the proxy
++ (void)setAppDelegateProxy:(id <SeafAppDelegateProxy>)proxy;
+/// @return The previously set proxy, or the AppDelegate cast to that if not set.
 + (id <SeafAppDelegateProxy>)appdelegate;
 
 @end
