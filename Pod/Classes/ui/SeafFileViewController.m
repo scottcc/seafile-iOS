@@ -856,7 +856,7 @@ static id <CustomImagePicker> (^customImagePickerFactoryBlock)(UIViewController 
     cell.moreButton.hidden = ![self shouldShowActionSheetWithIndexPath:indexPath];
     cell.moreButtonBlock = ^(NSIndexPath *indexPath) {
         Debug(@"%@", indexPath);
-        [self showActionSheetWithIndexPath:indexPath];
+        [self showAlertWithIndexPath:indexPath];
     };
     sdir.delegate = self;
     return cell;
@@ -873,7 +873,7 @@ static id <CustomImagePicker> (^customImagePickerFactoryBlock)(UIViewController 
     cell.moreButton.hidden = ![self shouldShowActionSheetWithIndexPath:indexPath];
     cell.moreButtonBlock = ^(NSIndexPath *indexPath) {
         Debug(@"%@", indexPath);
-        [self showActionSheetWithIndexPath:indexPath];
+        [self showAlertWithIndexPath:indexPath];
     };
     srepo.delegate = self;
 
