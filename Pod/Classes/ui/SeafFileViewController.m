@@ -698,7 +698,7 @@ static id <CustomImagePicker> (^customImagePickerFactoryBlock)(UIViewController 
     _selectedindex = indexPath;
     SeafCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
     NSArray *titles = [self sheetTitlesForIndexPath:indexPath];
-    [self showAlertWithAction:titles fromBarItem:cell withTitle:nil];
+    [self showAlertWithAction:titles fromView:cell.moreButton withTitle:nil];
 }
 
 - (void)showSheetWithTitles:(NSArray*)titles andFromView:(id)view
@@ -749,7 +749,19 @@ static id <CustomImagePicker> (^customImagePickerFactoryBlock)(UIViewController 
     UIAlertController *alert = [self generateAlert:arr withTitle:title handler:^(UIAlertAction *action) {
         [self handleAction:action.title];
     }];
+
     alert.popoverPresentationController.barButtonItem = item;
+    [self presentViewController:alert animated:true completion:nil];
+}
+
+- (void)showAlertWithAction:(NSArray *)arr fromView:(UIView *)view withTitle:(NSString *)title
+{
+    UIAlertController *alert = [self generateAlert:arr withTitle:title handler:^(UIAlertAction *action) {
+        [self handleAction:action.title];
+    }];
+    
+    alert.popoverPresentationController.sourceView = view;
+    alert.popoverPresentationController.sourceRect = CGRectMake(0.0f, view.center.y, 0.0f, 0.0f);
     [self presentViewController:alert animated:true completion:nil];
 }
 
