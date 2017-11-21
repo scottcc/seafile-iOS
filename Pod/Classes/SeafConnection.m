@@ -175,6 +175,10 @@ static SSLProtocol tlsMinimumSupportedProtocol = kTLSProtocol1;
                 [SeafStorage.sharedObject removeObjectForKey:url];
                 [SeafStorage.sharedObject setObject:ainfo forKey:infoKey];
             }
+            // Let's help out the object cache if we now know the username and haven't had one!
+            else if (username.length > 0 && _info && ![_info objectForKey:@"username"]) {
+                [_info setObject:username forKey:@"username"];
+            }
         }
 
         NSDictionary *settings = [SeafStorage.sharedObject objectForKey:[NSString stringWithFormat:@"%@/%@/settings", url, username]];
