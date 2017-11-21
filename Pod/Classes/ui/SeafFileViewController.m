@@ -1298,11 +1298,24 @@ static id <CustomImagePicker> (^customImagePickerFactoryBlock)(UIViewController 
 #pragma mark - edit files
 - (void)editOperation:(id)sender
 {
-    id <SeafAppDelegateProxy> appdelegate = [SeafUI appdelegate];
-
-    if (self != appdelegate.fileVC) {
-        return [appdelegate.fileVC editOperation:sender];
+    SeafFileViewController *appDelegateFileVC = [SeafUI appdelegate].fileVC;
+    // Alright kids, gather 'round. It appears that the expectation below
+    // is that if an editOperation is being called on this object *AND*
+    // the AppDelegate version is DIFFERENT then we use the AppDelegate one
+    // INSTEAD.
+    
+    // However. However. For some crazy people who use nearly all of the wonderful
+    // UI in this project, the _directory object held in the AppDelegate version
+    //     /may not have the repoId set/
+    // Thus we check that first, and ONLY swap to AppDelegate's instance if it
+    // has a valid repoId (and thus can compose the correct URL for move/copy files).
+    
+    if (self != appDelegateFileVC &&
+        appDelegateFileVC.directory.repoId.length > 0) {
+        // forward edit operation to new instance of fileVC?
+        return [appDelegateFileVC editOperation:sender];
     }
+
     switch ([sender tag]) {
         case EDITOP_MKDIR:
             [self popupMkdirView];
