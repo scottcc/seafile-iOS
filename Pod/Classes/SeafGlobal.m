@@ -165,7 +165,9 @@ static NSString *appName = @"com.seafile.seafilePro";
     Debug("Registering default values from Settings.bundle");
     NSUserDefaults * defs = [NSUserDefaults standardUserDefaults];
 
-    NSString *settingsBundle = [[NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"Seafile" ofType:@"bundle"]] pathForResource:@"Settings" ofType:@"bundle"];
+    NSBundle *seafileBundle = (SeafileBundle() ?: [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"Seafile" ofType:@"bundle"]]);
+    NSString *settingsBundle = [seafileBundle pathForResource:@"Settings" ofType:@"bundle"];
+    
     if(!settingsBundle) {
         Debug("Could not find Settings.bundle");
         return;
