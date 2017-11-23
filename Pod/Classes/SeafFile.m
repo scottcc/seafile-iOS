@@ -689,11 +689,21 @@
 
 - (BOOL)editable
 {
+    // Only in the event that a .heic based file gets added via a different way (say, from a web
+    // account from a High Sierra machine) would we see it as if it's added using Seafile code
+    // it will be auto-converted to JPG. However, if it IS added that way, we should be able to
+    // work with it. According to Apple, it should have a UTI of "public.heic" or
+    // "heif", however introspection shows that the mime can be just "heic" at this point.
+    // So we'll check for all occurrences by looking at the ending.
+    NSString *mimeLower = self.mime.lowercaseString;
+    BOOL isHEIC = ([mimeLower hasSuffix:@"heic"] || [mimeLower hasSuffix:@"heif"]);
+    BOOL isImage = ([mimeLower hasPrefix:@"image/"] || isHEIC);
+    
     return ([[connection getRepo:self.repoId] editable] &&
             _editable &&
-            ([self.mime hasPrefix:@"text/"] ||
-             ([self.mime hasPrefix:@"image/"] && [SeafDetailViewController editImageBlock] != nil) ||
-             ([self.mime isEqualToString:@"application/pdf"] && [SeafDetailViewController editPDFBlock] != nil))
+            ([mimeLower hasPrefix:@"text/"] ||
+             (isImage && [SeafDetailViewController editImageBlock] != nil) ||
+             ([mimeLower isEqualToString:@"application/pdf"] && [SeafDetailViewController editPDFBlock] != nil))
             );
 }
 
