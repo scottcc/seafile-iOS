@@ -102,10 +102,16 @@ static UIViewController *(^editPDFBlock)(SeafDetailViewController *, SeafFile *,
 - (BOOL)previewSuccess
 {
     // if we have an Edit-image block, then we can ALSO preview a PHOTO..
+    SeafFile  *possibleSeafFile = ([self.preViewItem isKindOfClass:[SeafFile class]]
+                                   ? (SeafFile *)self.preViewItem
+                                   : nil);
     return ((self.state == PREVIEW_QL_SUBVIEW) ||
             (self.state == PREVIEW_WEBVIEW) ||
             (self.state == PREVIEW_WEBVIEW_JS) ||
-            (self.state == PREVIEW_PHOTO && [SeafDetailViewController editImageBlock] != nil));
+            (self.state == PREVIEW_PHOTO &&
+             (possibleSeafFile &&
+              possibleSeafFile.hasCache &&
+              [SeafDetailViewController editImageBlock] != nil)));
 }
 
 - (BOOL)isModal

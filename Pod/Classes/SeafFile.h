@@ -53,6 +53,8 @@ typedef void (^SeafThumbCompleteBlock)(BOOL ret);
 @property (readwrite) BOOL editable;
 
 - (BOOL)isDownloading;
+/// Useful in combination with and editBlock and whether it could be called.
+- (BOOL)hasCache;
 - (BOOL)isStarred;
 - (void)setStarred:(BOOL)starred;
 - (void)deleteCache;
