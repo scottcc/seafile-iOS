@@ -11,6 +11,7 @@
 #import "SeafThumb.h"
 #import "SeafDataTaskManager.h"
 #import "SeafStorage.h"
+#import "SeafDetailViewController.h"
 
 #import "FileMimeType.h"
 #import "ExtentedString.h"
@@ -60,6 +61,7 @@
         _filesize = size;
         self.downloadingFileOid = nil;
         self.task = nil;
+        self.editable = YES;
         self.retryable = true;
     }
     return self;
@@ -498,6 +500,11 @@
     return [Utils isImageFile:self.name];
 }
 
+- (BOOL)isPDFFile
+{
+    return [Utils isPDFFile:self.name];
+}
+
 - (UIImage *)icon
 {
     if (_icon) return _icon;
@@ -515,6 +522,22 @@
         }
     }
     return [super icon];
+}
+
+- (void)regenerateIconThumbInBackground:(BOOL)inBackground
+{
+    _icon = nil;
+    _thumb = nil;
+    if (!self.image) {
+        Debug("regenerateIconThumbInBackground %@ has nil self.image - skipping genThumb.", self.name);
+        return;
+    }
+    if (inBackground) {
+        [self performSelectorInBackground:@selector(genThumb) withObject:nil];
+    }
+    else {
+        [self genThumb];
+    }
 }
 
 - (void)genThumb
@@ -666,7 +689,12 @@
 
 - (BOOL)editable
 {
-    return [[connection getRepo:self.repoId] editable] && [self.mime hasPrefix:@"text/"];
+    return ([[connection getRepo:self.repoId] editable] &&
+            _editable &&
+            ([self.mime hasPrefix:@"text/"] ||
+             ([self.mime hasPrefix:@"image/"] && [SeafDetailViewController editImageBlock] != nil) ||
+             ([self.mime isEqualToString:@"application/pdf"] && [SeafDetailViewController editPDFBlock] != nil))
+            );
 }
 
 - (UIImage *)image
@@ -674,7 +702,13 @@
     if (!self.ooid)
         return nil;
     NSString *path = [SeafStorage.sharedObject documentPath:self.ooid];
-    NSString *cachePath = [[SeafStorage.sharedObject tempDir] stringByAppendingPathComponent:self.ooid];
+    // Check the mpath first, as we can now modify images too, otherwise fall back on cache.
+    // HOWEVER, in this case, we must strip off the last path component as cachePath is apparently
+    // not inclusive of the name...
+    NSString *cachePath = (self.mpath && [[NSFileManager new] fileExistsAtPath:self.mpath]
+                           ? [self.mpath stringByDeletingLastPathComponent]
+                           : [[SeafStorage.sharedObject tempDir] stringByAppendingPathComponent:self.ooid]);
+    
     return [Utils imageFromPath:path withMaxSize:IMAGE_MAX_SIZE cachePath:cachePath andFileName:self.name];
 }
 

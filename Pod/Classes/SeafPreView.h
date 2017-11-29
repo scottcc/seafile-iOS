@@ -46,6 +46,7 @@ enum SET_REPO_PASSWORD_RET {
 - (BOOL)saveStrContent:(NSString *)content;
 - (BOOL)hasCache;
 - (BOOL)isImageFile;
+- (BOOL)isPDFFile;
 - (long long) mtime;
 - (void)cancelAnyLoading;
 

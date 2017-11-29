@@ -90,6 +90,8 @@ _out:
 }
 
 static AFHTTPRequestSerializer <AFURLRequestSerialization> * _requestSerializer;
+static SSLProtocol tlsMinimumSupportedProtocol = kTLSProtocol1;
+
 @interface SeafConnection ()
 
 @property NSMutableSet *starredFiles;
@@ -128,6 +130,11 @@ static AFHTTPRequestSerializer <AFURLRequestSerialization> * _requestSerializer;
 @synthesize platformVersion = _platformVersion;
 @synthesize accountIdentifier = _accountIdentifier;
 
++ (void)setTLSMinimumSupportedProtocol:(SSLProtocol)minTLS
+{
+    tlsMinimumSupportedProtocol = minTLS;
+}
+
 - (id)initWithUrl:(NSString *)url cacheProvider:(id<SeafCacheProvider>)cacheProvider
 {
     if (self = [super init]) {
@@ -139,7 +146,7 @@ static AFHTTPRequestSerializer <AFURLRequestSerialization> * _requestSerializer;
         _syncDir = nil;
         NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
         //configuration.TLSMaximumSupportedProtocol = kTLSProtocol12;
-        configuration.TLSMinimumSupportedProtocol = kTLSProtocol1;
+        configuration.TLSMinimumSupportedProtocol = tlsMinimumSupportedProtocol;
         _sessionMgr = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:configuration];
         _sessionMgr.responseSerializer = [AFJSONResponseSerializer serializerWithReadingOptions:NSJSONReadingAllowFragments];
         self.policy = [self policyForHost:[self host]];
@@ -197,7 +204,7 @@ static AFHTTPRequestSerializer <AFURLRequestSerialization> * _requestSerializer;
 - (NSString *)platformVersion
 {
     if (!_platformVersion) {
-        NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
+        NSDictionary *infoDictionary = [SeafileBundle() infoDictionary];
         _platformVersion = [infoDictionary objectForKey:@"DTPlatformVersion"];
     }
     return _platformVersion;
@@ -536,56 +543,60 @@ static AFHTTPRequestSerializer <AFURLRequestSerialization> * _requestSerializer;
 
 - (AFHTTPSessionManager *)loginMgr
 {
-    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration ephemeralSessionConfiguration];
-    configuration.TLSMinimumSupportedProtocol = kTLSProtocol1;
-
-    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:configuration];
-    [manager setSessionDidReceiveAuthenticationChallengeBlock:^NSURLSessionAuthChallengeDisposition(NSURLSession *session, NSURLAuthenticationChallenge *challenge, NSURLCredential *__autoreleasing *credential) {
-        if ([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust]) {
-            if (SeafStorage.sharedObject.allowInvalidCert) return NSURLSessionAuthChallengeUseCredential;
-
-            *credential = [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
-            BOOL valid = SeafServerTrustIsValid(challenge.protectionSpace.serverTrust);
-            Debug("Server cert is valid: %d, delegate=%@, inCheckCert=%d, credential:%@", valid, self.delegate, self.inCheckCert, *credential);
-            if (valid) {
-                [[NSFileManager defaultManager] removeItemAtPath:[self certPathForHost:challenge.protectionSpace.host] error:nil];
-                if ([challenge.protectionSpace.host isEqualToString:self.host]) {
-                    SecCertificateRef cer = SecTrustGetCertificateAtIndex(challenge.protectionSpace.serverTrust, 0);
-                    self.policy = SeafPolicyFromCert(cer);
+    if (_loginMgr == nil) {
+        NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration ephemeralSessionConfiguration];
+        configuration.TLSMinimumSupportedProtocol = tlsMinimumSupportedProtocol;
+        
+        AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:configuration];
+        [manager setSessionDidReceiveAuthenticationChallengeBlock:^NSURLSessionAuthChallengeDisposition(NSURLSession *session, NSURLAuthenticationChallenge *challenge, NSURLCredential *__autoreleasing *credential) {
+            if ([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust]) {
+                if (SeafStorage.sharedObject.allowInvalidCert) return NSURLSessionAuthChallengeUseCredential;
+                
+                *credential = [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
+                BOOL valid = SeafServerTrustIsValid(challenge.protectionSpace.serverTrust);
+                Debug("Server cert is valid: %d, delegate=%@, inCheckCert=%d, credential:%@", valid, self.delegate, self.inCheckCert, *credential);
+                if (valid) {
+                    [[NSFileManager defaultManager] removeItemAtPath:[self certPathForHost:challenge.protectionSpace.host] error:nil];
+                    if ([challenge.protectionSpace.host isEqualToString:self.host]) {
+                        SecCertificateRef cer = SecTrustGetCertificateAtIndex(challenge.protectionSpace.serverTrust, 0);
+                        self.policy = SeafPolicyFromCert(cer);
+                    }
+                    return NSURLSessionAuthChallengeUseCredential;
+                } else {
+                    if (!self.loginDelegate) return NSURLSessionAuthChallengeCancelAuthenticationChallenge;
+                    @synchronized(self) {
+                        if (self.inCheckCert)
+                            return NSURLSessionAuthChallengeCancelAuthenticationChallenge;
+                        self.inCheckCert = true;
+                    }
+                    BOOL yes = [self.loginDelegate authorizeInvalidCert:challenge.protectionSpace];
+                    NSURLSessionAuthChallengeDisposition dis = yes ? NSURLSessionAuthChallengeUseCredential: NSURLSessionAuthChallengeCancelAuthenticationChallenge;
+                    if (yes)
+                        [self saveCertificate:challenge.protectionSpace];
+                    
+                    self.inCheckCert = false;
+                    return dis;
                 }
-                return NSURLSessionAuthChallengeUseCredential;
-            } else {
+            } else if ([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodClientCertificate]) {
+                Debug("Use NSURLAuthenticationMethodClientCertificate");
                 if (!self.loginDelegate) return NSURLSessionAuthChallengeCancelAuthenticationChallenge;
-                @synchronized(self) {
-                    if (self.inCheckCert)
-                        return NSURLSessionAuthChallengeCancelAuthenticationChallenge;
-                    self.inCheckCert = true;
+                NSData *key = [self.loginDelegate getClientCertPersistentRef:credential];
+                if (key == nil){
+                    return NSURLSessionAuthChallengeCancelAuthenticationChallenge;
+                } else {
+                    _clientIdentityKey = key;
+                    _clientCred = *credential;
+                    [Utils dict:_info setObject:key forKey:@"identity"];
+                    return NSURLSessionAuthChallengeUseCredential;
                 }
-                BOOL yes = [self.loginDelegate authorizeInvalidCert:challenge.protectionSpace];
-                NSURLSessionAuthChallengeDisposition dis = yes ? NSURLSessionAuthChallengeUseCredential: NSURLSessionAuthChallengeCancelAuthenticationChallenge;
-                if (yes)
-                    [self saveCertificate:challenge.protectionSpace];
-
-                self.inCheckCert = false;
-                return dis;
-            }
-        } else if ([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodClientCertificate]) {
-            Debug("Use NSURLAuthenticationMethodClientCertificate");
-            if (!self.loginDelegate) return NSURLSessionAuthChallengeCancelAuthenticationChallenge;
-            NSData *key = [self.loginDelegate getClientCertPersistentRef:credential];
-            if (key == nil){
-                return NSURLSessionAuthChallengeCancelAuthenticationChallenge;
             } else {
-                _clientIdentityKey = key;
-                _clientCred = *credential;
-                [Utils dict:_info setObject:key forKey:@"identity"];
-                return NSURLSessionAuthChallengeUseCredential;
             }
-        } else {
-        }
-        return NSURLSessionAuthChallengePerformDefaultHandling;
-    }];
-    return manager;
+            return NSURLSessionAuthChallengePerformDefaultHandling;
+        }];
+        _loginMgr = manager;
+    }
+    
+    return _loginMgr;
 }
 
 - (AFSecurityPolicy *)policy
@@ -707,7 +718,7 @@ static AFHTTPRequestSerializer <AFURLRequestSerialization> * _requestSerializer;
     [request setHTTPMethod:@"POST"];
     [request setValue:@"application/x-www-form-urlencoded; charset=UTF-8" forHTTPHeaderField:@"Content-Type"];
 
-    NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
+    NSDictionary *infoDictionary = [SeafileBundle() infoDictionary];
     NSString *version = SEAFILE_VERSION;
     NSString *platform = @"ios";
     NSString *platformName = [infoDictionary objectForKey:@"DTPlatformName"];
@@ -1035,7 +1046,7 @@ static AFHTTPRequestSerializer <AFURLRequestSerialization> * _requestSerializer;
 - (void)registerDevice:(NSData *)deviceToken
 {
 #if 0
-    NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
+    NSDictionary *infoDictionary = [SeafileBundle() infoDictionary];
     NSString *version = SEAFILE_VERSION;
     NSString *platform = [infoDictionary objectForKey:@"DTPlatformName"];
     NSString *platformVersion = [infoDictionary objectForKey:@"DTPlatformVersion"];

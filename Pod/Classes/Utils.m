@@ -17,8 +17,18 @@
 #import <dirent.h>
 #import <sys/xattr.h>
 
+// These things are expensive to create and do not change, so hang onto one at class creation time.
+static NSDateFormatter *assetDateNameFormatter = nil;
+
 @implementation Utils
 
++ (void)initialize
+{
+    if (self == [Utils class]) {
+        assetDateNameFormatter = [[NSDateFormatter alloc] init];
+        [assetDateNameFormatter setDateFormat:@"yyyyMMdd_HHmmss"];
+    }
+}
 
 + (BOOL)addSkipBackupAttributeToItemAtPath:(NSString *)path
 {
@@ -291,7 +301,8 @@
 
 + (BOOL)isImageFile:(NSString *)name
 {
-    static NSString *imgexts[] = {@"tif", @"tiff", @"jpg", @"jpeg", @"gif", @"png", @"bmp", @"ico", nil};
+    // Note we'll convert .heic files to jpeg/jpg before uploading
+    static NSString *imgexts[] = {@"tif", @"tiff", @"jpg", @"jpeg", @"gif", @"png", @"bmp", @"ico", @"heic", nil};
     NSString *ext = name.pathExtension.lowercaseString;
     return [Utils isExt:ext In:imgexts];
 }
@@ -299,6 +310,13 @@
 + (BOOL)isVideoFile:(NSString *)name
 {
     return [Utils isVideoExt:name.pathExtension.lowercaseString];
+}
+
++ (BOOL)isPDFFile:(NSString *)name
+{
+    static NSString *pdfexts[] = {@"pdf", nil};
+    NSString *ext = name.pathExtension.lowercaseString;
+    return [Utils isExt:ext In:pdfexts];
 }
 
 + (BOOL)isVideoExt:(NSString *)ext
@@ -377,6 +395,67 @@
     return success;
 }
 
++ (BOOL)writeDataToPathWithMeta:(NSString *)filePath andPHAsset:(PHAsset *)phAsset
+{
+    // Somewhat following what the ALAsset thing does.. with some "skip .heic please" flavour tossed in
+    if ([PHPhotoLibrary authorizationStatus] != PHAuthorizationStatusAuthorized) {
+        Debug("***Not allowed to access PHPhotoLibrary!! ***");
+        return NO;
+    }
+    PHImageManager *imageManager = [PHImageManager new];
+    PHImageRequestOptions *options = [PHImageRequestOptions new];
+    options.networkAccessAllowed = YES;
+    options.synchronous = YES;
+    options.version = PHImageRequestOptionsVersionCurrent;
+    options.deliveryMode = PHImageRequestOptionsDeliveryModeHighQualityFormat;
+
+    __block BOOL success = NO;
+    [imageManager requestImageDataForAsset:phAsset
+                                   options:options
+                             resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
+                                 if (imageData) {
+                                     Debug(@"About to CONVERT imageData of type: '%@' for phAsset: %@", dataUTI, phAsset);
+                                     // INSPECT/CONVERT .heic FILES! Apparently only openable by this bloody device fwiw
+                                     // See:  https://devstreaming-cdn.apple.com/videos/wwdc/2017/511tj33587vdhds/511/511_working_with_heif_and_hevc.pdf
+                                     //   Apparently the types are: "public.heic", "public.heif", but the
+                                     //   apple recommendation is to check that it does NOT conform to the kUTTTypeJPEG
+                                     if (!UTTypeConformsTo((__bridge CFStringRef _Nonnull)(dataUTI), kUTTypeJPEG)) {
+                                         Debug(@"CONVERTING .heic/.heif FILE TO JPEG!");
+                                         CIContext *ciContext = [CIContext context];
+                                         CIImage *ciImage = [[CIImage alloc] initWithData:imageData];
+                                         NSAssert(ciImage != nil, @"UNABLE TO CREATE CIImage from .heif/.heic DATA!");
+                                         // according to Apple spec on this, "If not present, a value of 1 is assumed"
+                                         NSString *exifOrientationKey = (NSString *)kCGImagePropertyOrientation;
+                                         NSNumber *exifOrientation = ciImage.properties[exifOrientationKey];
+                                         Debug(@"Input EXIF Orientation is:%@", exifOrientation);
+                                         CIImage *outputImage = [ciImage imageByApplyingOrientation:exifOrientation.intValue];
+                                         
+                                         NSURL *outputURL = [[NSURL alloc] initFileURLWithPath:filePath];
+                                         NSError *error = nil;
+                                         success = [ciContext writeJPEGRepresentationOfImage:outputImage
+                                                                                       toURL:outputURL
+                                                                                  colorSpace:ciImage.colorSpace
+                                                                                     options:@{}
+                                                                                       error:&error];
+                                         
+                                         unsigned long long outputSize = [[NSFileManager new] attributesOfItemAtPath:filePath error:nil].fileSize;
+                                         
+                                         NSString *title = (success ? @"CONVERTED" : @"FAILED CONVERTING");
+                                         Debug(@"%@ HEIF image to JPEG (%@ -> %@ bytes)", title, @(imageData.length), @(outputSize));
+                                     }
+                                     else {
+                                         // Just write out the bytes to disk directly
+                                         success = [imageData writeToFile:filePath atomically:YES];
+                                     }
+                                 }
+                                 else {
+                                     Debug(@"Could not requestImageDataForAsset! %@", info);
+                                 }
+                             }];
+
+    return success;
+}
+
 + (BOOL)writeDataToPath:(NSString*)filePath andAsset:(ALAsset*)asset
 {
     [Utils checkMakeDir:[filePath stringByDeletingLastPathComponent]];
@@ -384,6 +463,16 @@
     if ([@"jpg" isEqualToString:ext] || [@"jpeg" isEqualToString:ext])
         return [Utils writeDataToPathWithMeta:filePath andAsset:asset];
     return [Utils writeDataToPathNoMeta:filePath andAsset:asset];
+}
+
++ (BOOL)writeDataToPath:(NSString*)filePath andPHAsset:(PHAsset*)phAsset
+{
+    [Utils checkMakeDir:[filePath stringByDeletingLastPathComponent]];
+    NSString *ext = filePath.pathExtension.lowercaseString;
+    if ([@"jpg" isEqualToString:ext] || [@"jpeg" isEqualToString:ext] || [@"heic" isEqualToString:ext])
+        return [Utils writeDataToPathWithMeta:filePath andPHAsset:phAsset];
+    Debug("***Could not create no-meta-data version of PHAsset for extension:%@ ***", ext);
+    return NO;
 }
 
 + (BOOL)fileExistsAtPath:(NSString *)path
@@ -543,8 +632,13 @@
 {
     const int MAX_SIZE = 2048;
     if ([[NSFileManager defaultManager] fileExistsAtPath:cachePath]) {
-        UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@/%@",cachePath,fileName]];
-        return image;
+        // try appending the filename to the cachepath first
+        NSString *fullPathToCachedFile = [cachePath stringByAppendingPathComponent:fileName];
+        UIImage *image = ([UIImage imageWithContentsOfFile:fullPathToCachedFile] ?:
+                          [UIImage imageWithContentsOfFile:cachePath] );
+        if (image) {
+            return image;
+        }
     }
 
     if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
@@ -563,17 +657,37 @@
 {
     NSString *name = asset.defaultRepresentation.filename;
     if ([name hasPrefix:@"IMG_"]) {
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat:@"yyyyMMdd_HHmmss"];
-        NSDate *date = [asset valueForProperty:ALAssetPropertyDate];
-        if (date == nil) {
-            date = [NSDate date];
-        }
-        NSString *dateStr = [dateFormatter stringFromDate:date];
+        NSDate *date = ([asset valueForProperty:ALAssetPropertyDate] ?: [NSDate date]);
+        NSString *dateStr = [assetDateNameFormatter stringFromDate:date];
         return [NSString stringWithFormat:@"IMG_%@_%@", dateStr, [name substringFromIndex:4]];
     }
     return name;
 }
+
++ (NSString *)assertPHAssetName:(PHAsset *)phAsset
+{
+    NSArray *resources = [PHAssetResource assetResourcesForAsset:phAsset];
+    NSString *name = ((PHAssetResource *)resources.firstObject).originalFilename;
+    if (!name || name.length == 0) {
+        Warning("Impossible! No resources for phAsset %@ - assuming file.dat", phAsset);
+        name = @"file.dat";
+    }
+    // Later on, we will FORCE CONVERT .heic (actually, anything not JPEG)
+    // to the much more compatible JPEG format, so we'll just
+    // assume that here for the sake of unique naming.
+    NSString *ext = name.pathExtension.lowercaseString;
+    if (![@[@"jpg", @"jpeg"] containsObject:ext]) {
+        // I personally prefer the lowercased long form, so there.
+        name = [[name stringByDeletingPathExtension] stringByAppendingPathExtension:@"jpeg"];
+    }
+    if ([name hasPrefix:@"IMG_"]) {
+        NSDate *date = (phAsset.creationDate ?: [NSDate date]);
+        NSString *dateStr = [assetDateNameFormatter stringFromDate:date];
+        return [NSString stringWithFormat:@"IMG_%@_%@", dateStr, [name substringFromIndex:4]];
+    }
+    return name;
+}
+
 
 + (NSString *)encodeDir:(NSString *)server username:(NSString *)username repo:(NSString *)repoId path:(NSString *)path overwrite:(BOOL)overwrite
 {

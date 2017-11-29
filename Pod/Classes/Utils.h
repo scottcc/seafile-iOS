@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <AssetsLibrary/AssetsLibrary.h>
+#import <Photos/Photos.h>
 #import <UIKit/UIKit.h>
 
 #define IMAGE_MAX_SIZE 2048
@@ -34,11 +35,13 @@
 + (id)JSONDecode:(NSData *)data error:(NSError **)error;
 + (NSString *)JSONEncodeDictionary:(NSDictionary *)dict;
 + (BOOL)isImageFile:(NSString *)name;
++ (BOOL)isPDFFile:(NSString *)name;
 + (BOOL)isVideoFile:(NSString *)name;
 
 + (BOOL)isVideoExt:(NSString *)ext;
 
 + (BOOL)writeDataToPath:(NSString*)filePath andAsset:(ALAsset*)asset;
++ (BOOL)writeDataToPath:(NSString*)filePath andPHAsset:(PHAsset*)asset;
 
 
 + (CGSize)textSizeForText:(NSString *)txt font:(UIFont *)font width:(float)width;
@@ -55,6 +58,7 @@
 + (NSDictionary *)queryToDict:(NSString *)query;
 + (void)dict:(NSMutableDictionary *)dict setObject:(id)value forKey:(NSString *)defaultName;
 + (NSString *)assertName:(ALAsset *)asset;
++ (NSString *)assertPHAssetName:(PHAsset *)phAsset;
 
 + (NSString *)encodeDir:(NSString *)server username:(NSString *)username repo:(NSString *)repoId path:(NSString *)path overwrite:(BOOL)overwrite;
 + (NSArray *)decodeDir:(NSString *)encodedStr; // server, username, repo, path, overwrite
