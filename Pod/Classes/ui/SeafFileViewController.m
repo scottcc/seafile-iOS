@@ -107,12 +107,18 @@ enum {
 static SeafDetailViewControllerResolver detailViewControllerResolver = ^SeafDetailViewController *{ return nil; };
 static NSMutableArray <NSString *> *sheetSkippedItems;
 static id <CustomImagePicker> (^customImagePickerFactoryBlock)(UIViewController *, id <SeafilePHPhotoFileViewController>) = nil;
+static BOOL pullToRefreshAutomaticallyAfterUpload = NO;
 
 + (void)initialize
 {
     if (self == [SeafFileViewController class]) {
         sheetSkippedItems = [NSMutableArray new];
     }
+}
+
++ (void)setShouldPullToRefreshAutomaticallyAfterUpload:(BOOL)refreshAutomatically
+{
+    pullToRefreshAutomaticallyAfterUpload = refreshAutomatically;
 }
 
 + (NSArray <NSString *> *)sheetSkippedItems
@@ -754,6 +760,27 @@ static id <CustomImagePicker> (^customImagePickerFactoryBlock)(UIViewController 
     [self presentViewController:alert animated:true completion:nil];
 }
 
++ (UIViewController *)topViewController
+{
+    return [self topViewController:[UIApplication sharedApplication].keyWindow.rootViewController];
+}
+
++ (UIViewController *)topViewController:(UIViewController *)rootViewController
+{
+    if ([rootViewController isKindOfClass:[UINavigationController class]]) {
+        UINavigationController *navigationController = (UINavigationController *)rootViewController;
+        return [self topViewController:[navigationController.viewControllers lastObject]];
+    }
+    if ([rootViewController isKindOfClass:[UITabBarController class]]) {
+        UITabBarController *tabController = (UITabBarController *)rootViewController;
+        return [self topViewController:tabController.selectedViewController];
+    }
+    if (rootViewController.presentedViewController) {
+        return [self topViewController:rootViewController];
+    }
+    return rootViewController;
+}
+
 - (void)showAlertWithAction:(NSArray *)arr fromView:(UIView *)view withTitle:(NSString *)title
 {
     UIAlertController *alert = [self generateAlert:arr withTitle:title handler:^(UIAlertAction *action) {
@@ -762,7 +789,11 @@ static id <CustomImagePicker> (^customImagePickerFactoryBlock)(UIViewController 
     
     alert.popoverPresentationController.sourceView = view;
     alert.popoverPresentationController.sourceRect = CGRectMake(0.0f, view.center.y, 0.0f, 0.0f);
-    [self presentViewController:alert animated:true completion:nil];
+    // NOTE! You can't assume YOU (this instance) is *the* topmost view controller. You might be in whatever
+    //       form of collections of whatnot window arrangements. Hence the topMost.. based methods.
+//    [self presentViewController:alert animated:true completion:nil];
+    UIViewController *topViewController = [SeafFileViewController topViewController];
+    [topViewController presentViewController:alert animated:true completion:nil];
 }
 
 - (UITableViewCell *)getSeafUploadFileCell:(SeafUploadFile *)file forTableView:(UITableView *)tableView
@@ -1861,6 +1892,13 @@ static id <CustomImagePicker> (^customImagePickerFactoryBlock)(UIViewController 
     [self updateFileCell:file result:YES progress:1.0f completed:YES];
     if (self.isVisible) {
         [SVProgressHUD showSuccessWithStatus:[NSString stringWithFormat:NSLocalizedString(@"File '%@' uploaded success", @"Seafile"), file.name]];
+        if (pullToRefreshAutomaticallyAfterUpload && self.pullToRefreshBlock != NULL) {
+            __weak SeafFileViewController *welf = self;
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC);
+            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                welf.pullToRefreshBlock();
+            });
+        }
     }
 }
 

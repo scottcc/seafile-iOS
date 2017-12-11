@@ -95,6 +95,9 @@ typedef SeafDetailViewController *(^SeafDetailViewControllerResolver)(void);
 + (void)setSheetSkippedItems:(NSArray <NSString *> *)skippedItems;
 + (NSArray <NSString *> *)sheetSkippedItems;
 
+///  @note: Default is `NO` - otherwise, each instance will (if visible) refresh when the upload is complete
++ (void)setShouldPullToRefreshAutomaticallyAfterUpload:(BOOL)refreshAutomatically;
+
 - (void)refreshView;
 - (void)uploadFile:(SeafUploadFile *)file;
 - (void)deleteFile:(SeafFile *)file;
